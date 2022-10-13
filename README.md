@@ -1,5 +1,5 @@
-# Master Project
-This repository is meant to document my Master's work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.
+# Masters Project
+This repository is meant to document my Masters in Physics' work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.
 
 ## Problem Statements
 
