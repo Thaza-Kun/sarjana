@@ -1,0 +1,66 @@
+# Literature Review
+## Observed Properties
+### Dispersion Measure
+As radio signals propagate through space, it interacts with mediums it encounters and thus is dispersed.
+As a consequence, its arrival time is directly dependent on its frequency with lower frequencies arriving later [@day_pinpointing_2022; @kulkarni_dispersion_2020].
+The measure of this dispersion – its dispersion measure (DM) – is a key observable quantity in studies of FRBs [@keane_fast_2016].
+It is generally accepted that the DM of a FRB transient is due to free electrons encountered, $n_e$, along the path, dl, with the relation,
+$$
+\text{DM} = \int_0^d n_e \text{d}l.
+$$ {#eq-DM}
+
+However, it is worth noting that ionized particles, plasma temperature, magnetic fields and its relative motion contribute to this measure even though these other contributions are very small and can be neglected [@kulkarni_dispersion_2020].
+The DM of a given transient is calculated using two observables: its arrival time, $t$, and its frequency, $\nu$; where the DM is related by the slope relation
+$$
+\Delta t = a\frac{\text{DM}}{\Delta\nu^2},
+$$ {#eq-DM-slope-a}
+or more directly
+$$
+\text{DM} = K\Delta\nu^2\Delta t,
+$$ {#eq-DM-slope-k}
+where $a=K^{-1}$ and $\Delta\nu^2$ is the difference of the highest and lowest frequency.
+Users of calculation software should be made aware which conventions are used.
+For the sake of precision, both values with its uncertainty are provided here [@kulkarni_dispersion_2020]:
+
+<!-- TODO Align Eq -->
+$a=4.148 806 4239(11) \text{GH}^2\text{pc}^{-1}\text{cm}^3\text{ms}$
+
+$K=241.033 1786(66)  \text{GH}^{-2}\text{pc}\text{cm}^{-3}\text{s}$
+
+###	Fluence And Peak Flux Density
+The fluence, $\mathcal{F}$, of a transient is the total energy received by the antenna throughout the duration of the signal typically measured in Jansky seconds, $\text{J}\cdot\text{s}$.
+It then is characterized by the expression [@petroff_fast_2019]
+$$
+\mathcal{F} = \int_\text{pulse} S(t) \text{d}t,
+$$ {#eq-fluence-by-integral}
+where $S(t)$ is the flux density of the signal. We can then characterize the peak flux density, $S_\text{peak}$ and its pulse width, $W_\text{pulse}$ like so
+$$
+\mathcal{F} = S_\text{peak} W_\text{peak}.
+$$ {#eq-fluence-by-peaks}
+
+###	Rotation Measure
+Analogous to dispersion measure, where the frequency is dispersed by the interacting medium, the radio wave may also be rotated as electrons interact with its magnetic field component.
+This rotation is measurable via its polarization, $\Theta$, which is proportional to its wavelength squared, $\lambda^2$,
+$$
+\Theta = \text{RM} \lambda^2,
+$$ {#eq-RM}
+where RM is the Faraday rotation measure.
+This quantity, RM, is analogous to @eq-DM for DM as it is the total interaction along the line of sight [@brentjens_faraday_2005; @feng_frequency-dependent_2022],
+$$
+\text{RM} = -0.81\int_0^d B(l)_\parallel n_e(l) \text{d}l.
+$$ {#eq-RM-intergral}
+
+## Derived Properties
+
+### Distance Constraints
+The DM of the FRBs can be used to infer the distance of the source by estimating contributions along the line of sight.
+FRBs typically have DM more than the contributions from Milky Way, $\text{DM}_\text{MW}$, suggesting it is an extragalactic phenomenon.
+The Milky Way contribution can be calculated using an electron density model associated with @eq-DM.
+The YMW16 model in @yao_new_2017 uses known distances of pulsars using independent methods and matching it with their respective DMs.
+Its value highly depends on its galactic latitude as there is little material higher up in the latitude so its DM is expected to be small [@thornton_population_2013].
+Non-Milky Way contributions to the observed DM (dubbed dispersion measure excess, $\text{DM}_\text{E}$) come from the intergalactic medium (IGM) and the host galaxy [@deng_cosmological_2014; @petroff_fast_2019],
+$$
+\text{DM}_\text{E} = \text{DM} =\text{DM}_\text{MW} + \left(\frac{\text{DM}_\text{Host}}{1+z}\right),
+$$ {#eq-DM-excess}
+where $z$ is the redshift associated with the host galaxy.
+The $\text{DM}_\text{Host}$ of the transient depends its distance from the host galactic core and viewing angle [@thornton_population_2013] because those factor determines how much material interacts with the signal throughout its propagation.
