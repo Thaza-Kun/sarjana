@@ -3,22 +3,29 @@
 <!-- TODO Beautify -->
 Listed below are open data on FRBs released by their respective telescopes that might be helpful for the research:
 Telescope	Server	Data
-CHIME/FRB	CANFAR	-	doi:10.11570/19.0004
--	doi:10.11570/19.0005
--	doi:10.11570/20.0002
--	doi:10.11570/20.0006
--	doi:10.11570/20.0006
-Parkes	gDCMP	-	https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data
--	https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude
--	https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514
--	https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215
 
-Lovell	Zenodo	-	https://zenodo.org/record/3974768#.YGWzqK8zap0
+- CHIME/FRB
+    * Server: CANFAR
+        - [doi:10.11570/19.0004](doi:10.11570/19.0004)
+        - [doi:10.11570/19.0005](doi:10.11570/19.0005)
+        - [doi:10.11570/20.0002](doi:10.11570/20.0002)
+        - [doi:10.11570/20.0006](doi:10.11570/20.0006)
+        - [doi:10.11570/20.0006](doi:10.11570/20.0006)
+- Parkes
+    * Sever: gDCMP	
+        - [https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data](https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data)
+        - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude)
+        - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514)
+        - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215)
+- Lovell
+    * Server: Zenodo
+        - [https://zenodo.org/record/3974768#.YGWzqK8zap0](https://zenodo.org/record/3974768#.YGWzqK8zap0)
+- STARE2
+    * Server: CalTechDATA
+        - [https://data.caltech.edu/records/1647](https://data.caltech.edu/records/1647)
 
-STARE2	CalTechDATA	-	https://data.caltech.edu/records/1647
 
-
-Other than that, the FRBSTATS website provides an open-source live update of known FRBs, its properties, and its references. This will be helpful for statistical analysis for the entire population. It can be accessed programmatically via an Application Programming Interface (API) or downloaded as a comma separated value (.csv) or excel (.xlsx) files.
+Other than that, the FRBSTATS^[[https://www.herta-experiment.org/frbstats/](https://www.herta-experiment.org/frbstats/)] website provides an open-source live update of known FRBs, its properties, and its references. This will be helpful for statistical analysis for the entire population. It can be accessed programmatically via an Application Programming Interface (API) or downloaded as a comma separated value (.csv) or excel (.xlsx) files.
 
 ## Data Analysis
 The study will be using Python3.8 or higher to conduct the analysis of the data. It has good support for `.hd5`, `.msgpack`, `.fits` and other common file formats used in astronomy and statistics. In addition to that, the CHIME/FRB Open Data package that aims to assist the analysis of CHIME/FRB datasets, and the ‘astropy’ package (a reliable package for astronomy) is also written in Python.
@@ -35,3 +42,4 @@ This study can be divided roughly into four phases and is expected to be 2 years
 4.	Thesis writing and defence.
 
 <!-- TODO Gantt Chart Here refer https://mermaid-js.github.io/mermaid/#/gantt -->
+<!-- ? DO we have to? -->
