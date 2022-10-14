@@ -7,7 +7,7 @@ book:
   title: "Characteristic Study Of Selected Fast Radio Bursts (FRB) Transients"
   author: "Murthadza Aznam"
   # TODO To be changed when published
-  date: now
+  date: '2022-07-14'
   chapters:
     - index.qmd
     - literature.qmd
