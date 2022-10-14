@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sarjana-muda"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 
