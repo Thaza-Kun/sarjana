@@ -1,3 +1,8 @@
 .venv
 *.pyc
 *.csv
+
+# Quarto generated output
+*.quarto/
+*_book/
+*_site/
