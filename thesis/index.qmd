@@ -1,10 +1,10 @@
 # Introduction
 
 Fast radio bursts (FRBs) are bright (50 mJy – 100 Jy), milliseconds long pulses of radio signal that is extra-terrestrial in nature.
-The frequency range of FRBs reported is between  400 MHz to 8 GHz (Petroff et al., 2019).
+The frequency range of FRBs reported is between  400 MHz to 8 GHz [@petroff_fast_2019].
 The underlying process of its emission is still poorly understood.
 However, its detection has rapidly increased ever since its identification in Lorimer et al., (2007).
-By June 2022, Spanakis-Misirlis, (2021) has reported 806 FRB events including 25 repeaters indexed from the Transient Name Server, the CHIME/FRB Collaboration and several other cited reports.
+By June 2022, @spanakis-misirlis_frbstats_2021 has reported 806 FRB events including 25 repeaters indexed from the Transient Name Server, the CHIME/FRB Collaboration and several other cited reports.
 
 ## Instruments
 One reason for the abundance of the detection of FRBs is that many telescope dedicated to FRB has been built within the last decade.
@@ -12,13 +12,13 @@ Listed here are several telescopes that have been known to provide open data for
 
 ### CHIME/FRB
 The Canadian Hydrogen Intensity Mapping Experiment (CHIME) is a stationary radio telescope located in the southern parts of British Columbia, Canada (49^∘^ 19^'^ 14^''^.52 N,  119^∘^ 37^'^ 25^''^.25 W).
-Unlike conventional dish shaped radio telescope, CHIME consists of four 20m x 100m semi-cylindrical reflectors pointed skywards to achieve 8000m2¬ with a sensitivity between 400 to 800 MHz (The CHIME/FRB Collaboration et al., 2018).
+Unlike conventional dish shaped radio telescope, CHIME consists of four 20m x 100m semi-cylindrical reflectors pointed skywards to achieve 8000m2¬ with a sensitivity between 400 to 800 MHz [@the_chimefrb_collaboration_chime_2018].
 This allows the telescope to map ≳200 square degrees of the sky continuously with three different output pipelines: CHIME/Cosmology, CHIME/FRB, and CHIME/Pulsar.
 The data relevant to this study is from the CHIME/FRB pipeline.
 
 ### Parkes
 The Parkes radio telescope is a 64-meter steerable radio telescope located in the central-west region of New South Wales, Australia.
-It was the telescope used by Lorimer for the serendipitous discovery of the FRB in 2007.
+It was the telescope used by Lorimer for the serendipitous discovery of the FRB in @lorimer_bright_2007.
 It has been given the name Murriyang in honour of Australian aboriginals in 2020.
 However, the name “Parkes radio telescope” or “Parkes” remains in use within the literature.
 

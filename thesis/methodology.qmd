@@ -11,21 +11,25 @@ Telescope	Server	Data
         - [doi:10.11570/20.0002](doi:10.11570/20.0002)
         - [doi:10.11570/20.0006](doi:10.11570/20.0006)
         - [doi:10.11570/20.0006](doi:10.11570/20.0006)
+        <!-- TODO Link to data paper -->
 - Parkes
     * Sever: gDCMP	
         - [https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data](https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data)
         - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude)
         - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514)
         - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215)
+        <!-- TODO Link to data paper -->
 - Lovell
     * Server: Zenodo
         - [https://zenodo.org/record/3974768#.YGWzqK8zap0](https://zenodo.org/record/3974768#.YGWzqK8zap0)
+        <!-- TODO Link to data paper -->
 - STARE2
     * Server: CalTechDATA
         - [https://data.caltech.edu/records/1647](https://data.caltech.edu/records/1647)
+        <!-- TODO Link to data paper -->
 
 
-Other than that, the FRBSTATS^[[https://www.herta-experiment.org/frbstats/](https://www.herta-experiment.org/frbstats/)] website provides an open-source live update of known FRBs, its properties, and its references. This will be helpful for statistical analysis for the entire population. It can be accessed programmatically via an Application Programming Interface (API) or downloaded as a comma separated value (.csv) or excel (.xlsx) files.
+Other than that, the FRBSTATS^[@spanakis-misirlis_frbstats_2021 [https://www.herta-experiment.org/frbstats/](https://www.herta-experiment.org/frbstats/)] website provides an open-source live update of known FRBs, its properties, and its references. This will be helpful for statistical analysis for the entire population. It can be accessed programmatically via an Application Programming Interface (API) or downloaded as a comma separated value (.csv) or excel (.xlsx) files.
 
 ## Data Analysis
 The study will be using Python3.8 or higher to conduct the analysis of the data. It has good support for `.hd5`, `.msgpack`, `.fits` and other common file formats used in astronomy and statistics. In addition to that, the CHIME/FRB Open Data package that aims to assist the analysis of CHIME/FRB datasets, and the ‘astropy’ package (a reliable package for astronomy) is also written in Python.

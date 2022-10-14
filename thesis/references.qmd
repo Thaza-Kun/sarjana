@@ -1,15 +1,4 @@
-# References
+# References {.unnumbered}
 
-<!-- TODO Refactor -->
-- Brentjens, M. A., & de Bruyn, A. G. (2005). Faraday rotation measure synthesis. Astronomy & Astrophysics, 441(3), 1217–1228. https://doi.org/10.1051/0004-6361:20052990
-- Day, C. (2022). Pinpointing the Origins of Fast Radios Bursts [PhD Thesis, Swinburne University]. https://researchbank.swinburne.edu.au/file/96131418-00cb-4d9e-9c89-ac44d57b314f/1/Cherie_Day_Thesis.pdf
-- Deng, W., & Zhang, B. (2014). COSMOLOGICAL IMPLICATIONS OF FAST RADIO BURST/GAMMA-RAY BURST ASSOCIATIONS. The Astrophysical Journal, 783(2), L35. https://doi.org/10.1088/2041-8205/783/2/L35
-- Feng, Y., Li, D., Yang, Y.-P., Zhang, Y., Zhu, W., Zhang, B., Lu, W., Wang, P., Dai, S., Lynch, R. S., Yao, J., Jiang, J., Niu, J., Zhou, D., Xu, H., Miao, C., Niu, C., Meng, L., Qian, L., … Zhang, L. (2022). Frequency-dependent polarization of repeating fast radio bursts—Implications for their origin. Science, 375(6586), 1266–1270. https://doi.org/10.1126/science.abl7759
-- Keane, E. F., Johnston, S., Bhandari, S., Barr, E., Bhat, N. D. R., Burgay, M., Caleb, M., Flynn, C., Jameson, A., Kramer, M., Petroff, E., Possenti, A., van Straten, W., Bailes, M., Burke-Spolaor, S., Eatough, R. P., Stappers, B. W., Totani, T., Honma, M., … Bassa, C. (2016). The host galaxy of a fast radio burst. Nature, 530(7591), 453–456. https://doi.org/10.1038/nature17140
-- Kulkarni, S. R. (2020). Dispersion measure: Confusion, Constants & Clarity. In ArXiv e-prints. https://ui.adsabs.harvard.edu/abs/2020arXiv200702886K
-- Lorimer, D. R., Bailes, M., McLaughlin, M. A., Narkevic, D. J., & Crawford, F. (2007). A Bright Millisecond Radio Burst of Extragalactic Origin. Science, 318(5851), 777–780. https://doi.org/10.1126/science.1147532
-- Petroff, E., Hessels, J. W. T., & Lorimer, D. R. (2019). Fast radio bursts. The Astronomy and Astrophysics Review, 27(1), 4. https://doi.org/10.1007/s00159-019-0116-6
-- Spanakis-Misirlis, A. (2021). FRBSTATS: A web-based platform for visualization of fast radio burst properties. Astrophysics Source Code Library, ascl:2106.028.
-- The CHIME/FRB Collaboration, Amiri, M., Bandura, K., Berger, P., Bhardwaj, M., Boyce, M. M., Boyle, P. J., Brar, C., Burhanpurkar, M., Chawla, P., Chowdhury, J., Cliche, J. F., Cranmer, M. D., Cubranic, D., Deng, M., Denman, N., Dobbs, M., Fandino, M., Fonseca, E., … Wiebe, D. V. (2018). The CHIME Fast Radio Burst Project: System Overview. The Astrophysical Journal, 863(1), 48. https://doi.org/10.3847/1538-4357/aad188
-- Thornton, D., Stappers, B., Bailes, M., Barsdell, B., Bates, S., Bhat, N. D. R., Burgay, M., Burke-Spolaor, S., Champion, D. J., Coster, P., D’Amico, N., Jameson, A., Johnston, S., Keith, M., Kramer, M., Levin, L., Milia, S., Ng, C., Possenti, A., & van Straten, W. (2013). A Population of Fast Radio Bursts at Cosmological Distances. Science, 341(6141), 53–56. https://doi.org/10.1126/science.1236789
-- Yao, J. M., Manchester, R. N., & Wang, N. (2017). A New Electron-density Model for Estimation of Pulsar and FRB Distances. The Astrophysical Journal, 835, 29. https://doi.org/10.3847/1538-4357/835/1/29
+:::{#refs}
+:::
