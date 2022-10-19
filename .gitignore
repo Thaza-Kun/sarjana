@@ -1,6 +1,10 @@
 .venv
 *.pyc
-*.csv
+
+# Processed data
+data/processed/
+data/interim/
+
 
 # Quarto generated output
 *.quarto/
