@@ -10,3 +10,4 @@ data/interim/
 *.quarto/
 *_book/
 *_site/
+/.quarto/
