@@ -1,0 +1,29 @@
+project:
+  type: website
+  preview: 
+      port: 4050
+  render: 
+      - notebooks/*
+      - '*.qmd'
+      - 'README.qmd'
+
+website:
+  title: "Masters Project"
+  navbar:
+    right:
+      - README.qmd
+  #     - icon: github
+  #       href: https://github.com/
+  #     - icon: twitter
+  #       href: https://twitter.com
+format:
+  html:
+    port: 4000
+    theme: cosmo
+    # css: styles.css
+
+title-block-banner: true
+
+
+
+
