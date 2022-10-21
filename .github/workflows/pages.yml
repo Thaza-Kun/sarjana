@@ -23,7 +23,7 @@ jobs:
           python-version: "3.10"
           cache: "pip"
       - run: pip install jupyter poetry
-      - run: poetry install --dev
+      - run: poetry install --with dev
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
