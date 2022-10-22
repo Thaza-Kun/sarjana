@@ -3,15 +3,15 @@ project:
   preview: 
       port: 4050
   render: 
+      - 'index.qmd'
       - notebooks/*
-      - '*.qmd'
-      - 'README.qmd'
+      - 'README.md'
 
 website:
   title: "Masters Project"
   navbar:
     right:
-      - README.qmd
+      - README.md
   #     - icon: github
   #       href: https://github.com/
   #     - icon: twitter
