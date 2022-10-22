@@ -12,12 +12,16 @@ pandas = "^1.5.0"
 matplotlib = "^3.6.0"
 mw-plot = "^0.9.0"
 cfod = "^2021.6.4"
+umap-learn = {extras = ["plot"], version = "^0.5.3"}
 
 [tool.poetry.dev-dependencies]
 ipykernel = "^6.15.3"
 
 [tool.poetry.group.dev.dependencies]
 nbformat = "^5.7.0"
+ipywidgets = "^8.0.2"
+plotly = "^5.10.0"
+nbclient = "^0.7.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
