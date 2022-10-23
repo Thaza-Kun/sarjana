@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2022-09-15">
+<meta name="dcterms.date" content="2022-10-21">
 
-<title>Masters Project - About</title>
+<title>Masters Project - Calculating Redshift via Dispersion Measure</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,22 +24,22 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -60,13 +60,16 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="Masters Project - About">
-<meta property="og:description" content="This repository is meant to document my Masters in Physics’ work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.">
+<meta property="og:title" content="Masters Project - Calculating Redshift via Dispersion Measure">
+<meta property="og:description" content="A model developed by Hashimoto et al 2020">
+<meta property="og:image" content="jupyter-python.jpg">
 <meta property="og:site-name" content="Masters Project">
-<meta name="twitter:title" content="Masters Project - About">
-<meta name="twitter:description" content="This repository is meant to document my Masters in Physics’ work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Masters Project - Calculating Redshift via Dispersion Measure">
+<meta name="twitter:description" content="A model developed by Hashimoto et al 2020">
+<meta name="twitter:image" content="jupyter-python.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -76,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Masters Project</span>
     </a>
   </div>
@@ -86,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./README.html" aria-current="page">About</a>
+    <a class="nav-link" href="../README.html">About</a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -98,7 +101,8 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">About</h1>
+      <h1 class="title">Calculating Redshift via Dispersion Measure</h1>
+            <p class="subtitle lead">A model developed by <a href="https://doi.org/10.1093/mnras/staa2490">Hashimoto et al 2020</a></p>
                       </div>
   </div>
     
@@ -115,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 15, 2022</p>
+        <p class="date">October 21, 2022</p>
       </div>
     </div>
       
@@ -130,10 +134,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#masters-project" id="toc-masters-project" class="nav-link active" data-scroll-target="#masters-project">Masters Project</a>
+  <li><a href="#pre-analysis" id="toc-pre-analysis" class="nav-link active" data-scroll-target="#pre-analysis">0. Pre-Analysis</a>
   <ul class="collapse">
-  <li><a href="#problem-statements" id="toc-problem-statements" class="nav-link" data-scroll-target="#problem-statements">Problem Statements</a></li>
-  <li><a href="#requirements" id="toc-requirements" class="nav-link" data-scroll-target="#requirements">Requirements</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">0.1 Description</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -144,21 +147,27 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="masters-project" class="level1">
-<h1>Masters Project</h1>
-<p>This repository is meant to document my Masters in Physics’ work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.</p>
-<section id="problem-statements" class="level2">
-<h2 class="anchored" data-anchor-id="problem-statements">Problem Statements</h2>
-<p>These problem statements are taken from the proposal and will likely change and become more specific in the future:</p>
-<ol type="1">
-<li>What relationship of its properties can be extracted from the population of known FRBs now that we have more than 800 observed transients?</li>
-<li>Which FRBs exhibit interesting properties compared to the rest of the population?</li>
-<li>What might be the reason behind the interesting properties of the FRBs in question (2)?</li>
-</ol>
-</section>
-<section id="requirements" class="level2">
-<h2 class="anchored" data-anchor-id="requirements">Requirements</h2>
-<p>The <code>cfod</code> package used to access the CHIME/FRB catalog requires Linux or WSL.</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>📌 Goal: To reproduce the redshift model described in <a href="https://doi.org/10.1093/mnras/staa2490">https://doi.org/10.1093/mnras/staa2490</a></p>
+</div>
+</div>
+<section id="pre-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="pre-analysis">0. Pre-Analysis</h2>
+<section id="description" class="level3">
+<h3 class="anchored" data-anchor-id="description">0.1 Description</h3>
+<p>The redshift model is described as follows: 1. We agree that the <span class="math inline">\(\text{DM}_\text{obs}\)</span> is the total <span class="math inline">\(DM\)</span> from multiple sources <span id="eq-dm-total"><span class="math display">\[
+\text{DM}_\text{obs} = \text{DM}_\text{MW}(b, l) + \text{DM}_\text{halo} + \text{DM}_\text{IGM}(z) + \text{DM}_\text{host}(z)
+\tag{1}\]</span></span> 2. <span class="math inline">\(\text{DM}_\text{IGM}\)</span> is derived from <a href="https://arxiv.org/abs/1401.2927">Zhou et al 2014</a> 3. <span class="math inline">\(\text{DM}_\text{MW}(b,l)\)</span> is derived from <a href="https://iopscience.iop.org/article/10.3847/1538-4357/835/1/29">Yao et al 2017</a> and integrate up to 10 kpc. 4. <span class="math inline">\(\text{DM}_\text{halo}\)</span> is taken to be 65 pc/cm. <span class="math inline">\(\text{DM}_\text{halo}\)</span> is estimated to be between 10 to 200 kpc from the sun. (<a href="https://academic.oup.com/mnras/article/485/1/648/5300129">https://academic.oup.com/mnras/article/485/1/648/5300129</a>) 5. <span class="math inline">\(\text{DM}_\text{host} = 50.0/(1+z) \text{pc} \text{cm}^{-3}\)</span> (<a href="https://www.nature.com/articles/s41586-018-0588-y">Shannon et al 2018</a>)</p>
+<p>Which supposedly give the redshift.</p>
 
 
 </section>

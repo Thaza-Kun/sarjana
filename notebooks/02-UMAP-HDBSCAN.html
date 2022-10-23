@@ -128,6 +128,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
+<meta property="og:title" content="Masters Project - Reproducing Chen et. al.&nbsp;(2021)’s unsupervised machine learning">
+<meta property="og:description" content="Using UMAP to reduce dimensions and HDBSCAN to cluster datapoints">
+<meta property="og:image" content="https://Thaza-Kun.github.io/sarjana/notebooks/jupyter-python.jpg">
+<meta property="og:site-name" content="Masters Project">
+<meta name="twitter:title" content="Masters Project - Reproducing Chen et. al.&nbsp;(2021)’s unsupervised machine learning">
+<meta name="twitter:description" content="Using UMAP to reduce dimensions and HDBSCAN to cluster datapoints">
+<meta name="twitter:image" content="https://Thaza-Kun.github.io/sarjana/notebooks/jupyter-python.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -193,8 +201,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
    
   <ul>
   <li><a href="#requirements" id="toc-requirements" class="nav-link active" data-scroll-target="#requirements">0. Requirements</a></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">0.1 Parameters</a></li>
-  <li><a href="#model-dependent-parameters" id="toc-model-dependent-parameters" class="nav-link" data-scroll-target="#model-dependent-parameters">1.1 Model Dependent Parameters</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">0.1 Parameters</a>
+  <ul class="collapse">
+  <li><a href="#observational-parameters" id="toc-observational-parameters" class="nav-link" data-scroll-target="#observational-parameters">0.1.1 Observational Parameters</a></li>
+  <li><a href="#model-dependent-parameters" id="toc-model-dependent-parameters" class="nav-link" data-scroll-target="#model-dependent-parameters">0.1.2 Model Dependent Parameters</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -220,49 +231,159 @@ Note
 <section id="requirements" class="level2">
 <h2 class="anchored" data-anchor-id="requirements">0. Requirements</h2>
 <p>The paper uses data from CHIME/FRB Catalog. Luckily, the CHIME/FRB team has made it simple for us to access their data through the <a href="https://github.com/chime-frb-open-data/chime-frb-open-data">CHIME/FRB Open Data</a> package, <code>cfod</code>.</p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> cfod <span class="im">import</span> catalog</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>cat: pd.DataFrame <span class="op">=</span> catalog.as_dataframe()</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>cat.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-<pre><code>Index(['tns_name', 'previous_name', 'repeater_name', 'ra', 'ra_err',
-       'ra_notes', 'dec', 'dec_err', 'dec_notes', 'gl', 'gb', 'exp_up',
-       'exp_up_err', 'exp_up_notes', 'exp_low', 'exp_low_err', 'exp_low_notes',
-       'bonsai_snr', 'bonsai_dm', 'low_ft_68', 'up_ft_68', 'low_ft_95',
-       'up_ft_95', 'snr_fitb', 'dm_fitb', 'dm_fitb_err', 'dm_exc_ne2001',
-       'dm_exc_ymw16', 'bc_width', 'scat_time', 'scat_time_err', 'flux',
-       'flux_err', 'flux_notes', 'fluence', 'fluence_err', 'fluence_notes',
-       'sub_num', 'mjd_400', 'mjd_400_err', 'mjd_inf', 'mjd_inf_err',
-       'width_fitb', 'width_fitb_err', 'sp_idx', 'sp_idx_err', 'sp_run',
-       'sp_run_err', 'high_freq', 'low_freq', 'peak_freq', 'excluded_flag'],
-      dtype='object')</code></pre>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cat: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/chimefrbcat1_Hashimoto_2022.csv'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span>[<span class="bu">print</span>(col) <span class="cf">for</span> col <span class="kw">in</span> cat.columns]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>tns_name
+previous_name
+repeater_name
+ra
+ra_err
+ra_notes
+dec
+dec_err
+dec_notes
+gl
+gb
+exp_up
+exp_up_err
+exp_up_notes
+exp_low
+exp_low_err
+exp_low_notes
+bonsai_snr
+bonsai_dm
+low_ft_68
+up_ft_68
+low_ft_95
+up_ft_95
+snr_fitb
+dm_fitb
+dm_fitb_err
+dm_exc_ne2001
+dm_exc_ymw16
+bc_width
+scat_time
+scat_time_err
+flux
+flux_err
+flux_notes
+fluence
+fluence_err
+fluence_notes
+sub_num
+mjd_400
+mjd_400_err
+mjd_inf
+mjd_inf_err
+width_fitb
+width_fitb_err
+sp_idx
+sp_idx_err
+sp_run
+sp_run_err
+high_freq
+low_freq
+peak_freq
+chi_sq
+dof
+flag_frac
+excluded_flag
+subw_upper_flag
+scat_upper_flag
+spec_z
+spec_z_flag
+E_obs
+E_obs_error
+subb_flag
+subb_p_flag
+common_p_flag
+delta_nuo_FRB
+z_DM
+z_DM_error_p
+z_DM_error_m
+E_obs_400
+E_obs_400_error_p
+E_obs_400_error_m
+logsubw_int_rest
+logsubw_int_rest_error_p
+logsubw_int_rest_error_m
+z
+z_error_p
+z_error_m
+logE_rest_400
+logE_rest_400_error_p
+logE_rest_400_error_m
+logrhoA
+logrhoA_error_p
+logrhoA_error_m
+logrhoB
+logrhoB_error_p
+logrhoB_error_m
+weight_DM
+weight_DM_error_p
+weight_DM_error_m
+weight_scat
+weight_scat_error_p
+weight_scat_error_m
+weight_w_int
+weight_w_int_error_p
+weight_w_int_error_m
+weight_fluence
+weight_fluence_error_p
+weight_fluence_error_m
+weight
+weight_error_p
+weight_error_m
+weighted_logrhoA
+weighted_logrhoA_error_p
+weighted_logrhoA_error_m
+weighted_logrhoB
+weighted_logrhoB_error_p
+weighted_logrhoB_error_m</code></pre>
 </div>
 </div>
 </section>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">0.1 Parameters</h2>
+<section id="observational-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="observational-parameters">0.1.1 Observational Parameters</h3>
 <p>The parameters selected by the paper is as follows: - Boxcar Width - Width of Sub-Burst - Flux - Fluence - Scattering Time - Spectral Index - Spectral Running - Highest Frequency - Lowest Frequency - Peak Frequency</p>
-<div class="cell" data-execution_count="8">
+</section>
+<section id="model-dependent-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="model-dependent-parameters">0.1.2 Model Dependent Parameters</h3>
+<ul>
+<li>Redshift <code>z</code></li>
+<li>Radio Energy <code>logE_rest_400</code></li>
+<li>Rest-Frame Intrinsic Duration <code>logsubw_int_rest</code></li>
+</ul>
+<div class="cell" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Type</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>params : Type[<span class="bu">str</span>] <span class="op">=</span> [</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bc_width"</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"width_fitb"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flux"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scat_time"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_idx"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_run"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"high_freq"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"low_freq"</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"peak_freq"</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> cat[params]</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>selected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="8">
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Observational</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bc_width"</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"width_fitb"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flux"</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scat_time"</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_idx"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_run"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"high_freq"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"low_freq"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"peak_freq"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Model dependent</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"z"</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logE_rest_400"</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logsubw_int_rest"</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> cat[params].dropna()</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>selected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="11">
 
 <div>
 
@@ -279,68 +400,86 @@ Note
       <th>high_freq</th>
       <th>low_freq</th>
       <th>peak_freq</th>
+      <th>z</th>
+      <th>logE_rest_400</th>
+      <th>logsubw_int_rest</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>0.00295</td>
-      <td>0.000296</td>
-      <td>1.70</td>
-      <td>0.00110</td>
-      <td>38.20</td>
-      <td>-45.80</td>
+      <td>0.00030</td>
+      <td>2.0</td>
+      <td>0.001100</td>
+      <td>38.0</td>
+      <td>-46.0</td>
       <td>760.1</td>
       <td>485.3</td>
       <td>607.4</td>
+      <td>0.676253</td>
+      <td>40.208078</td>
+      <td>-0.748199</td>
     </tr>
     <tr>
       <th>1</th>
       <td>0.00295</td>
-      <td>0.00139</td>
-      <td>0.58</td>
-      <td>&lt;0.0017</td>
-      <td>3.80</td>
-      <td>-9.20</td>
+      <td>0.00140</td>
+      <td>0.6</td>
+      <td>0.001700</td>
+      <td>4.0</td>
+      <td>-9.0</td>
       <td>800.2</td>
       <td>400.2</td>
       <td>493.3</td>
+      <td>0.662998</td>
+      <td>39.791080</td>
+      <td>-0.073706</td>
     </tr>
     <tr>
       <th>2</th>
       <td>0.00098</td>
-      <td>&lt;0.00010</td>
-      <td>11.70</td>
-      <td>0.0001574</td>
-      <td>16.46</td>
-      <td>-30.21</td>
+      <td>0.00010</td>
+      <td>12.0</td>
+      <td>0.000157</td>
+      <td>16.5</td>
+      <td>-30.2</td>
       <td>692.7</td>
       <td>400.2</td>
       <td>525.6</td>
+      <td>0.067419</td>
+      <td>38.880719</td>
+      <td>-0.948762</td>
     </tr>
     <tr>
       <th>3</th>
       <td>0.00197</td>
-      <td>0.000314</td>
-      <td>0.92</td>
-      <td>0.00066</td>
-      <td>14.50</td>
-      <td>-14.60</td>
+      <td>0.00031</td>
+      <td>0.9</td>
+      <td>0.000700</td>
+      <td>14.0</td>
+      <td>-15.0</td>
       <td>800.2</td>
       <td>441.8</td>
       <td>657.5</td>
+      <td>0.189369</td>
+      <td>38.561879</td>
+      <td>-0.582195</td>
     </tr>
     <tr>
       <th>4</th>
       <td>0.00492</td>
-      <td>0.000468</td>
-      <td>5.20</td>
-      <td>0.002073</td>
-      <td>4.27</td>
-      <td>-11.31</td>
+      <td>0.00047</td>
+      <td>5.0</td>
+      <td>0.002070</td>
+      <td>4.3</td>
+      <td>-11.3</td>
       <td>759.2</td>
       <td>400.2</td>
       <td>483.5</td>
+      <td>0.839657</td>
+      <td>41.127444</td>
+      <td>-0.592583</td>
     </tr>
     <tr>
       <th>...</th>
@@ -353,87 +492,114 @@ Note
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>594</th>
+      <td>0.00197</td>
+      <td>0.00061</td>
+      <td>1.3</td>
+      <td>0.000720</td>
+      <td>-1.0</td>
+      <td>3.0</td>
+      <td>800.2</td>
+      <td>400.2</td>
+      <td>800.2</td>
+      <td>0.622526</td>
+      <td>39.639959</td>
+      <td>-0.423913</td>
     </tr>
     <tr>
       <th>595</th>
-      <td>0.00197</td>
-      <td>0.000608</td>
-      <td>1.26</td>
-      <td>&lt;0.00072</td>
-      <td>-1.10</td>
-      <td>3.30</td>
-      <td>800.2</td>
-      <td>400.2</td>
-      <td>800.2</td>
-    </tr>
-    <tr>
-      <th>596</th>
       <td>0.00295</td>
-      <td>0.00063</td>
-      <td>1.10</td>
-      <td>0.00034</td>
-      <td>3.90</td>
-      <td>-11.80</td>
+      <td>0.00060</td>
+      <td>1.1</td>
+      <td>0.000300</td>
+      <td>4.0</td>
+      <td>-12.0</td>
       <td>732.8</td>
       <td>400.2</td>
       <td>471.5</td>
+      <td>0.736153</td>
+      <td>39.870346</td>
+      <td>-0.463004</td>
     </tr>
     <tr>
-      <th>597</th>
+      <th>596</th>
       <td>0.00197</td>
-      <td>0.00144</td>
-      <td>0.88</td>
-      <td>&lt;0.0018</td>
-      <td>46.20</td>
-      <td>-211.00</td>
+      <td>0.00140</td>
+      <td>0.9</td>
+      <td>0.001800</td>
+      <td>46.0</td>
+      <td>-210.0</td>
       <td>495.5</td>
       <td>402.2</td>
       <td>446.4</td>
+      <td>0.971651</td>
+      <td>40.362724</td>
+      <td>-0.148206</td>
     </tr>
     <tr>
-      <th>598</th>
+      <th>597</th>
       <td>0.00885</td>
       <td>0.00140</td>
-      <td>1.33</td>
-      <td>0.00153</td>
-      <td>6.49</td>
-      <td>-20.90</td>
+      <td>1.3</td>
+      <td>0.001500</td>
+      <td>6.5</td>
+      <td>-21.0</td>
       <td>651.8</td>
       <td>400.2</td>
       <td>467.6</td>
+      <td>0.937864</td>
+      <td>40.835803</td>
+      <td>-0.141426</td>
     </tr>
     <tr>
-      <th>599</th>
+      <th>598</th>
       <td>0.00295</td>
-      <td>0.00042</td>
-      <td>0.68</td>
-      <td>0.00067</td>
-      <td>0.30</td>
-      <td>-5.10</td>
+      <td>0.00040</td>
+      <td>0.7</td>
+      <td>0.000700</td>
+      <td>0.0</td>
+      <td>-5.0</td>
       <td>800.2</td>
       <td>400.2</td>
       <td>410.3</td>
+      <td>0.911719</td>
+      <td>39.964235</td>
+      <td>-0.671894</td>
     </tr>
   </tbody>
 </table>
-<p>600 rows × 9 columns</p>
+<p>593 rows × 12 columns</p>
 </div>
 </div>
 </div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span> <span class="op">=</span> umap.UMAP(n_neighbors<span class="op">=</span><span class="dv">8</span>, n_components<span class="op">=</span><span class="dv">2</span>).fit(selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> umap <span class="im">import</span> plot</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plot.points(<span class="bu">map</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>*c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* &amp; *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="18">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02-UMAP-HDBSCAN_files/figure-html/cell-6-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+
+
 </section>
-<section id="model-dependent-parameters" class="level2">
-<h2 class="anchored" data-anchor-id="model-dependent-parameters">1.1 Model Dependent Parameters</h2>
-<!-- TODO: Implement these parameters -->
-<p>Verbatim:</p>
-<blockquote class="blockquote">
-<ul>
-<li>Redshift: We apply the redshift of each sub-burst as one of the input elements. The redshift is spectroscopic redshift if available; otherwise, the value is derived from the dispersion measure (see Hashimoto et al.&nbsp;2020b, for details). These values are common for the sub-bursts from the same FRBs.</li>
-<li>Radio Energy: This is the logarithm of radio energy integrated over 400 MHz at the emitter’s frame. The values are common for the sub-bursts from the same FRBs.</li>
-<li>Rest-Frame Intrinsic Duration: This is the logarithm of the rest-frame intrinsic duration of the sub-burst. These values are different between the sub-bursts of the same FRBs.</li>
-</ul>
-</blockquote>
-
-
 </section>
 
 </main> <!-- /main -->
