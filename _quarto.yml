@@ -18,9 +18,11 @@ website:
   #       href: https://twitter.com
 format:
   html:
-    port: 4000
     theme: cosmo
     # css: styles.css
+    twitter-card: true
+    open-graph: true
+    reader-mode: true
 
 title-block-banner: true
 
