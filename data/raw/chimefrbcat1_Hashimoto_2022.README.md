@@ -1,0 +1,56 @@
+https://academic.oup.com/mnras/article/511/2/1961/6507586?login=true#332238885
+
+Here, we describe the new columns added by this work (see also The CHIME/FRB Collaboration 2021, for other column names).
+
+ - subw_upper_flag: width_fitb and logsubw_int_rest indicate upper limits if 1. Otherwise 0. Different for sub-bursts.
+ - scat_upper_flag: scat_time indicates the upper limit if 1. Otherwise 0. Common for sub-bursts with the same tns_name.
+ - spec_z: spectroscopic redshift if available. Otherwise −9999. Common for sub-bursts with the same tns_name.
+ - spec_z_flag: spec_z is available if 1. Otherwise 0. Common for sub-bursts with the same tns_name.
+ - E_obs (Jy ms Hz): fluence (Jy ms) × Δν, where Δν is the band width of 400 MHz at observer’s frame. Common for sub-bursts with the same tns_name.
+ - E_obs_error (Jy ms Hz): error of E_obs. Common for sub-bursts with the same tns_name.
+ - subb_flag: 1 if the row belongs to multiple sub-bursts. 0 means FRBs without sub-bursts. Common for sub-bursts with the same tns_name.
+ - subb_p_flag: subb_p_flag=1 can be used when sub-burst parameters are used. All rows have 1.
+ - common_p_flag: common_p_flag=1 can be used when common parameters are used. For each tns_name, the first sub-burst indicates 1. Different for sub-bursts.
+ - delta_nuo_FRB: (MHz) observed spectral band width. Common for sub-bursts. i.e. high_freq−low_freq for FRBs without multiple sub-bursts and max(high_freq)−min(low_freq) for FRBs with multiple sub-bursts. The latter works because there is no frequency gap between sub-bursts in the catalogue.
+ - z_DM: redshift derived from a dispersion measure. 50 percentile of the probability distribution function (PDF). Common for sub-bursts with the same tns_name.
+ - z_DM_error_p: +1σ of z_DM. 84.135 percentile of the PDF − z_DM. Common for sub-bursts with the same tns_name.
+ - z_DM_error_m: −1σ of z_DM. z_DM − 15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - E_obs_400 (Jy ms Hz): observed energy integrated over 400 MHz at emitter’s frame. 50 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - E_obs_400_error_p (Jy ms Hz): +1σ of E_obs_400. 84.135 percentile of the PDF − E_obs_400. Common for sub-bursts with the same tns_name.
+ - E_obs_400_error_m (Jy ms Hz): −1σ of E_obs_400. E_obs_400 − 15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - logsubw_int_rest: (ms) log rest-frame intrinsic duration of a sub-burst in the logarithmic scale. 50 percentile of the PDF. Different for sub-bursts.
+ - logsubw_int_rest_error_p: (ms) +1σ of logsubw_int_rest. 84.135 percentile of the PDF − subw_int_rest. Different for sub-bursts.
+ - logsubw_int_rest_error_m: (ms) −1σ of logsubw_int_rest. logsubw_int_rest − 15.865 percentile of the PDF. Different for sub-bursts.
+ - z: spec_z if available, otherwise z_DM. Common for sub-bursts with the same tns_name.
+ - z_error_p: spec_z error if spec_z is available, otherwise z_DM_error_p. Common for sub-bursts with the same tns_name.
+ - z_error_m: spec_z error if spec_z is available, otherwise z_DM_error_m. Common for sub-bursts with the same tns_name.
+ - logE_rest_400: (erg) radio energy in the logarithmic scale integrated over 400 MHz at emitter’s frame. 50 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - logE_rest_400_error_p: (erg) +1σ of logE_rest_400. 84.135 percentile of the PDF − logE_rest_400. Common for sub-bursts with the same tns_name.
+ - logE_rest_400_error_m: (erg) −1σ of logE_rest_400. logE_rest_400 −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - logrhoA: (Gpc−3 yr−1) the number density in the logarithmic scale derived by the Vmax method and redshift bin A. Uncorrected for the selection functions. Common for sub-bursts with the same tns_name.
+ - logrhoA_error_p: (Gpc−3 yr−1) +1σ of logrhoA. 84.135 percentile of the PDF − logrhoA. Common for sub-bursts with the same tns_name.
+ - logrhoA_error_m: (Gpc−3 yr−1) −1σ of logrhoA. logrhoA − 15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - logrhoB: (Gpc−3 yr−1) the number density in the logarithmic scale derived by the Vmax method and redshift bin B. Uncorrected for the selection functions. Common for sub-bursts with the same tns_name.
+ - logrhoB_error_p: (Gpc−3 yr−1) +1σ of logrhoB. 84.135 percentile of the PDF − logrhoB. Common for sub-bursts with the same tns_name.
+ - logrhoB_error_m: (Gpc−3 yr−1) −1σ of logrhoB. logrhoB − 15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weight_DM: weight factor of DMobs. Common for sub-bursts with the same tns_name.
+ - weight_DM_error_p: +1σ of weight_DM. 84.135 percentile of the PDF − weight_DM. Common for sub-bursts with the same tns_name.
+ - weight_DM_error_m: −1σ of weight_DM. weight_DM −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weight_scat: weight factor of τscat. Common for sub-bursts with the same tns_name.
+ - weight_scat_error_p: +1σ of weight_scat. 84.135 percentile of the PDF − weight_scat. Common for sub-bursts with the same tns_name.
+ - weight_scat_error_m: −1σ of weight_scat. weight_scat −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weight_w_int: weight factor of wint. Common for sub-bursts with the same tns_name.
+ - weight_w_int_error_p: +1σ of weight_w_int. 84.135 percentile of the PDF − weight_w_int. Common for sub-bursts with the same tns_name.
+ - weight_w_int_error_m: −1σ of weight_w_int. weight_w_int −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weight_fluence: weight factor of fluence. Common for sub-bursts with the same tns_name.
+ - weight_fluence_error_p: +1σ of weight_fluence. 84.135 percentile of the PDF − weight_fluence. Common for sub-bursts with the same tns_name.
+ - weight_fluence_error_m: −1σ of weight_fluence. weight_fluence −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weight: weight_DM×weight_scat×weight_w_int×weight_fluence. Common for sub-bursts with the same tns_name.
+ - weight_error_p: +1σ of weight. 84.135 percentile of the PDF − weight. Common for sub-bursts with the same tns_name.
+ - weight_error_m: −1σ of weight. weight −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weighted_logrhoA: (Gpc−3 yr−1) the number density in the logarithmic scale (redshift bin A) corrected for the selection functions. Common for sub-bursts with the same tns_name.
+ - weighted_logrhoA_error_p: (Gpc−3 yr−1) +1σ of weighted_logrhoA. 84.135 percentile of the PDF − weighted_logrhoA. Common for sub-bursts with the same tns_name.
+ - weighted_logrhoA_error_m: (Gpc−3 yr−1) −1σ of weighted_logrhoA. weighted_logrhoA −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
+ - weighted_logrhoB: (Gpc−3 yr−1) the number density in the logarithmic scale (redshift bin B) corrected for the selection functions. Common for sub-bursts with the same tns_name.
+ - weighted_logrhoB_error_p: (Gpc−3 yr−1) +1σ of weighted_logrhoB. 84.135 percentile of the PDF − weighted_logrhoB. Common for sub-bursts with the same tns_name.
+ - weighted_logrhoB_error_m: (Gpc−3 yr−1) −1σ of weighted_logrhoB. weighted_logrhoB −15.865 percentile of the PDF. Common for sub-bursts with the same tns_name.
