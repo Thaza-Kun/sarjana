@@ -3,8 +3,12 @@
 ## Upcoming
 
 ### TODO
-- [ ] Reproduce Chen et. al. (2021) in [#3](https://github.com/Thaza-Kun/sarjana/issues/3)
-- [ ] Find some thing else to read
+- [ ] Read [Luo, Jia-Wei et. al. 2022](https://ui.adsabs.harvard.edu/abs/2022arXiv221002463L/abstract)
+
+## 0.1.2 2022-10-25
+
+### Added
+- Reproduction of Chen et. al.'s (2021) UMAP dimension reduction in [#3](https://github.com/Thaza-Kun/sarjana/issues/3). Have not yet implemented HDBSCAN.
 
 ### Literature
 - Read [Uncloaking hidden repeating fast radio bursts with unsupervised machine learning](https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract) by Bo Han Chen et. al. (2021). Refer to https://github.com/Thaza-Kun/sarjana/issues/3#issuecomment-1280387079
