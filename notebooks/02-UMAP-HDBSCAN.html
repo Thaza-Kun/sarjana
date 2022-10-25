@@ -200,12 +200,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#requirements" id="toc-requirements" class="nav-link active" data-scroll-target="#requirements">0. Requirements</a></li>
-  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">0.1 Parameters</a>
+  <li><a href="#getting-the-data" id="toc-getting-the-data" class="nav-link active" data-scroll-target="#getting-the-data">0. Getting the Data</a>
   <ul class="collapse">
-  <li><a href="#observational-parameters" id="toc-observational-parameters" class="nav-link" data-scroll-target="#observational-parameters">0.1.1 Observational Parameters</a></li>
-  <li><a href="#model-dependent-parameters" id="toc-model-dependent-parameters" class="nav-link" data-scroll-target="#model-dependent-parameters">0.1.2 Model Dependent Parameters</a></li>
+  <li><a href="#source" id="toc-source" class="nav-link" data-scroll-target="#source">0.1 Source</a></li>
+  <li><a href="#dataset-validation" id="toc-dataset-validation" class="nav-link" data-scroll-target="#dataset-validation">0.2 Dataset Validation</a></li>
   </ul></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">1. Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#sample-dan-selection" id="toc-sample-dan-selection" class="nav-link" data-scroll-target="#sample-dan-selection">1.1 Sample dan Selection</a></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">1.2 Parameters</a></li>
+  <li><a href="#observational-parameters" id="toc-observational-parameters" class="nav-link" data-scroll-target="#observational-parameters">1.2.1 Observational Parameters</a></li>
+  <li><a href="#model-dependent-parameters" id="toc-model-dependent-parameters" class="nav-link" data-scroll-target="#model-dependent-parameters">1.2.2 Model Dependent Parameters</a></li>
+  </ul></li>
+  <li><a href="#umap" id="toc-umap" class="nav-link" data-scroll-target="#umap">2. UMAP</a></li>
   </ul>
 </nav>
     </div>
@@ -225,165 +232,23 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>📌 Goal: This notebook tries to reproduce the results from <a href="https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract">https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract</a></p>
+<p>📌 Goal: This notebook tries to reproduce the results from <a href="https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract">https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract</a>. As stated in the paper, verbatim</p>
+<blockquote class="blockquote">
+<p>Our goal is to <strong>map several observational and model-dependent parameters of each FRB to a 2D embedding plane</strong> by training the UMAP algorithm on the features of the training samples in CHIME/FRB dataset <strong>and finally identify possibly misclassified non-repeating FRBs</strong> which in fact have latent features of repeating FRBs. We define these possibly misclassified non-repeating FRBs as FRB repeater candidates in our paper.</p>
+</blockquote>
 </div>
 </div>
-<section id="requirements" class="level2">
-<h2 class="anchored" data-anchor-id="requirements">0. Requirements</h2>
-<p>The paper uses data from CHIME/FRB Catalog. Luckily, the CHIME/FRB team has made it simple for us to access their data through the <a href="https://github.com/chime-frb-open-data/chime-frb-open-data">CHIME/FRB Open Data</a> package, <code>cfod</code>.</p>
-<div class="cell" data-execution_count="5">
+<section id="getting-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="getting-the-data">0. Getting the Data</h2>
+<section id="source" class="level3">
+<h3 class="anchored" data-anchor-id="source">0.1 Source</h3>
+<p>The paper uses data from CHIME/FRB Catalog with parameters calculated in <a href="https://doi.org/10.1093/mnras/stac065">Hashimoto et. al.&nbsp;2022</a>.</p>
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cat: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/chimefrbcat1_Hashimoto_2022.csv'</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>a<span class="op">=</span>[<span class="bu">print</span>(col) <span class="cf">for</span> col <span class="kw">in</span> cat.columns]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tns_name
-previous_name
-repeater_name
-ra
-ra_err
-ra_notes
-dec
-dec_err
-dec_notes
-gl
-gb
-exp_up
-exp_up_err
-exp_up_notes
-exp_low
-exp_low_err
-exp_low_notes
-bonsai_snr
-bonsai_dm
-low_ft_68
-up_ft_68
-low_ft_95
-up_ft_95
-snr_fitb
-dm_fitb
-dm_fitb_err
-dm_exc_ne2001
-dm_exc_ymw16
-bc_width
-scat_time
-scat_time_err
-flux
-flux_err
-flux_notes
-fluence
-fluence_err
-fluence_notes
-sub_num
-mjd_400
-mjd_400_err
-mjd_inf
-mjd_inf_err
-width_fitb
-width_fitb_err
-sp_idx
-sp_idx_err
-sp_run
-sp_run_err
-high_freq
-low_freq
-peak_freq
-chi_sq
-dof
-flag_frac
-excluded_flag
-subw_upper_flag
-scat_upper_flag
-spec_z
-spec_z_flag
-E_obs
-E_obs_error
-subb_flag
-subb_p_flag
-common_p_flag
-delta_nuo_FRB
-z_DM
-z_DM_error_p
-z_DM_error_m
-E_obs_400
-E_obs_400_error_p
-E_obs_400_error_m
-logsubw_int_rest
-logsubw_int_rest_error_p
-logsubw_int_rest_error_m
-z
-z_error_p
-z_error_m
-logE_rest_400
-logE_rest_400_error_p
-logE_rest_400_error_m
-logrhoA
-logrhoA_error_p
-logrhoA_error_m
-logrhoB
-logrhoB_error_p
-logrhoB_error_m
-weight_DM
-weight_DM_error_p
-weight_DM_error_m
-weight_scat
-weight_scat_error_p
-weight_scat_error_m
-weight_w_int
-weight_w_int_error_p
-weight_w_int_error_m
-weight_fluence
-weight_fluence_error_p
-weight_fluence_error_m
-weight
-weight_error_p
-weight_error_m
-weighted_logrhoA
-weighted_logrhoA_error_p
-weighted_logrhoA_error_m
-weighted_logrhoB
-weighted_logrhoB_error_p
-weighted_logrhoB_error_m</code></pre>
-</div>
-</div>
-</section>
-<section id="parameters" class="level2">
-<h2 class="anchored" data-anchor-id="parameters">0.1 Parameters</h2>
-<section id="observational-parameters" class="level3">
-<h3 class="anchored" data-anchor-id="observational-parameters">0.1.1 Observational Parameters</h3>
-<p>The parameters selected by the paper is as follows: - Boxcar Width - Width of Sub-Burst - Flux - Fluence - Scattering Time - Spectral Index - Spectral Running - Highest Frequency - Lowest Frequency - Peak Frequency</p>
-</section>
-<section id="model-dependent-parameters" class="level3">
-<h3 class="anchored" data-anchor-id="model-dependent-parameters">0.1.2 Model Dependent Parameters</h3>
-<ul>
-<li>Redshift <code>z</code></li>
-<li>Radio Energy <code>logE_rest_400</code></li>
-<li>Rest-Frame Intrinsic Duration <code>logsubw_int_rest</code></li>
-</ul>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Type</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>params : Type[<span class="bu">str</span>] <span class="op">=</span> [</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Observational</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bc_width"</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"width_fitb"</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flux"</span>,</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scat_time"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_idx"</span>,</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_run"</span>,</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"high_freq"</span>,</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"low_freq"</span>,</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"peak_freq"</span>,</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Model dependent</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"z"</span>,</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logE_rest_400"</span>,</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logsubw_int_rest"</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> cat[params].dropna()</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>selected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>catalog: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/chimefrbcat1_Hashimoto_2022.csv'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>catalog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
 
 <div>
 
@@ -391,95 +256,149 @@ weighted_logrhoB_error_m</code></pre>
   <thead>
     <tr>
       <th></th>
-      <th>bc_width</th>
-      <th>width_fitb</th>
-      <th>flux</th>
-      <th>scat_time</th>
-      <th>sp_idx</th>
-      <th>sp_run</th>
-      <th>high_freq</th>
-      <th>low_freq</th>
-      <th>peak_freq</th>
-      <th>z</th>
-      <th>logE_rest_400</th>
-      <th>logsubw_int_rest</th>
+      <th>tns_name</th>
+      <th>previous_name</th>
+      <th>repeater_name</th>
+      <th>ra</th>
+      <th>ra_err</th>
+      <th>ra_notes</th>
+      <th>dec</th>
+      <th>dec_err</th>
+      <th>dec_notes</th>
+      <th>gl</th>
+      <th>...</th>
+      <th>weight_fluence_error_m</th>
+      <th>weight</th>
+      <th>weight_error_p</th>
+      <th>weight_error_m</th>
+      <th>weighted_logrhoA</th>
+      <th>weighted_logrhoA_error_p</th>
+      <th>weighted_logrhoA_error_m</th>
+      <th>weighted_logrhoB</th>
+      <th>weighted_logrhoB_error_p</th>
+      <th>weighted_logrhoB_error_m</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>0.00295</td>
-      <td>0.00030</td>
-      <td>2.0</td>
-      <td>0.001100</td>
-      <td>38.0</td>
-      <td>-46.0</td>
-      <td>760.1</td>
-      <td>485.3</td>
-      <td>607.4</td>
-      <td>0.676253</td>
-      <td>40.208078</td>
-      <td>-0.748199</td>
+      <td>FRB20180725A</td>
+      <td>180725.J0613+67</td>
+      <td>-9999</td>
+      <td>93.42</td>
+      <td>0.04</td>
+      <td>-9999</td>
+      <td>67.10</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>147.29</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>0.00295</td>
-      <td>0.00140</td>
-      <td>0.6</td>
-      <td>0.001700</td>
-      <td>4.0</td>
-      <td>-9.0</td>
-      <td>800.2</td>
-      <td>400.2</td>
-      <td>493.3</td>
-      <td>0.662998</td>
-      <td>39.791080</td>
-      <td>-0.073706</td>
+      <td>FRB20180727A</td>
+      <td>180727.J1311+26</td>
+      <td>-9999</td>
+      <td>197.70</td>
+      <td>0.10</td>
+      <td>-9999</td>
+      <td>26.40</td>
+      <td>0.30</td>
+      <td>-9999</td>
+      <td>24.76</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>0.00098</td>
-      <td>0.00010</td>
-      <td>12.0</td>
-      <td>0.000157</td>
-      <td>16.5</td>
-      <td>-30.2</td>
-      <td>692.7</td>
-      <td>400.2</td>
-      <td>525.6</td>
-      <td>0.067419</td>
-      <td>38.880719</td>
-      <td>-0.948762</td>
+      <td>FRB20180729A</td>
+      <td>180729.J1316+55</td>
+      <td>-9999</td>
+      <td>199.40</td>
+      <td>0.10</td>
+      <td>-9999</td>
+      <td>55.58</td>
+      <td>0.08</td>
+      <td>-9999</td>
+      <td>115.26</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>0.00197</td>
-      <td>0.00031</td>
-      <td>0.9</td>
-      <td>0.000700</td>
-      <td>14.0</td>
-      <td>-15.0</td>
-      <td>800.2</td>
-      <td>441.8</td>
-      <td>657.5</td>
-      <td>0.189369</td>
-      <td>38.561879</td>
-      <td>-0.582195</td>
+      <td>FRB20180729B</td>
+      <td>180729.J0558+56</td>
+      <td>-9999</td>
+      <td>89.90</td>
+      <td>0.30</td>
+      <td>-9999</td>
+      <td>56.50</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>156.90</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>0.00492</td>
-      <td>0.00047</td>
-      <td>5.0</td>
-      <td>0.002070</td>
-      <td>4.3</td>
-      <td>-11.3</td>
-      <td>759.2</td>
-      <td>400.2</td>
-      <td>483.5</td>
-      <td>0.839657</td>
-      <td>41.127444</td>
-      <td>-0.592583</td>
+      <td>FRB20180730A</td>
+      <td>180730.J0353+87</td>
+      <td>-9999</td>
+      <td>57.39</td>
+      <td>0.03</td>
+      <td>-9999</td>
+      <td>87.20</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>125.11</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>...</th>
@@ -495,111 +414,296 @@ weighted_logrhoB_error_m</code></pre>
       <td>...</td>
       <td>...</td>
       <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
     </tr>
     <tr>
       <th>594</th>
-      <td>0.00197</td>
-      <td>0.00061</td>
-      <td>1.3</td>
-      <td>0.000720</td>
-      <td>-1.0</td>
-      <td>3.0</td>
-      <td>800.2</td>
-      <td>400.2</td>
-      <td>800.2</td>
-      <td>0.622526</td>
-      <td>39.639959</td>
-      <td>-0.423913</td>
+      <td>FRB20190701A</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>277.50</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>59.00</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>88.29</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>595</th>
-      <td>0.00295</td>
-      <td>0.00060</td>
-      <td>1.1</td>
-      <td>0.000300</td>
-      <td>4.0</td>
-      <td>-12.0</td>
-      <td>732.8</td>
-      <td>400.2</td>
-      <td>471.5</td>
-      <td>0.736153</td>
-      <td>39.870346</td>
-      <td>-0.463004</td>
+      <td>FRB20190701B</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>302.90</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>80.20</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>112.88</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>596</th>
-      <td>0.00197</td>
-      <td>0.00140</td>
-      <td>0.9</td>
-      <td>0.001800</td>
-      <td>46.0</td>
-      <td>-210.0</td>
-      <td>495.5</td>
-      <td>402.2</td>
-      <td>446.4</td>
-      <td>0.971651</td>
-      <td>40.362724</td>
-      <td>-0.148206</td>
+      <td>FRB20190701C</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>96.40</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>81.60</td>
+      <td>0.30</td>
+      <td>-9999</td>
+      <td>132.18</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>597</th>
-      <td>0.00885</td>
-      <td>0.00140</td>
-      <td>1.3</td>
-      <td>0.001500</td>
-      <td>6.5</td>
-      <td>-21.0</td>
-      <td>651.8</td>
-      <td>400.2</td>
-      <td>467.6</td>
-      <td>0.937864</td>
-      <td>40.835803</td>
-      <td>-0.141426</td>
+      <td>FRB20190701D</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>112.10</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>66.70</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>149.28</td>
+      <td>...</td>
+      <td>0.000649</td>
+      <td>1.361506</td>
+      <td>0.574701</td>
+      <td>0.206776</td>
+      <td>0.813142</td>
+      <td>0.485293</td>
+      <td>0.109293</td>
+      <td>0.894742</td>
+      <td>0.25519</td>
+      <td>0.19035</td>
     </tr>
     <tr>
       <th>598</th>
-      <td>0.00295</td>
-      <td>0.00040</td>
-      <td>0.7</td>
-      <td>0.000700</td>
-      <td>0.0</td>
-      <td>-5.0</td>
-      <td>800.2</td>
-      <td>400.2</td>
-      <td>410.3</td>
-      <td>0.911719</td>
-      <td>39.964235</td>
-      <td>-0.671894</td>
+      <td>FRB20190701E</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>138.60</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>61.71</td>
+      <td>0.04</td>
+      <td>-9999</td>
+      <td>153.27</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>593 rows × 12 columns</p>
+<p>599 rows × 107 columns</p>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span> <span class="op">=</span> umap.UMAP(n_neighbors<span class="op">=</span><span class="dv">8</span>, n_components<span class="op">=</span><span class="dv">2</span>).fit(selected)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> umap <span class="im">import</span> plot</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plot.points(<span class="bu">map</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>*c* argument looks like a single numeric RGB or RGBA sequence, which should be avoided as value-mapping will have precedence in case its length matches with *x* &amp; *y*.  Please use the *color* keyword-argument or provide a 2D array with a single row if you intend to specify the same RGB or RGBA value for all points.</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>&lt;AxesSubplot: &gt;</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="02-UMAP-HDBSCAN_files/figure-html/cell-6-output-3.png" class="img-fluid"></p>
-</div>
-</div>
-
-
 </section>
+<section id="dataset-validation" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-validation">0.2 Dataset Validation</h3>
+<p>We first validate that the data is as described in the paper. According to the paper:</p>
+<ol type="1">
+<li><blockquote class="blockquote">
+<p>The initial dataset includes 501 non-repeating FRB sub-bursts from 474 sources and 93 repeating FRB sub-bursts from 18 sources.</p>
+</blockquote></li>
+<li><blockquote class="blockquote">
+<p>The catalogue includes 535 FRBs at a frequency range between 400 and 800 MHz from <strong>2018 July 25</strong> to <strong>2019 July 1</strong>. Since a repeating FRB source provides several FRBs and each FRB might include several sub-bursts, the actual number of applying subburst samples are 501 non-repeating + 93 repeating = 594 sub-bursts.</p>
+</blockquote></li>
+</ol>
+<p>We can verify this using a simple dataframe method.</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> astropy.time <span class="im">import</span> Time</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>start: <span class="bu">float</span> <span class="op">=</span> Time(<span class="st">'2018-07-25'</span>).mjd</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>end: <span class="bu">float</span> <span class="op">=</span> Time(<span class="st">'2019-07-01'</span>).mjd</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>interval: pd.Series <span class="op">=</span> (start <span class="op">&lt;=</span> catalog[<span class="st">'mjd_400'</span>]) <span class="op">&amp;</span> (catalog[<span class="st">'mjd_400'</span>] <span class="op">&lt;=</span> end)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>catalog: pd.DataFrame <span class="op">=</span> catalog[interval]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>repeating: pd.DataFrame <span class="op">=</span> catalog[(catalog[<span class="st">'repeater_name'</span>] <span class="op">!=</span> <span class="st">"-9999"</span>)]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>non_repeating: pd.DataFrame <span class="op">=</span> catalog[(catalog[<span class="st">'repeater_name'</span>] <span class="op">==</span> <span class="st">"-9999"</span>)]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total repeaters</span><span class="ch">\t\t</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(repeating)<span class="sc">}</span><span class="ss">"</span>,<span class="ss">f"Total non-repeaters</span><span class="ch">\t</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(non_repeating)<span class="sc">}</span><span class="ss">"</span>, sep<span class="op">=</span><span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Total sub-bursts</span><span class="ch">\t</span><span class="ss">: </span><span class="sc">{</span><span class="bu">len</span>(repeating) <span class="op">+</span> <span class="bu">len</span>(non_repeating)<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total repeaters     : 93
+Total non-repeaters : 501
+Total sub-bursts    : 594</code></pre>
+</div>
+</div>
+<p>:::{.callout-note} TODO Apply filter to get the number of sources. This filter only gets the number of sub bursts. :::</p>
+<div class="callout-question callout callout-style-default no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Question
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>What does the authors mean by “The catalogue includes 535 FRBs”? I could not think of a filter that fits the description.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="preprocessing">1. Preprocessing</h2>
+<section id="sample-dan-selection" class="level3">
+<h3 class="anchored" data-anchor-id="sample-dan-selection">1.1 Sample dan Selection</h3>
+<p>These are the criteria:</p>
+<ol type="1">
+<li>Observed between 2018 July 25 to 2019 July 1. (Already filtered in <a href="#02-dataset-validation">Validation</a>)</li>
+<li>We exclude the FRB sub-bursts which have neither <code>flux</code> nor <code>fluence</code> measurements.</li>
+<li>The input data for unsupervised learning includes a total of 10 observational and 3 model-dependent parameters. (Described in <a href="#12-parameters">Parameters</a>)</li>
+</ol>
+</section>
+<section id="parameters" class="level3">
+<h3 class="anchored" data-anchor-id="parameters">1.2 Parameters</h3>
+</section>
+<section id="observational-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="observational-parameters">1.2.1 Observational Parameters</h3>
+<p>The parameters selected by the paper is as follows: - Boxcar Width <code>bc_width</code> - Width of Sub-Burst <code>width_fitb</code> - Flux <code>flux</code> - Fluence <code>fluence</code> - Scattering Time <code>scat_time</code> - Spectral Index <code>sp_idx</code> - Spectral Running <code>sp_run</code> - Highest Frequency <code>high_freq</code> - Lowest Frequency <code>low_freq</code> - Peak Frequency <code>peak_freq</code></p>
+</section>
+<section id="model-dependent-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="model-dependent-parameters">1.2.2 Model Dependent Parameters</h3>
+<ul>
+<li>Redshift <code>z</code></li>
+<li>Radio Energy <code>logE_rest_400</code></li>
+<li>Rest-Frame Intrinsic Duration <code>logsubw_int_rest</code></li>
+</ul>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> List</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>params : List[<span class="bu">str</span>] <span class="op">=</span> [</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Observational</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"bc_width"</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"width_fitb"</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"flux"</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"fluence"</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"scat_time"</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_idx"</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"sp_run"</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"high_freq"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"low_freq"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"peak_freq"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Model dependent</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">"z"</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logE_rest_400"</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">"logsubw_int_rest"</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>identifiers: List[<span class="bu">str</span>] <span class="op">=</span> [</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">"tns_name"</span>,</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"repeater_name"</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>dropna_subset <span class="op">=</span> [<span class="st">'flux'</span>, <span class="st">'fluence'</span>, <span class="st">'logE_rest_400'</span>]</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>non_repeating <span class="op">=</span> non_repeating[[<span class="op">*</span>params, <span class="op">*</span>identifiers]]</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>repeating <span class="op">=</span> repeating[[<span class="op">*</span>params, <span class="op">*</span>identifiers]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>test, train <span class="op">=</span> train_test_split(repeating, test_size<span class="op">=</span><span class="fl">0.9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>selected <span class="op">=</span> pd.concat([train, non_repeating]).dropna(subset[<span class="st">''</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="umap" class="level2">
+<h2 class="anchored" data-anchor-id="umap">2. UMAP</h2>
+<p>Parameters:</p>
+<ol type="1">
+<li><code>n_neighbors = 8</code>
+<ul>
+<li>it controls how UMAP balances between the local structure and the global structure of the data manifolds</li>
+</ul></li>
+<li><code>n_components = 2</code>
+<ul>
+<li>the resulting dimensionality of the reduced dimension</li>
+</ul></li>
+<li><code>min_dist = 0.1</code>
+<ul>
+<li>to prevent the resulting low dimensional projections clumping together</li>
+</ul></li>
+</ol>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> umap</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>model: umap.UMAP <span class="op">=</span> umap.UMAP(n_neighbors<span class="op">=</span><span class="dv">8</span>, n_components<span class="op">=</span><span class="dv">2</span>, min_dist<span class="op">=</span><span class="fl">0.1</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="bu">map</span> <span class="op">=</span> model.fit(selected[params])</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>test_map <span class="op">=</span> <span class="bu">map</span>.transform(test[params])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: Input contains NaN.</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>train[<span class="st">'x'</span>] <span class="op">=</span> <span class="bu">map</span>.embedding_[:, <span class="dv">0</span>]</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>train[<span class="st">'y'</span>] <span class="op">=</span> <span class="bu">map</span>.embedding_[:, <span class="dv">1</span>]</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>train[<span class="st">'color'</span>] <span class="op">=</span> [<span class="st">'non-repeater'</span> <span class="cf">if</span> name <span class="op">==</span> <span class="st">'-9999'</span> <span class="cf">else</span> <span class="st">'repeater'</span> <span class="cf">for</span> name <span class="kw">in</span> train[<span class="st">'repeater_name'</span>]]</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>train, kind<span class="op">=</span><span class="st">'scatter'</span>, x<span class="op">=</span><span class="st">'x'</span>, y<span class="op">=</span><span class="st">'y'</span>, style<span class="op">=</span><span class="st">'color'</span>, hue<span class="op">=</span><span class="st">'color'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: Length of values (588) does not match length of index (84)</code></pre>
+</div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
