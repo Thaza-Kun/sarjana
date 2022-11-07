@@ -217,6 +217,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#split-test-and-training-data" id="toc-split-test-and-training-data" class="nav-link" data-scroll-target="#split-test-and-training-data">2.1 Split test and training data</a></li>
   <li><a href="#umap" id="toc-umap" class="nav-link" data-scroll-target="#umap">2.2 UMAP</a></li>
   </ul></li>
+  <li><a href="#hdbscan" id="toc-hdbscan" class="nav-link" data-scroll-target="#hdbscan">3. HDBSCAN</a>
+  <ul class="collapse">
+  <li><a href="#calculation" id="toc-calculation" class="nav-link" data-scroll-target="#calculation">3.1 Calculation</a></li>
+  <li><a href="#comparison" id="toc-comparison" class="nav-link" data-scroll-target="#comparison">3.2 Comparison</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -727,12 +732,78 @@ Question
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>sns.set_context(<span class="st">'paper'</span>)</span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>to_plot, kind<span class="op">=</span><span class="st">'scatter'</span>, x<span class="op">=</span><span class="st">'x'</span>, y<span class="op">=</span><span class="st">'y'</span>, hue<span class="op">=</span><span class="st">'color'</span>, hue_order<span class="op">=</span>[<span class="st">'non-repeater'</span>,<span class="st">'repeater (train)'</span>,<span class="st">'repeater (test)'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x7f90efe57a90&gt;</code></pre>
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1dff54e50d0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="02-UMAP-HDBSCAN_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
 </div>
 </div>
+</section>
+</section>
+<section id="hdbscan" class="level2">
+<h2 class="anchored" data-anchor-id="hdbscan">3. HDBSCAN</h2>
+<p>We now perform HDBSCAN to cluster data based on the dimensionally reduced data from UMAP.</p>
+<section id="calculation" class="level3">
+<h3 class="anchored" data-anchor-id="calculation">3.1 Calculation</h3>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hdbscan</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>const <span class="op">=</span> <span class="fl">0.485</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>clus_size <span class="op">=</span> <span class="bu">round</span>(const <span class="op">*</span> to_plot.shape[<span class="dv">1</span>])</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>model_ <span class="op">=</span> hdbscan.HDBSCAN(clus_size)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>to_plot[<span class="st">'hdbscan'</span>] <span class="op">=</span> model_.fit_predict(to_plot[[<span class="st">'x'</span>, <span class="st">'y'</span>]])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>to_plot <span class="op">=</span> to_plot.sort_values(by<span class="op">=</span><span class="st">'hdbscan'</span>, ascending<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>to_plot[<span class="st">'hdbscan'</span>] <span class="op">=</span> to_plot[<span class="st">'hdbscan'</span>].astype(<span class="bu">str</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>to_plot, kind<span class="op">=</span><span class="st">'scatter'</span>, x<span class="op">=</span><span class="st">'x'</span>, y<span class="op">=</span><span class="st">'y'</span>, hue<span class="op">=</span><span class="st">'hdbscan'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="75">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1df8adc3340&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02-UMAP-HDBSCAN_files/figure-html/cell-11-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="comparison" class="level3">
+<h3 class="anchored" data-anchor-id="comparison">3.2 Comparison</h3>
+<p>In this section we present the data from <a href="https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract">Chen et al (2021)</a>.</p>
+<div class="cell" data-execution_count="84">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>chen2021 <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/CHIME_FRB_ML_classification.csv'</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>chen2021[<span class="st">'source'</span>] <span class="op">=</span> <span class="st">'chen et al 2021'</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>chen2021, kind<span class="op">=</span><span class="st">'scatter'</span>, x<span class="op">=</span><span class="st">'embedding_x'</span>, y<span class="op">=</span><span class="st">'embedding_y'</span>, hue<span class="op">=</span><span class="st">'group'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="84">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1df8b491fa0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02-UMAP-HDBSCAN_files/figure-html/cell-12-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>As you can see, Chen et al (2021) contains 9 clusters while the one we did have 12 clusters. The number of clusters itself is irrelevant but the size of clusters is. What we want to know is whether or not we can replicate the classification of repeater clusters from non-repeater clusters.</p>
+<p>A cluster is considered repeater cluster is the total number of more than 10% repeating FRB exists in the cluster. Other FRBs inside the repeater cluster is determined to be ‘potentially’ repeating. Then, we compare the division between this notebook and Chen et al (2021).</p>
+<div class="cell" data-execution_count="85">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Determining repeater clusters (&gt;10% is repeater FRB)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>this <span class="op">=</span> to_plot[[<span class="st">'tns_name'</span>,<span class="st">'x'</span>,<span class="st">'y'</span>, <span class="st">'hdbscan'</span>, <span class="st">'color'</span>]].rename(columns<span class="op">=</span>{<span class="st">'x'</span>: <span class="st">'embedding_x'</span>, <span class="st">'y'</span>:<span class="st">'embedding_y'</span>, <span class="st">'hdbscan'</span>: <span class="st">'label'</span>, <span class="st">'color'</span>: <span class="st">'repeater'</span>})</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>this[<span class="st">'source'</span>] <span class="op">=</span> <span class="st">'calculated'</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>this[<span class="st">'repeater'</span>] <span class="op">=</span> [<span class="va">False</span> <span class="cf">if</span> name <span class="op">==</span> <span class="st">'non-repeater'</span> <span class="cf">else</span> <span class="va">True</span> <span class="cf">for</span> name <span class="kw">in</span> this[<span class="st">'repeater'</span>]]</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> this.groupby(<span class="st">'label'</span>).aggregate(<span class="st">'mean'</span>, numeric_only<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>a[<span class="st">'group'</span>] <span class="op">=</span> [<span class="st">'repeater_cluster'</span> <span class="cf">if</span> row <span class="op">&gt;</span> <span class="fl">0.1</span> <span class="cf">else</span> <span class="st">'other_cluster'</span> <span class="cf">for</span> row <span class="kw">in</span> a[<span class="st">'repeater'</span>]]</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>a.reset_index()</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>this <span class="op">=</span> this.merge(a[[<span class="st">'group'</span>]], on<span class="op">=</span><span class="st">'label'</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename groups to only separate repeater clusters from other clusters</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>chen2021[<span class="st">'group'</span>] <span class="op">=</span> chen2021[<span class="st">'group'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[:<span class="op">-</span><span class="dv">2</span>])</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>data: pd.DataFrame <span class="op">=</span> pd.concat([this, chen2021])</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>data, kind<span class="op">=</span><span class="st">'scatter'</span>, x<span class="op">=</span><span class="st">'embedding_x'</span>, y<span class="op">=</span><span class="st">'embedding_y'</span>, hue<span class="op">=</span><span class="st">'group'</span>, col<span class="op">=</span><span class="st">'source'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="85">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1df8b23fa60&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02-UMAP-HDBSCAN_files/figure-html/cell-13-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The division fairly replicates the one from Chen et al.&nbsp;(2021). However, some of the top left corner of the embedding is not classified as repeater in this notebook while it is in Chen et al.&nbsp;(2021). We can continue analysis with more graphs from Chen et al.&nbsp;(2021).</p>
 
 
 </section>
