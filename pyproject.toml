@@ -14,10 +14,10 @@ pandas = "^1.5.1"
 numpy = "^1.23.4"
 jupyter = "^1.0.0"
 hdbscan = "^0.8.29"
+plotly = "^5.11.0"
 
 [tool.poetry.dev-dependencies]
 nbformat = "^5.7.0"
-plotly = "^5.11.0"
 jupyterlab = "^3.5.0"
 
 [build-system]
