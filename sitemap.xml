@@ -2,18 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/index.html</loc>
-    <lastmod>2022-11-07T08:50:04.236Z</lastmod>
+    <lastmod>2022-11-09T09:31:49.323Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/01-get-data.html</loc>
-    <lastmod>2022-11-07T08:50:04.772Z</lastmod>
+    <lastmod>2022-11-09T09:31:50.323Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/02-UMAP-HDBSCAN.html</loc>
-    <lastmod>2022-11-07T08:50:05.140Z</lastmod>
+    <lastmod>2022-11-09T09:31:51.027Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/03-filter-repeaters.html</loc>
+    <lastmod>2022-11-09T09:31:51.459Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/README.html</loc>
-    <lastmod>2022-11-07T08:50:05.384Z</lastmod>
+    <lastmod>2022-11-09T09:31:51.847Z</lastmod>
   </url>
 </urlset>
