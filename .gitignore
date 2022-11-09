@@ -1,5 +1,6 @@
 .venv
 *.pyc
+.vscode
 
 # Processed data
 data/processed/
