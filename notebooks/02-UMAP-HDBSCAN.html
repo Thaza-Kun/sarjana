@@ -748,6 +748,7 @@ Question
 <div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hdbscan</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>The paper did not classify the minimum cluster size for HDBSCAN so I tried to find a parameter that fits. The minimum cluster size (<code>clus_size</code>) that fits the paper’s model is <code>19</code> as calculated by rounding <code>0.458 * to_plot.shape[1]</code>.</p>
 <div class="cell" data-execution_count="75">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>const <span class="op">=</span> <span class="fl">0.485</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>clus_size <span class="op">=</span> <span class="bu">round</span>(const <span class="op">*</span> to_plot.shape[<span class="dv">1</span>])</span>
