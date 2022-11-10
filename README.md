@@ -1,10 +1,3 @@
----
-title: 'About'
-toc: true
-authors: Murthadza Aznam
-date: '2022-09-15'
----
-
 # Masters Project
 This repository is meant to document my Masters in Physics' work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.
 

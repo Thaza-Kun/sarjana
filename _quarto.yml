@@ -5,13 +5,13 @@ project:
   render: 
       - 'index.qmd'
       - notebooks/*
-      - 'README.md'
+      - 'about.qmd'
 
 website:
   title: "Masters Project"
   navbar:
     right:
-      - README.md
+      - about.qmd
   #     - icon: github
   #       href: https://github.com/
   #     - icon: twitter
