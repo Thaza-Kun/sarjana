@@ -3,7 +3,18 @@
 ## Upcoming
 
 ### TODO
-- [ ] Read [Luo, Jia-Wei et. al. 2022](https://ui.adsabs.harvard.edu/abs/2022arXiv221002463L/abstract)
+
+## 0.1.3 2022-11-12
+
+### Added
+- Fully implemented Chen et. al's (2021) UMAP and HDBSCAN algorithm.
+- Exported UMAP-HDBSCAN to script
+
+### Literature
+- Read [Luo, Jia-Wei et. al. 2022, Machine learning classification of CHIME fast radio bursts: I. Supervised Methods](https://doi.org/10.1093/mnras/stac3206)
+- Read [Zhu-Ge, Jia-Ming et. al. 2022, Machine Learning Classification of Fast Radio Bursts: II. Unsupervised Methods](http://arxiv.org/abs/2210.02471)
+- Read [CHIME/FRB 2020, Periodic activity from a fast radio burst source](doi:10.1038/s41586-020-2398-2)
+- Read [Jake VanderPlas 2022, Python Data Science Handbook](https://www.oreilly.com/library/view/python-data-science/9781491912126/)
 
 ## 0.1.2 2022-10-25
 
