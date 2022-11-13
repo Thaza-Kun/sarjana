@@ -1,6 +1,5 @@
-import asyncio
-from source.frbstats import FRBPopulation
+import logging
+import workflows
 
 if __name__ == "__main__":
-    data = FRBPopulation()
-    print(data.dataframe)
+    workflows.replicate_chen2021()
