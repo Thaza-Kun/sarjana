@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.2.269">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -155,7 +155,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../about.html">About</a>
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
   </li>  
 </ul>
               <div id="quarto-search" class="" title="Search"></div>
@@ -188,6 +189,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         <p class="date">September 15, 2022</p>
       </div>
     </div>
+    
       
     </div>
     
@@ -244,373 +246,61 @@ Note
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> output_file</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="cf">await</span> download_csv())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="4">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>frb</th>
-      <th>utc</th>
-      <th>mjd</th>
-      <th>telescope</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>l</th>
-      <th>b</th>
-      <th>frequency</th>
-      <th>dm</th>
-      <th>flux</th>
-      <th>width</th>
-      <th>fluence</th>
-      <th>snr</th>
-      <th>reference</th>
-      <th>redshift</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>FRB 20010125A</td>
-      <td>2001-01-25 0:29:16</td>
-      <td>51934.02032</td>
-      <td>Parkes</td>
-      <td>19:06:53</td>
-      <td>-40:37:14</td>
-      <td>356.64</td>
-      <td>-20.02</td>
-      <td>-</td>
-      <td>790.3</td>
-      <td>0.54</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>https://www.wis-tns.org/object/20010125a</td>
-      <td>0.7083</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>FRB 20010305A</td>
-      <td>2001-03-05 12:29:16</td>
-      <td>51973.52032</td>
-      <td>Parkes</td>
-      <td>4:57:20</td>
-      <td>-52:36:25</td>
-      <td>260.07</td>
-      <td>-38.35</td>
-      <td>1374</td>
-      <td>350.0</td>
-      <td>0.42</td>
-      <td>9</td>
-      <td>3.78</td>
-      <td>10.2</td>
-      <td>https://arxiv.org/abs/2004.04601</td>
-      <td>0.341</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>FRB 20010312A</td>
-      <td>2001-03-12 11:06:48</td>
-      <td>51980.46306</td>
-      <td>Parkes</td>
-      <td>5:26:55</td>
-      <td>-64:56:19</td>
-      <td>274.72</td>
-      <td>-33.30</td>
-      <td>-</td>
-      <td>1187.0</td>
-      <td>0.25</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>https://www.wis-tns.org/object/20010312a</td>
-      <td>1.0897</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FRB 20010621A</td>
-      <td>2001-06-21 13:02:11</td>
-      <td>52081.54318</td>
-      <td>Parkes</td>
-      <td>18:52:05</td>
-      <td>-8:29:35</td>
-      <td>25.43</td>
-      <td>-4.00</td>
-      <td>-</td>
-      <td>745.0</td>
-      <td>0.41</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>https://www.wis-tns.org/object/20010621a</td>
-      <td>0.4454</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>FRB 20010724A</td>
-      <td>2001-07-24 19:50:02</td>
-      <td>52114.82641</td>
-      <td>Parkes</td>
-      <td>1:18:06</td>
-      <td>-75:12:18</td>
-      <td>300.65</td>
-      <td>-41.81</td>
-      <td>-</td>
-      <td>375.0</td>
-      <td>30</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>https://www.wis-tns.org/object/20010724a</td>
-      <td>0.369</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>806</th>
-      <td>FRB 20220105A</td>
-      <td>2022-01-05 0:19:19</td>
-      <td>59584.01341</td>
-      <td>ASKAP</td>
-      <td>13:55:51.4</td>
-      <td>+22:29:19.7</td>
-      <td>18.84</td>
-      <td>74.68</td>
-      <td>1632.5</td>
-      <td>583.0</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>10</td>
-      <td>https://www.wis-tns.org/object/20220105a</td>
-      <td>0.5724</td>
-    </tr>
-    <tr>
-      <th>807</th>
-      <td>FRB 20220414A</td>
-      <td>2022-04-14 17:26:40</td>
-      <td>59683.72685</td>
-      <td>Tianlai</td>
-      <td>13:04:21</td>
-      <td>+48:18:05</td>
-      <td>117.02</td>
-      <td>68.68</td>
-      <td>747.5</td>
-      <td>208.1</td>
-      <td>128.4</td>
-      <td>2.2</td>
-      <td>204</td>
-      <td>15.1</td>
-      <td>https://www.wis-tns.org/object/20220414a</td>
-      <td>0.2169</td>
-    </tr>
-    <tr>
-      <th>808</th>
-      <td>FRB 20220501C</td>
-      <td>2022-05-01 2:11:09</td>
-      <td>59700.09108</td>
-      <td>ASKAP</td>
-      <td>23:29:50</td>
-      <td>-32:27:00</td>
-      <td>11.26</td>
-      <td>-71.55</td>
-      <td>863.5</td>
-      <td>449.5</td>
-      <td>-</td>
-      <td>-</td>
-      <td>30</td>
-      <td>16.1</td>
-      <td>https://www.wis-tns.org/object/20220501c</td>
-      <td>0.4558</td>
-    </tr>
-    <tr>
-      <th>809</th>
-      <td>FRB 20220610A</td>
-      <td>2022-06-10 22:26:43</td>
-      <td>59740.93522</td>
-      <td>ASKAP</td>
-      <td>23:23:60</td>
-      <td>-33:31:00</td>
-      <td>8.87</td>
-      <td>-70.13</td>
-      <td>1271.5</td>
-      <td>1458.1</td>
-      <td>-</td>
-      <td>5.6</td>
-      <td>43</td>
-      <td>29.8</td>
-      <td>https://www.wis-tns.org/object/20220610a</td>
-      <td>1.3836</td>
-    </tr>
-    <tr>
-      <th>810</th>
-      <td>FRB 20220725A</td>
-      <td>2022-07-25 21:54:53</td>
-      <td>59785.91311</td>
-      <td>ASKAP</td>
-      <td>22:26:60</td>
-      <td>+34:52:60</td>
-      <td>92.14</td>
-      <td>-19.21</td>
-      <td>919.5</td>
-      <td>290.4</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>12.7</td>
-      <td>https://www.wis-tns.org/object/20220725a</td>
-      <td>0.2591</td>
-    </tr>
-  </tbody>
-</table>
-<p>811 rows × 16 columns</p>
-</div>
-</div>
-</div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data[[<span class="st">'ra'</span>, <span class="st">'dec'</span>, <span class="st">'l'</span>, <span class="st">'b'</span>, <span class="st">'frequency'</span>, <span class="st">'dm'</span>, <span class="st">'flux'</span>, <span class="st">'width'</span>, <span class="st">'fluence'</span>, <span class="st">'snr'</span>, <span class="st">'redshift'</span>]].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>l</th>
-      <th>b</th>
-      <th>dm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>count</th>
-      <td>811.000000</td>
-      <td>811.000000</td>
-      <td>811.000000</td>
-    </tr>
-    <tr>
-      <th>mean</th>
-      <td>140.128890</td>
-      <td>13.971689</td>
-      <td>603.167531</td>
-    </tr>
-    <tr>
-      <th>std</th>
-      <td>66.823504</td>
-      <td>33.066918</td>
-      <td>416.749504</td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td>0.740000</td>
-      <td>-71.550000</td>
-      <td>87.750000</td>
-    </tr>
-    <tr>
-      <th>25%</th>
-      <td>105.395000</td>
-      <td>-8.155000</td>
-      <td>347.760000</td>
-    </tr>
-    <tr>
-      <th>50%</th>
-      <td>129.710000</td>
-      <td>16.620000</td>
-      <td>469.880000</td>
-    </tr>
-    <tr>
-      <th>75%</th>
-      <td>171.525000</td>
-      <td>35.415000</td>
-      <td>734.000000</td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td>359.830000</td>
-      <td>89.530000</td>
-      <td>3037.700000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="cf">await</span> download_csv())</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data.plot.scatter(x<span class="op">=</span><span class="st">'redshift'</span>, y<span class="op">=</span><span class="st">'dm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data.plot.scatter(x<span class="op">=</span><span class="st">'redshift'</span>, y<span class="op">=</span><span class="st">'dm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="13">
 <pre><code>&lt;AxesSubplot: xlabel='redshift', ylabel='dm'&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="01-get-data_files/figure-html/cell-7-output-2.png" class="img-fluid"></p>
+<p><img src="01-get-data_files/figure-html/cell-5-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data.plot.scatter(x<span class="op">=</span><span class="st">'l'</span>, y<span class="op">=</span><span class="st">'b'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data.plot.scatter(x<span class="op">=</span><span class="st">'l'</span>, y<span class="op">=</span><span class="st">'b'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>&lt;AxesSubplot: xlabel='l', ylabel='b'&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="01-get-data_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+<p><img src="01-get-data_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set projection &amp; properties</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>canvas <span class="op">=</span> MWSkyMap(projection<span class="op">=</span><span class="st">'aitoff'</span>, grayscale<span class="op">=</span><span class="va">False</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="fl">12.5</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha value for the milkyway image</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>canvas.imalpha <span class="op">=</span> <span class="fl">1.</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co"># set up plot title</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>canvas.title <span class="op">=</span> <span class="vs">r'$\mathrm{FRB \ } l \mathrm{-} b \mathrm{ \ Distribution}$'</span><span class="op">+</span><span class="st">'</span><span class="ch">\n</span><span class="st">'</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>canvas.fontsize <span class="op">=</span> <span class="dv">48</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Set projection &amp; properties</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>canvas <span class="op">=</span> MWSkyMap(projection<span class="op">=</span><span class="st">'aitoff'</span>, grayscale<span class="op">=</span><span class="va">False</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="fl">12.5</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># alpha value for the milkyway image</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>canvas.imalpha <span class="op">=</span> <span class="fl">1.</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="co"># set up plot title</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>canvas.title <span class="op">=</span> <span class="vs">r'$\mathrm{FRB \ } l \mathrm{-} b \mathrm{ \ Distribution}$'</span><span class="op">+</span><span class="st">'</span><span class="ch">\n</span><span class="st">'</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>canvas.fontsize <span class="op">=</span> <span class="dv">48</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>coords <span class="op">=</span> SkyCoord(ra<span class="op">=</span>data[<span class="st">'ra'</span>][<span class="dv">0</span>], dec<span class="op">=</span>data[<span class="st">'dec'</span>][<span class="dv">0</span>], unit<span class="op">=</span>(u.hourangle, u.deg))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>coords</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>coords <span class="op">=</span> SkyCoord(ra<span class="op">=</span>data[<span class="st">'ra'</span>][<span class="dv">0</span>], dec<span class="op">=</span>data[<span class="st">'dec'</span>][<span class="dv">0</span>], unit<span class="op">=</span>(u.hourangle, u.deg))</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>coords</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="26">
 <pre><code>&lt;SkyCoord (ICRS): (ra, dec) in deg
     (286.72083333, -40.62055556)&gt;</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="32">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>galcoords <span class="op">=</span> SkyCoord(l<span class="op">=</span>data[<span class="st">'l'</span>][<span class="dv">0</span>], b<span class="op">=</span>data[<span class="st">'b'</span>][<span class="dv">0</span>], unit<span class="op">=</span><span class="st">'deg'</span>, frame<span class="op">=</span><span class="st">'galactic'</span>)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>galcoords</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>galcoords <span class="op">=</span> SkyCoord(l<span class="op">=</span>data[<span class="st">'l'</span>][<span class="dv">0</span>], b<span class="op">=</span>data[<span class="st">'b'</span>][<span class="dv">0</span>], unit<span class="op">=</span><span class="st">'deg'</span>, frame<span class="op">=</span><span class="st">'galactic'</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>galcoords</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="32">
 <pre><code>&lt;SkyCoord (Galactic): (l, b) in deg
     (356.64, -20.02)&gt;</code></pre>
 </div>
 </div>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_sky_coord(row) <span class="op">-&gt;</span> SkyCoord:</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> SkyCoord(l<span class="op">=</span>row[<span class="st">'l'</span>], b<span class="op">=</span>row[<span class="st">'b'</span>], unit<span class="op">=</span><span class="st">'deg'</span>, frame<span class="op">=</span><span class="st">'galactic'</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'galactic'</span>] <span class="op">=</span> data.<span class="bu">apply</span>(<span class="kw">lambda</span> x: to_sky_coord(x), axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> to_sky_coord(row) <span class="op">-&gt;</span> SkyCoord:</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> SkyCoord(l<span class="op">=</span>row[<span class="st">'l'</span>], b<span class="op">=</span>row[<span class="st">'b'</span>], unit<span class="op">=</span><span class="st">'deg'</span>, frame<span class="op">=</span><span class="st">'galactic'</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'galactic'</span>] <span class="op">=</span> data.<span class="bu">apply</span>(<span class="kw">lambda</span> x: to_sky_coord(x), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 
 <div>
@@ -866,7 +556,7 @@ Note
 </div>
 </div>
 <div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>canvas.scatter(ra<span class="op">=</span>data[<span class="st">'ra'</span>].to_numpy()<span class="op">*</span>u.degree, dec<span class="op">=</span>data[<span class="st">'dec'</span>].to_numpy()<span class="op">*</span>u.degree, s<span class="op">=</span><span class="dv">150</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, edgecolor<span class="op">=</span><span class="st">'white'</span>, linewidth<span class="op">=</span><span class="fl">0.85</span>, cmap<span class="op">=</span><span class="st">'plasma'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>canvas.scatter(ra<span class="op">=</span>data[<span class="st">'ra'</span>].to_numpy()<span class="op">*</span>u.degree, dec<span class="op">=</span>data[<span class="st">'dec'</span>].to_numpy()<span class="op">*</span>u.degree, s<span class="op">=</span><span class="dv">150</span>, alpha<span class="op">=</span><span class="fl">0.6</span>, edgecolor<span class="op">=</span><span class="st">'white'</span>, linewidth<span class="op">=</span><span class="fl">0.85</span>, cmap<span class="op">=</span><span class="st">'plasma'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>TypeError: unsupported operand type(s) for *: 'numpy.ndarray' and 'Unit'</code></pre>
 </div>
@@ -916,7 +606,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -952,24 +659,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
