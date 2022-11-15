@@ -16,15 +16,11 @@ from sklearn.model_selection import train_test_split
 from paths import external_data_path
 
 
-def load_data(source: str, interval: Tuple[str, str]) -> pd.DataFrame:
+def load_data(source: str, interval: Optional[Tuple[str, str]] = None) -> pd.DataFrame:
     path = Path(external_data_path, source)
     logging.info(f"Loading data from {path}")
     catalog: pd.DataFrame = pd.read_csv(path)
 
-    start: float = Time(interval[0]).mjd
-    end: float = Time(interval[1]).mjd
-
-    within_time: pd.Series = (start <= catalog["mjd_400"]) & (catalog["mjd_400"] <= end)
     catalog["label"]: pd.Series = [
         "non-repeater" if row == "-9999" else "repeater"
         for row in catalog["repeater_name"]
@@ -32,7 +28,15 @@ def load_data(source: str, interval: Tuple[str, str]) -> pd.DataFrame:
     catalog["repeater"] = [
         False if name == "non-repeater" else True for name in catalog["label"]
     ]
-    return catalog[within_time]
+    if interval:
+        start: float = Time(interval[0]).mjd
+        end: float = Time(interval[1]).mjd
+
+        within_time: pd.Series = (start <= catalog["mjd_400"]) & (
+            catalog["mjd_400"] <= end
+        )
+        return catalog[within_time]
+    return catalog
 
 
 def load_chen2021(rename_columns: Optional[dict] = None) -> pd.DataFrame:
@@ -71,6 +75,7 @@ def reduce_dimension(
     drop_na: Optional[List[str]] = None,
     test: Optional[pd.DataFrame] = None,
     technique: str = "UMAP",
+    seed: int = 42,
     **kwargs,
 ) -> pd.DataFrame:
     logging.info(f"Reducing dimension using '{technique.lower()}'")
@@ -79,7 +84,10 @@ def reduce_dimension(
         n_components = kwargs.pop("n_components", 2)
         min_dist = kwargs.pop("min_dist", 0.1)
         model: umap.UMAP = umap.UMAP(
-            n_neighbors=n_neighbors, n_components=n_components, min_dist=min_dist
+            n_neighbors=n_neighbors,
+            n_components=n_components,
+            min_dist=min_dist,
+            random_state=seed,
         )
     else:
         raise NotImplementedError

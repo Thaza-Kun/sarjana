@@ -2,6 +2,9 @@
 
 ## Upcoming
 
+### Added
+- Added workflow files to replicate different results with arbitrary algorithm order
+
 ### TODO
 
 ## 0.1.3 2022-11-12
