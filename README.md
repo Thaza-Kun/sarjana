@@ -11,3 +11,4 @@ These problem statements are taken from the proposal and will likely change and 
 
 ## Requirements
 The `cfod` package used to access the CHIME/FRB catalog requires Linux or WSL.
+The `fruitbat` package used to calculate redshift requires Linux or WSL.
