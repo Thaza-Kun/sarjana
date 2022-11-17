@@ -2,7 +2,7 @@
 *.pyc
 .vscode
 
-*/zhang2022/*
+*/luojiawei2022/*
 
 # Processed data
 data/processed/
