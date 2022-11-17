@@ -3,6 +3,9 @@ name = "sarjana"
 version = "0.1.3"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
+packages = [
+    { include = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -16,6 +19,7 @@ jupyter = "^1.0.0"
 hdbscan = "^0.8.29"
 plotly = "^5.11.0"
 jupytext = "^1.14.1"
+fruitbat = "^2.0.1"
 
 [tool.poetry.dev-dependencies]
 nbformat = "^5.7.0"

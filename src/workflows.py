@@ -1,26 +1,41 @@
 import logging
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import seaborn as sns
 import pandas as pd
 
-from paths import graph_path
-from scan import (
+from paths import graph_path, collected_data_path
+from source.papers import (
     load_chen2021,
-    load_data,
-    reduce_dimension,
+    load_hashimoto2022,
+)
+from learning import (
+    reduce_dimension_to_2,
     run_hdbscan,
     separate_repeater_and_non_repeater,
     train_test_split_subset,
 )
 
 
+def get_chen2021_repeater_candidates(
+    filename: Optional[str] = "chen2021_candidates",
+) -> pd.DataFrame:
+    data: pd.DataFrame = load_chen2021()[["tns_name", "classification", "group"]]
+    data["cluster"] = data["group"].apply(lambda x: int(x.split("_")[-1]))
+    data["candidate"] = [
+        True if "repeater" in item else False for item in data["group"]
+    ]
+    data = data[data["candidate"] == True][["tns_name", "cluster"]]
+    data.to_csv(Path(collected_data_path, f"{filename}.csv"), index=False)
+    return data
+
+
 def compare_with_chen2021(
     data: pd.DataFrame, filename_prefix: str, filename_postfix: str = ""
 ) -> pd.DataFrame:
     chen_2021: pd.DataFrame = load_chen2021(
-        rename_columns={"embedding_y": "y", "embedding_x": "x", "label": "group"}
+        rename_columns={"embedding_y": "y", "embedding_x": "x"}
     )
     chen_2021["group"] = chen_2021["group"].apply(lambda x: x[:-2])
     data["source"] = "this work"
@@ -41,7 +56,6 @@ def replicate_chen2021_UMAP_HDBSCAN(
     seed: int = 42,
     filename_prefix: str = "replicate_chen2021",
 ) -> pd.DataFrame:
-    # TODO Make min_cluster_size a params because it is not stated in the paper
     logging.basicConfig(level=logging.INFO)
     logging.info(
         'Replicating Chen et. al. (2021) "Uncloaking hidden repeating fast radio bursts with unsupervised machine learning" doi:10.1093/mnras/stab2994'
@@ -65,7 +79,7 @@ def replicate_chen2021_UMAP_HDBSCAN(
     ]
 
     dropna_subset = ["flux", "fluence", "logE_rest_400"]
-    data = load_data(
+    data = load_hashimoto2022(
         source="Hashimoto2022_chimefrbcat1.csv",
         interval=("2018-07-25", "2019-07-01"),
     )
@@ -74,7 +88,7 @@ def replicate_chen2021_UMAP_HDBSCAN(
     sample, test = train_test_split_subset(
         subsample=repeating, sidesample=non_repeating
     )
-    data = reduce_dimension(
+    data = reduce_dimension_to_2(
         sample=sample,
         params=params,
         drop_na=dropna_subset,
@@ -86,13 +100,13 @@ def replicate_chen2021_UMAP_HDBSCAN(
     logging.debug(
         f"Data dimension reduced. Shape: {data.shape}. Columns: {data.columns}"
     )
-    postfix: str = f"(mcs_{min_cluster_size}_seed_{seed})"
+    postfix: str = f"(mcs={min_cluster_size}_seed={seed})"
     sns.relplot(data=data, x="x", y="y", hue="label").savefig(
         Path(graph_path, f"{filename_prefix}_UMAP_{postfix}.png")
     )
 
     data = run_hdbscan(
-        data=data, params=params, min_cluster_size=min_cluster_size, threshold=0.1
+        data=data, columns=["x", "y"], min_cluster_size=min_cluster_size, threshold=0.1
     )
     logging.debug(f"HDBSCAN Complete. Shape: {data.shape}. Columns: {data.columns}")
     sns.relplot(data=data, x="x", y="y", hue="group").savefig(
@@ -132,7 +146,7 @@ def UMAP_HDBSCAN_no_model_dependent_params(
 
     postfix: str = f"(mcs={min_cluster_size}_seed={seed})"
     dropna_subset = ["flux", "fluence"]
-    data = load_data(
+    data = load_hashimoto2022(
         source="Hashimoto2022_chimefrbcat1.csv",
     )
     logging.debug(f"Data loaded. Shape: {data.shape}. Columns: {data.columns}")
@@ -140,7 +154,7 @@ def UMAP_HDBSCAN_no_model_dependent_params(
     sample, test = train_test_split_subset(
         subsample=repeating, sidesample=non_repeating
     )
-    data = reduce_dimension(
+    data = reduce_dimension_to_2(
         sample=sample,
         params=params,
         drop_na=dropna_subset,
@@ -157,7 +171,7 @@ def UMAP_HDBSCAN_no_model_dependent_params(
     )
 
     data = run_hdbscan(
-        data=data, params=params, min_cluster_size=min_cluster_size, threshold=0.1
+        data=data, columns=["x", "y"], min_cluster_size=min_cluster_size, threshold=0.1
     )
     logging.debug(f"HDBSCAN Complete. Shape: {data.shape}. Columns: {data.columns}")
     sns.relplot(data=data, x="x", y="y", hue="group").savefig(
