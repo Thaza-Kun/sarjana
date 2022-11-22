@@ -1,13 +1,20 @@
 project:
   type: book
+  output-dir: ../_book
   preview: 
       port: 4000
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
 
 book:
   title: "Characteristic Study Of Selected Fast Radio Bursts (FRB) Transients"
   author: "Murthadza Aznam"
   # TODO To be changed when published
-  date: '2022-07-14'
+  date: now
   chapters:
     - index.qmd
     - literature.qmd
@@ -15,9 +22,3 @@ book:
     - references.qmd
 
 bibliography: references.bib
-
-format:
-  html:
-    theme: cosmo
-  pdf:
-    documentclass: scrreprt
