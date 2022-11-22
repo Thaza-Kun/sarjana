@@ -3,8 +3,8 @@
     "listing": "/index.html",
     "items": [
       "/notebooks/03-filter-repeaters.html",
-      "/notebooks/02-UMAP-HDBSCAN.html",
       "/notebooks/04-UMAP-HDBSCAN-reduced-params.html",
+      "/notebooks/02-UMAP-HDBSCAN.html",
       "/notebooks/01-get-data.html"
     ]
   }
