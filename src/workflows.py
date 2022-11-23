@@ -53,7 +53,7 @@ def compare_with_chen2021(
     return data
 
 
-def replicate_chen2021_UMAP_HDBSCAN(
+def replicate_chen2021(
     min_cluster_size: int = 19,
     seed: int = 42,
     filename_prefix: str = "replicate_chen2021",
@@ -190,7 +190,7 @@ def UMAP_HDBSCAN_FRBSTATS(
     return data
 
 
-def UMAP_HDBSCAN_model_independent(
+def replicate_chen2021_model_independent(
     min_cluster_size: int = 19,
     seed: int = 42,
     filename_prefix: str = "replicate_chen2021_model_independent_params",
