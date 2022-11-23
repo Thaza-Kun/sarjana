@@ -7,3 +7,4 @@ if __name__ == "__main__":
     workflows.UMAP_HDBSCAN_no_model_dependent_params(
         min_cluster_size=cluster_size, seed=seed
     )
+    workflows.UMAP_HDBSCAN_FRBSTATS(min_cluster_size=cluster_size, seed=seed)

@@ -64,7 +64,7 @@ def reduce_dimension_to_2(
     Args:
         sample (pd.DataFrame): Dataset to be reduced
         params (List[str]): List of columns to be reduced
-        drop_na (Optional[List[str]], optional): List of columns to drop na values. Defaults to None.
+        drop_na (Optional[List[str]], optional): List of columns to drop na values. If None, will use the whole params list. Defaults to None.
         test (Optional[pd.DataFrame], optional): Test dataset. Defaults to None.
         technique (str, optional): Algorithms for dimensional reduction (Currently only supports UMAP). Defaults to "UMAP".
         seed (int, optional): Seed for reproducibility. Defaults to 42.
@@ -88,21 +88,23 @@ def reduce_dimension_to_2(
         )
     else:
         raise NotImplementedError
+    drop_na = params if drop_na is None else drop_na
     sample = sample.dropna(subset=drop_na)
+    test = test.dropna(subset=drop_na)
     map = model.fit(sample[params])
-    sample["x"] = map.embedding_[:, 0]
-    sample["y"] = map.embedding_[:, 1]
+    sample.loc[:, ["x"]] = map.embedding_[:, 0]
+    sample.loc[:, ["y"]] = map.embedding_[:, 1]
     data = sample
 
     if test is not None:
         test_map = map.transform(test[params])
-        test["x"] = test_map[:, 0]
-        test["y"] = test_map[:, 1]
+        test.loc[:, ["x"]] = test_map[:, 0]
+        test.loc[:, ["y"]] = test_map[:, 1]
         sample["label"] = [
             "repeater (train)" if name == "repeater" else name
             for name in sample["label"]
         ]
-        test["label"] = "repeater (test)"
+        test.loc[:, ["label"]] = "repeater (test)"
         data: pd.DataFrame = pd.concat([sample, test]).sort_values(by=["label"])
     return data
 
@@ -126,10 +128,10 @@ def run_hdbscan(
     """
     logging.info(f"Running HDBSCAN with minimum cluster size {min_cluster_size}")
     model_ = HDBSCAN(min_cluster_size)
-    data["cluster"] = model_.fit_predict(data[columns])
+    data.loc[:, ["cluster"]] = model_.fit_predict(data[columns])
     logging.info(f"HDBSCAN detected {data['cluster'].value_counts().shape[0]} clusters")
     data = data.sort_values(by="cluster", ascending=True)
-    data["cluster"] = data["cluster"].astype(str)
+    data.loc[:, ["cluster"]] = data["cluster"].astype(str)
     cluster = data.groupby("cluster").aggregate("mean", numeric_only=True)
     cluster["group"] = [
         "repeater_cluster" if row > threshold else "other_cluster"

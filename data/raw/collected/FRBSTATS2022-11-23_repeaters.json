@@ -1,0 +1,738 @@
+[
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150517A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150517B"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602B"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602C"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602D"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602E"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602F"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602G"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20150602H"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151018A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151113A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151119A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151119B"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151119C"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151119D"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20151208A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20160823A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20170826A"
+    },
+    {
+        "name":"FRB 20121102A",
+        "samples":"FRB 20181119D"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20180911C"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20180917A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20180919A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20181028A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20181118C"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20181120C"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190224F"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190329A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190517B"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190611A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190625E"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190626A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20190817A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20191029A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20191107A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20191111A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20200224A"
+    },
+    {
+        "name":"FRB 20180814A",
+        "samples":"FRB 20200302A"
+    },
+    {
+        "name":"FRB 20180908A",
+        "samples":"FRB 20180908B"
+    },
+    {
+        "name":"FRB 20180908A",
+        "samples":"FRB 20190621A"
+    },
+    {
+        "name":"FRB 20180908A",
+        "samples":"FRB 20190702A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181019A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181104A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181120A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181120B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181222A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181223A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181225A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20181226A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190126A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190518A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190518E"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190519A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190519B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190519C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190603A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190604B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190604F"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190605A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190605B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190619E"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190619F"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190619G"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190619H"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190809A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190810B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190825A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190825B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20190825C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191030A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191030B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191115A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191218A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191219C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191219D"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191219A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191219B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20191219E"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200120A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200120B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200120C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200120D"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200203A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200204B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200204C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200204D"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200204E"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200219A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200220A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200220B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200220C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200220D"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200323A"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200323B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200324B"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200324C"
+    },
+    {
+        "name":"FRB 20180916B",
+        "samples":"FRB 20200423A"
+    },
+    {
+        "name":"FRB 20200120E",
+        "samples":"FRB 20200718A"
+    },
+    {
+        "name":"FRB 20200120E",
+        "samples":"FRB 20201129A"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20181030B"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122A"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122B"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122C"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122D"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122E"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122F"
+    },
+    {
+        "name":"FRB 20181030A",
+        "samples":"FRB 20200122G"
+    },
+    {
+        "name":"FRB 20181104B",
+        "samples":"FRB 20200221A"
+    },
+    {
+        "name":"FRB 20181119A",
+        "samples":"FRB 20191202A"
+    },
+    {
+        "name":"FRB 20181128A",
+        "samples":"FRB 20181219A"
+    },
+    {
+        "name":"FRB 20181128A",
+        "samples":"FRB 20190302B"
+    },
+    {
+        "name":"FRB 20181128A",
+        "samples":"FRB 20190527B"
+    },
+    {
+        "name":"FRB 20190103A",
+        "samples":"FRB 20190313A"
+    },
+    {
+        "name":"FRB 20190103A",
+        "samples":"FRB 20190926A"
+    },
+    {
+        "name":"FRB 20190103A",
+        "samples":"FRB 20191205A"
+    },
+    {
+        "name":"FRB 20190117A",
+        "samples":"FRB 20190630A"
+    },
+    {
+        "name":"FRB 20190117A",
+        "samples":"FRB 20190810A"
+    },
+    {
+        "name":"FRB 20190117A",
+        "samples":"FRB 20190815A"
+    },
+    {
+        "name":"FRB 20190117A",
+        "samples":"FRB 20190824A"
+    },
+    {
+        "name":"FRB 20190117A",
+        "samples":"FRB 20191223A"
+    },
+    {
+        "name":"FRB 20190208A",
+        "samples":"FRB 20190406A"
+    },
+    {
+        "name":"FRB 20190208A",
+        "samples":"FRB 20200124A"
+    },
+    {
+        "name":"FRB 20190208A",
+        "samples":"FRB 20200314A"
+    },
+    {
+        "name":"FRB 20190116A",
+        "samples":"FRB 20190116B"
+    },
+    {
+        "name":"FRB 20190116A",
+        "samples":"FRB 20190116B"
+    },
+    {
+        "name":"FRB 20190209A",
+        "samples":"FRB 20190210A"
+    },
+    {
+        "name":"FRB 20190212A",
+        "samples":"FRB 20190213B"
+    },
+    {
+        "name":"FRB 20190212A",
+        "samples":"FRB 20190516A"
+    },
+    {
+        "name":"FRB 20190212A",
+        "samples":"FRB 20191217A"
+    },
+    {
+        "name":"FRB 20190212A",
+        "samples":"FRB 20191220A"
+    },
+    {
+        "name":"FRB 20190213A",
+        "samples":"FRB 20190515C"
+    },
+    {
+        "name":"FRB 20181017A",
+        "samples":"FRB 20190216A"
+    },
+    {
+        "name":"FRB 20190222A",
+        "samples":"FRB 20190301A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20190421A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20190702B"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191013A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191020A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191029B"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191110A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191113A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191116A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191117A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191215A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20191231A"
+    },
+    {
+        "name":"FRB 20190303A",
+        "samples":"FRB 20200112A"
+    },
+    {
+        "name":"FRB 20190417A",
+        "samples":"FRB 20190806A"
+    },
+    {
+        "name":"FRB 20190417A",
+        "samples":"FRB 20190929A"
+    },
+    {
+        "name":"FRB 20190417A",
+        "samples":"FRB 20200124B"
+    },
+    {
+        "name":"FRB 20190711A",
+        "samples":"FRB 20190804A"
+    },
+    {
+        "name":"FRB 20190604A",
+        "samples":"FRB 20190606A"
+    },
+    {
+        "name":"FRB 20190907A",
+        "samples":"FRB 20190915A"
+    },
+    {
+        "name":"FRB 20190907A",
+        "samples":"FRB 20190925A"
+    },
+    {
+        "name":"FRB 20190907A",
+        "samples":"FRB 20200307A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20201124B"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20201210A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20201216A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210220A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210301A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210321A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210322A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210323A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210326A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210327A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210327B"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210327C"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210328A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210401A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210401B"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210402A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210403A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210403B"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210404B"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210404C"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210405C"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210405D"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210405E"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210405F"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210405G"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210405H"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210407A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210407B"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210407C"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210415A"
+    },
+    {
+        "name":"FRB 20201124A",
+        "samples":"FRB 20210518A"
+    }
+]

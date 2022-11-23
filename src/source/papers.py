@@ -8,6 +8,16 @@ from astropy.time import Time
 from paths import external_data_path
 
 
+def load_FRBSTATS(source: str = "FRBSTATS2022-11-23_population.csv") -> pd.DataFrame:
+    return pd.read_csv(Path(external_data_path, source))
+
+
+def load_FRBSTATS_repeaters(
+    source: str = "FRBSTATS2022-11-23_repeaters.csv",
+) -> pd.DataFrame:
+    return pd.read_csv(Path(external_data_path, source))
+
+
 def load_hashimoto2022(
     source: str = "Hashimoto2022_chimefrbcat1.csv",
     interval: Optional[Tuple[str, str]] = None,
