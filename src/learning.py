@@ -7,7 +7,10 @@ import umap
 from hdbscan import HDBSCAN
 from sklearn.model_selection import train_test_split
 
+from utils import logdata
 
+
+@logdata()
 def separate_repeater_and_non_repeater(
     data: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -27,6 +30,7 @@ def separate_repeater_and_non_repeater(
     return repeating, non_repeating
 
 
+@logdata()
 def train_test_split_subset(
     subsample: pd.DataFrame,
     sidesample: Optional[pd.DataFrame] = None,
@@ -50,6 +54,7 @@ def train_test_split_subset(
     return train, test
 
 
+@logdata(msg="Dimension reduced.", properties=["shape", "columns"])
 def reduce_dimension_to_2(
     sample: pd.DataFrame,
     params: List[str],
@@ -100,7 +105,7 @@ def reduce_dimension_to_2(
         test_map = map.transform(test[params])
         test.loc[:, ["x"]] = test_map[:, 0]
         test.loc[:, ["y"]] = test_map[:, 1]
-        sample["label"] = [
+        sample.loc[:, ["label"]] = [
             "repeater (train)" if name == "repeater" else name
             for name in sample["label"]
         ]
@@ -109,6 +114,7 @@ def reduce_dimension_to_2(
     return data
 
 
+@logdata(msg="HDBSCAN Complete.", properties=["shape", "columns"])
 def run_hdbscan(
     data: pd.DataFrame,
     columns: List[str],

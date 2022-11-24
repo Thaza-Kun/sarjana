@@ -2,13 +2,13 @@ import logging
 from pathlib import Path
 from typing import List, Optional
 
-import seaborn as sns
+import numpy as np
 import pandas as pd
+import seaborn as sns
 
 from paths import graph_path, collected_data_path
 from source.papers import (
     load_FRBSTATS,
-    load_FRBSTATS_repeaters,
     load_chen2021,
     load_hashimoto2022,
 )
@@ -18,6 +18,7 @@ from learning import (
     separate_repeater_and_non_repeater,
     train_test_split_subset,
 )
+from utils import Mpc_to_cm, luminosity_distance_at_z
 
 
 def get_chen2021_repeater_candidates(
@@ -58,7 +59,6 @@ def replicate_chen2021(
     seed: int = 42,
     filename_prefix: str = "replicate_chen2021",
 ) -> pd.DataFrame:
-    logging.basicConfig(level=logging.INFO)
     logging.info(
         'Replicating Chen et. al. (2021) "Uncloaking hidden repeating fast radio bursts with unsupervised machine learning" doi:10.1093/mnras/stab2994'
     )
@@ -85,7 +85,6 @@ def replicate_chen2021(
         source="Hashimoto2022_chimefrbcat1.csv",
         interval=("2018-07-25", "2019-07-01"),
     )
-    logging.debug(f"Data loaded. Shape: {data.shape}. Columns: {data.columns}")
     repeating, non_repeating = separate_repeater_and_non_repeater(data=data)
     sample, test = train_test_split_subset(
         subsample=repeating, sidesample=non_repeating
@@ -98,10 +97,6 @@ def replicate_chen2021(
         technique="UMAP",
         seed=seed,
     )
-    data = pd.concat([data, test])
-    logging.debug(
-        f"Data dimension reduced. Shape: {data.shape}. Columns: {data.columns}"
-    )
     postfix: str = f"(mcs={min_cluster_size}_seed={seed})"
     sns.relplot(data=data, x="x", y="y", hue="label").savefig(
         Path(graph_path, f"{filename_prefix}_UMAP_{postfix}.png")
@@ -110,7 +105,6 @@ def replicate_chen2021(
     data = run_hdbscan(
         data=data, columns=["x", "y"], min_cluster_size=min_cluster_size, threshold=0.1
     )
-    logging.debug(f"HDBSCAN Complete. Shape: {data.shape}. Columns: {data.columns}")
     sns.relplot(data=data, x="x", y="y", hue="group").savefig(
         Path(
             graph_path,
@@ -128,7 +122,6 @@ def UMAP_HDBSCAN_FRBSTATS(
     params: Optional[List] = None,
     filename_prefix: str = "FRBSTATS",
 ) -> pd.DataFrame:
-    logging.basicConfig(level=logging.INFO)
     if params is None:
         params = ["frequency", "dm", "flux", "width", "fluence", "redshift"]
     logging.info(
@@ -137,20 +130,37 @@ def UMAP_HDBSCAN_FRBSTATS(
         )
     )
     postfix: str = f"(mcs={min_cluster_size}_seed={seed})"
-    data: pd.DataFrame = load_FRBSTATS().replace("-", None)
-    logging.debug(f"Data loaded. Shape: {data.shape}. Columns: {data.columns}")
-    # Labeling repeaters
-    rptrs: pd.DataFrame = load_FRBSTATS_repeaters()
-    data["label"] = [
-        "repeater"
-        if name in [*rptrs["name"].to_list(), *rptrs["samples"].to_list()]
-        else "non-repeater"
-        for name in data["frb"]
-    ]
-    data["repeater"] = [
-        False if name == "non-repeater" else True for name in data["label"]
-    ]
-    # -
+    data: pd.DataFrame = (
+        load_FRBSTATS()
+        .dropna(axis=0, subset=params)
+        .astype({key: float for key in params})
+    )
+    data.loc[:, ["energy"]] = np.log10(
+        1e-23
+        * data["frequency"]
+        * 1e6
+        * data["fluence"]
+        / 1000
+        * (4 * np.pi * (luminosity_distance_at_z(data["redshift"]) * Mpc_to_cm) ** 2)
+        / (1 + data["redshift"])
+    )
+    data.loc[:, ["rest_frequency"]] = data["frequency"] * (1 + data["redshift"])
+    data.loc[:, ["brightness_temperature"]] = np.log10(
+        1.1e35
+        * data["flux"]
+        * (data["width"] * 1000) ** (-2)
+        * (data["frequency"] / 1000) ** (-2)
+        * (luminosity_distance_at_z(data["redshift"]) / 1000) ** 2
+        / (1 + data["redshift"])
+    )
+    params.extend(
+        [
+            "energy",
+            "rest_frequency",
+            "brightness_temperature",
+        ]
+    )
+
     repeating, non_repeating = separate_repeater_and_non_repeater(data=data)
     sample, test = train_test_split_subset(
         subsample=repeating, sidesample=non_repeating, test_size=0.1
@@ -163,10 +173,6 @@ def UMAP_HDBSCAN_FRBSTATS(
         technique="UMAP",
         seed=seed,
     )
-    data = pd.concat([data, test])
-    logging.debug(
-        f"Data dimension reduced. Shape: {data.shape}. Columns: {data.columns}"
-    )
     sns.relplot(data=data, x="x", y="y", hue="label").savefig(
         Path(graph_path, f"{filename_prefix}_UMAP_{postfix}.png")
     )
@@ -174,7 +180,6 @@ def UMAP_HDBSCAN_FRBSTATS(
     data = run_hdbscan(
         data=data, columns=["x", "y"], min_cluster_size=min_cluster_size, threshold=0.1
     )
-    logging.debug(f"HDBSCAN Complete. Shape: {data.shape}. Columns: {data.columns}")
     sns.relplot(data=data, x="x", y="y", hue="cluster").savefig(
         Path(
             graph_path,
@@ -195,7 +200,6 @@ def replicate_chen2021_model_independent(
     seed: int = 42,
     filename_prefix: str = "replicate_chen2021_model_independent_params",
 ) -> pd.DataFrame:
-    logging.basicConfig(level=logging.INFO)
     logging.info(
         """Replicating Chen et. al. (2021) "Uncloaking hidden repeating fast radio bursts with unsupervised machine learning" doi:10.1093/mnras/stab2994. With no model dependent parameters.
         """
@@ -219,7 +223,6 @@ def replicate_chen2021_model_independent(
     data = load_hashimoto2022(
         source="Hashimoto2022_chimefrbcat1.csv",
     )
-    logging.debug(f"Data loaded. Shape: {data.shape}. Columns: {data.columns}")
     repeating, non_repeating = separate_repeater_and_non_repeater(data=data)
     sample, test = train_test_split_subset(
         subsample=repeating, sidesample=non_repeating
@@ -232,10 +235,6 @@ def replicate_chen2021_model_independent(
         technique="UMAP",
         seed=seed,
     )
-    data = pd.concat([data, test])
-    logging.debug(
-        f"Data dimension reduced. Shape: {data.shape}. Columns: {data.columns}"
-    )
     sns.relplot(data=data, x="x", y="y", hue="label").savefig(
         Path(graph_path, f"{filename_prefix}_UMAP_{postfix}.png")
     )
@@ -243,7 +242,6 @@ def replicate_chen2021_model_independent(
     data = run_hdbscan(
         data=data, columns=["x", "y"], min_cluster_size=min_cluster_size, threshold=0.1
     )
-    logging.debug(f"HDBSCAN Complete. Shape: {data.shape}. Columns: {data.columns}")
     sns.relplot(data=data, x="x", y="y", hue="group").savefig(
         Path(
             graph_path,
