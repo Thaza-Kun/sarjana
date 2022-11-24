@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Murthadza Aznam">
+<meta name="dcterms.date" content="2022-11-23">
 
-<title>Masters Project – filter-repeaters</title>
+<title>Masters Project - Parameter calculation of available data</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -126,6 +128,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
+<meta property="og:title" content="Masters Project - Parameter calculation of available data">
+<meta property="og:description" content="Data is obtained from [FRBSTATS](https://www.herta-experiment.org/frbstats/)">
+<meta property="og:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/jupyter-python.jpg">
+<meta property="og:site-name" content="Masters Project">
+<meta name="twitter:title" content="Masters Project - Parameter calculation of available data">
+<meta name="twitter:description" content="Data is obtained from [FRBSTATS](https://www.herta-experiment.org/frbstats/)">
+<meta name="twitter:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/jupyter-python.jpg">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -155,24 +165,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Parameter calculation of available data</h1>
+            <p class="subtitle lead">Data is obtained from <a href="https://www.herta-experiment.org/frbstats/">FRBSTATS</a></p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Murthadza Aznam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 23, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#getting-the-data" id="toc-getting-the-data" class="nav-link active" data-scroll-target="#getting-the-data">0. Getting The Data</a>
+  <ul class="collapse">
+  <li><a href="#source" id="toc-source" class="nav-link" data-scroll-target="#source">0.1 Source</a></li>
+  </ul></li>
+  <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">1. Parameters</a>
+  <ul class="collapse">
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">1.1</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hashimoto: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/Hashimoto2022_chimefrbcat1.csv'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>hashimoto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<section id="getting-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="getting-the-data">0. Getting The Data</h2>
+<section id="source" class="level3">
+<h3 class="anchored" data-anchor-id="source">0.1 Source</h3>
+<p>This notebook uses data from <a href="https://www.herta-experiment.org/frbstats/">FRBSTATS</a></p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>datapath <span class="op">=</span> Path(<span class="st">'..'</span>, <span class="st">'data'</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>external_datapath <span class="op">=</span> Path(datapath, <span class="st">'raw'</span>, <span class="st">'external'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>catalog: pd.DataFrame <span class="op">=</span> pd.read_csv(Path(external_datapath, <span class="st">'FRBSTATS2022-11-23_population.csv'</span>))</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>catalog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="5">
 
 <div>
 
@@ -180,149 +243,143 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <thead>
     <tr>
       <th></th>
-      <th>tns_name</th>
-      <th>previous_name</th>
-      <th>repeater_name</th>
+      <th>frb</th>
+      <th>utc</th>
+      <th>mjd</th>
+      <th>telescope</th>
       <th>ra</th>
-      <th>ra_err</th>
-      <th>ra_notes</th>
       <th>dec</th>
-      <th>dec_err</th>
-      <th>dec_notes</th>
-      <th>gl</th>
-      <th>...</th>
-      <th>weight_fluence_error_m</th>
-      <th>weight</th>
-      <th>weight_error_p</th>
-      <th>weight_error_m</th>
-      <th>weighted_logrhoA</th>
-      <th>weighted_logrhoA_error_p</th>
-      <th>weighted_logrhoA_error_m</th>
-      <th>weighted_logrhoB</th>
-      <th>weighted_logrhoB_error_p</th>
-      <th>weighted_logrhoB_error_m</th>
+      <th>l</th>
+      <th>b</th>
+      <th>frequency</th>
+      <th>dm</th>
+      <th>flux</th>
+      <th>width</th>
+      <th>fluence</th>
+      <th>snr</th>
+      <th>reference</th>
+      <th>redshift</th>
+      <th>redshift_measured</th>
+      <th>ra_error</th>
+      <th>dec_error</th>
+      <th>dm_error</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>FRB20180725A</td>
-      <td>180725.J0613+67</td>
-      <td>-9999</td>
-      <td>93.42</td>
-      <td>0.04</td>
-      <td>-9999</td>
-      <td>67.10</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>147.29</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>FRB 19910730A</td>
+      <td>1991-07-30 22:24:58</td>
+      <td>48467.93400</td>
+      <td>Parkes</td>
+      <td>07:06:45.900</td>
+      <td>-43:33:00.00</td>
+      <td>254.23</td>
+      <td>-15.73</td>
+      <td>430.0</td>
+      <td>591.4</td>
+      <td>0.77</td>
+      <td>113.4</td>
+      <td>87</td>
+      <td>23</td>
+      <td>https://www.wis-tns.org/object/19910730a</td>
+      <td>0.3674</td>
+      <td>-</td>
+      <td>7</td>
+      <td>7</td>
+      <td>-</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>FRB20180727A</td>
-      <td>180727.J1311+26</td>
-      <td>-9999</td>
-      <td>197.70</td>
-      <td>0.10</td>
-      <td>-9999</td>
-      <td>26.40</td>
-      <td>0.30</td>
-      <td>-9999</td>
-      <td>24.76</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>FRB 19920428A</td>
+      <td>1992-04-28 18:14:24</td>
+      <td>48740.76000</td>
+      <td>Parkes</td>
+      <td>17:08:60.000</td>
+      <td>-15:36:00.00</td>
+      <td>6.64</td>
+      <td>14.35</td>
+      <td>430.0</td>
+      <td>276.3</td>
+      <td>0.36</td>
+      <td>51.6</td>
+      <td>18</td>
+      <td>7.2</td>
+      <td>https://www.wis-tns.org/object/19920428a</td>
+      <td>0.1782</td>
+      <td>-</td>
+      <td>7</td>
+      <td>7</td>
+      <td>-</td>
     </tr>
     <tr>
       <th>2</th>
-      <td>FRB20180729A</td>
-      <td>180729.J1316+55</td>
-      <td>-9999</td>
-      <td>199.40</td>
-      <td>0.10</td>
-      <td>-9999</td>
-      <td>55.58</td>
-      <td>0.08</td>
-      <td>-9999</td>
-      <td>115.26</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>FRB 19920913A</td>
+      <td>1992-09-13 0:51:50</td>
+      <td>48878.03600</td>
+      <td>Parkes</td>
+      <td>15:03:00.000</td>
+      <td>-05:12:00.00</td>
+      <td>352.43</td>
+      <td>44.66</td>
+      <td>430.0</td>
+      <td>3337.9</td>
+      <td>0.23</td>
+      <td>157</td>
+      <td>37</td>
+      <td>8.2</td>
+      <td>https://www.wis-tns.org/object/19920913a</td>
+      <td>2.8319</td>
+      <td>-</td>
+      <td>7</td>
+      <td>7</td>
+      <td>-</td>
     </tr>
     <tr>
       <th>3</th>
-      <td>FRB20180729B</td>
-      <td>180729.J0558+56</td>
-      <td>-9999</td>
-      <td>89.90</td>
-      <td>0.30</td>
-      <td>-9999</td>
-      <td>56.50</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>156.90</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>FRB 19921212A</td>
+      <td>1992-12-12 6:10:05</td>
+      <td>48968.25700</td>
+      <td>Parkes</td>
+      <td>21:46:15.000</td>
+      <td>-07:46:60.00</td>
+      <td>47.91</td>
+      <td>-42.14</td>
+      <td>430.0</td>
+      <td>838.9</td>
+      <td>0.62</td>
+      <td>201</td>
+      <td>126</td>
+      <td>24.9</td>
+      <td>https://www.wis-tns.org/object/19921212a</td>
+      <td>0.7945</td>
+      <td>-</td>
+      <td>7</td>
+      <td>7</td>
+      <td>-</td>
     </tr>
     <tr>
       <th>4</th>
-      <td>FRB20180730A</td>
-      <td>180730.J0353+87</td>
-      <td>-9999</td>
-      <td>57.39</td>
-      <td>0.03</td>
-      <td>-9999</td>
-      <td>87.20</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>125.11</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>FRB 20010125A</td>
+      <td>2001-01-25 0:29:16</td>
+      <td>51934.02032</td>
+      <td>Parkes</td>
+      <td>19:06:53.000</td>
+      <td>-40:37:14.00</td>
+      <td>356.64</td>
+      <td>-20.02</td>
+      <td>1372.5</td>
+      <td>790.3</td>
+      <td>0.54</td>
+      <td>10.6</td>
+      <td>5.72</td>
+      <td>25</td>
+      <td>https://www.wis-tns.org/object/20010125a</td>
+      <td>0.7083</td>
+      <td>-</td>
+      <td>7.5</td>
+      <td>7.5</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>...</th>
@@ -346,157 +403,148 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <td>...</td>
       <td>...</td>
       <td>...</td>
-      <td>...</td>
     </tr>
     <tr>
-      <th>594</th>
-      <td>FRB20190701A</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>277.50</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>59.00</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>88.29</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>814</th>
+      <td>FRB 20220501C</td>
+      <td>2022-05-01 2:11:09</td>
+      <td>59700.09108</td>
+      <td>ASKAP</td>
+      <td>23:29:50.000</td>
+      <td>-32:27:00.00</td>
+      <td>11.26</td>
+      <td>-71.55</td>
+      <td>863.5</td>
+      <td>449.5</td>
+      <td>-</td>
+      <td>-</td>
+      <td>30</td>
+      <td>16.1</td>
+      <td>https://www.wis-tns.org/object/20220501c</td>
+      <td>0.4558</td>
+      <td>-</td>
+      <td>3</td>
+      <td>3</td>
+      <td>0.2</td>
     </tr>
     <tr>
-      <th>595</th>
-      <td>FRB20190701B</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>302.90</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>80.20</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>112.88</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>815</th>
+      <td>FRB 20220610A</td>
+      <td>2022-06-10 22:26:43</td>
+      <td>59740.93522</td>
+      <td>ASKAP</td>
+      <td>23:23:60.000</td>
+      <td>-33:31:00.00</td>
+      <td>8.87</td>
+      <td>-70.13</td>
+      <td>1271.5</td>
+      <td>1458.1</td>
+      <td>-</td>
+      <td>5.6</td>
+      <td>43</td>
+      <td>29.8</td>
+      <td>https://www.wis-tns.org/object/20220610a</td>
+      <td>1.3836</td>
+      <td>-</td>
+      <td>3</td>
+      <td>3</td>
+      <td>0.2</td>
     </tr>
     <tr>
-      <th>596</th>
-      <td>FRB20190701C</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>96.40</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>81.60</td>
-      <td>0.30</td>
-      <td>-9999</td>
-      <td>132.18</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>816</th>
+      <td>FRB 20220725A</td>
+      <td>2022-07-25 21:54:53</td>
+      <td>59785.91311</td>
+      <td>ASKAP</td>
+      <td>22:26:60.000</td>
+      <td>+34:52:60.00</td>
+      <td>92.14</td>
+      <td>-19.21</td>
+      <td>919.5</td>
+      <td>290.4</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>12.7</td>
+      <td>https://www.wis-tns.org/object/20220725a</td>
+      <td>0.2591</td>
+      <td>-</td>
+      <td>50</td>
+      <td>80</td>
+      <td>0.3</td>
     </tr>
     <tr>
-      <th>597</th>
-      <td>FRB20190701D</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>112.10</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>66.70</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>149.28</td>
-      <td>...</td>
-      <td>0.000649</td>
-      <td>1.361506</td>
-      <td>0.574701</td>
-      <td>0.206776</td>
-      <td>0.813142</td>
-      <td>0.485293</td>
-      <td>0.109293</td>
-      <td>0.894742</td>
-      <td>0.25519</td>
-      <td>0.19035</td>
+      <th>817</th>
+      <td>FRB 20220918A</td>
+      <td>2022-09-18 17:33:34</td>
+      <td>59840.73164</td>
+      <td>ASKAP</td>
+      <td>01:10:57.900</td>
+      <td>-70:47:05.90</td>
+      <td>300.61</td>
+      <td>-46.26</td>
+      <td>1271.5</td>
+      <td>656.8</td>
+      <td>-</td>
+      <td>-</td>
+      <td>55</td>
+      <td>26.4</td>
+      <td>https://www.wis-tns.org/object/20220918a</td>
+      <td>0.6313</td>
+      <td>-</td>
+      <td>8</td>
+      <td>8</td>
+      <td>0.4</td>
     </tr>
     <tr>
-      <th>598</th>
-      <td>FRB20190701E</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>138.60</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>61.71</td>
-      <td>0.04</td>
-      <td>-9999</td>
-      <td>153.27</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>818</th>
+      <td>FRB 20221106A</td>
+      <td>2022-11-06 21:27:33</td>
+      <td>59889.89413</td>
+      <td>ASKAP_Incoherent</td>
+      <td>03:46:38.100</td>
+      <td>-25:39:44.90</td>
+      <td>221.03</td>
+      <td>-50.94</td>
+      <td>1631.5</td>
+      <td>343.8</td>
+      <td>-</td>
+      <td>-</td>
+      <td>80</td>
+      <td>35.1</td>
+      <td>https://www.wis-tns.org/object/20221106a</td>
+      <td>0.3393</td>
+      <td>-</td>
+      <td>11</td>
+      <td>11</td>
+      <td>0.8</td>
     </tr>
   </tbody>
 </table>
-<p>599 rows × 107 columns</p>
+<p>819 rows × 20 columns</p>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> hashimoto.groupby(<span class="st">'repeater_name'</span>).groups</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data.pop(<span class="st">'-9999'</span>) <span class="co"># Removes non repeaters</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>repeaters <span class="op">=</span> pd.DataFrame({<span class="st">'name'</span>: data.keys(), <span class="st">'sample_id'</span>:data.values()})</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>repeaters <span class="op">=</span> repeaters.explode([<span class="st">'sample_id'</span>])</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> hashimoto.reset_index()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>rp <span class="op">=</span> repeaters.merge(df[[<span class="st">'index'</span>,<span class="st">'tns_name'</span>]], right_on<span class="op">=</span><span class="st">'index'</span>, left_on<span class="op">=</span><span class="st">'sample_id'</span>)<span class="co">#.rename(columns={'tns_name': 'samples'})[['name', 'samples']]</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>rp.groupby(<span class="st">'name'</span>).tns_name.aggregate(<span class="bu">list</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>rptes <span class="op">=</span> rp.groupby(<span class="st">'name'</span>).tns_name.aggregate(<span class="bu">list</span>).items()</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>rptrs <span class="op">=</span> pd.DataFrame(rptes, columns<span class="op">=</span>[<span class="st">'name'</span>, <span class="st">'samples'</span>])</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>rptrs[<span class="st">'source'</span>] <span class="op">=</span> <span class="st">'Hashimoto2022'</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>rptrs.to_json(<span class="st">'../data/raw/collected/repeaters.json'</span>, orient<span class="op">=</span><span class="st">'records'</span>, indent<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="parameters" class="level2">
+<h2 class="anchored" data-anchor-id="parameters">1. Parameters</h2>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section">1.1</h3>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rptrs <span class="op">=</span> pd.read_csv(Path(external_datapath, <span class="st">"FRBSTATS2022-11-23_repeaters.csv"</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'labels'</span>] <span class="op">=</span> [<span class="st">'repeater'</span> <span class="cf">if</span> name <span class="kw">in</span> [<span class="op">*</span>rptrs[<span class="st">'name'</span>].to_list(), <span class="op">*</span>rptrs[<span class="st">'samples'</span>].to_list()] <span class="cf">else</span> <span class="st">'non-repeater'</span> <span class="cf">for</span> name <span class="kw">in</span> catalog[<span class="st">'frb'</span>]]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'labels'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>non-repeater    612
+repeater        207
+Name: labels, dtype: int64</code></pre>
 </div>
-<div class="cell" data-execution_count="80">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert FRBSTATS Repeaters list into our JSON</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_json(<span class="st">'../data/raw/external/FRBSTAT2022-11-23_repeaters.json'</span>)[<span class="st">'children'</span>].explode()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame.from_records([<span class="op">*</span>df])</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>children <span class="op">=</span> df[<span class="st">'children'</span>].explode().reset_index().groupby(<span class="st">'index'</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="st">'children'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.get(<span class="st">'name'</span>)))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.reset_index().merge(children, on<span class="op">=</span><span class="st">'index'</span>).rename(columns<span class="op">=</span>{<span class="st">'children_y'</span>: <span class="st">'samples'</span>})[[<span class="st">'name'</span>, <span class="st">'samples'</span>]]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df.to_json(<span class="st">'../data/raw/collected/FRBSTATS2022-11-23_repeaters.json'</span>, orient<span class="op">=</span><span class="st">'records'</span>, indent<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
