@@ -9,7 +9,7 @@
 <meta name="author" content="Murthadza Aznam">
 <meta name="dcterms.date" content="2022-11-15">
 
-<title>Masters Project - Reproducing Chen et. al.&nbsp;(2021)’s unsupervised machine learning with Reduced Parameters</title>
+<title>Masters Project - UMAP-HDBSCAN Reduced Parameters</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,12 +128,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
-<meta property="og:title" content="Masters Project - Reproducing Chen et. al.&nbsp;(2021)’s unsupervised machine learning with Reduced Parameters">
-<meta property="og:description" content="Using UMAP to reduce dimensions and HDBSCAN to cluster datapoints">
+<meta property="og:title" content="Masters Project - UMAP-HDBSCAN Reduced Parameters">
+<meta property="og:description" content="What if there available parameters are not as verbose?">
 <meta property="og:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/jupyter-python.jpg">
 <meta property="og:site-name" content="Masters Project">
-<meta name="twitter:title" content="Masters Project - Reproducing Chen et. al.&nbsp;(2021)’s unsupervised machine learning with Reduced Parameters">
-<meta name="twitter:description" content="Using UMAP to reduce dimensions and HDBSCAN to cluster datapoints">
+<meta name="twitter:title" content="Masters Project - UMAP-HDBSCAN Reduced Parameters">
+<meta name="twitter:description" content="What if there available parameters are not as verbose?">
 <meta name="twitter:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/jupyter-python.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -168,8 +168,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Reproducing Chen et. al.&nbsp;(2021)’s unsupervised machine learning with Reduced Parameters</h1>
-            <p class="subtitle lead">Using UMAP to reduce dimensions and HDBSCAN to cluster datapoints</p>
+      <h1 class="title">UMAP-HDBSCAN Reduced Parameters</h1>
+            <p class="subtitle lead">What if there available parameters are not as verbose?</p>
                       </div>
   </div>
     
@@ -243,10 +243,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>📌 Goal: This notebook tries to reproduce the results from <a href="https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract">https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract</a>. As stated in the paper, verbatim</p>
-<blockquote class="blockquote">
-<p>Our goal is to <strong>map several observational and model-dependent parameters of each FRB to a 2D embedding plane</strong> by training the UMAP algorithm on the features of the training samples in CHIME/FRB dataset <strong>and finally identify possibly misclassified non-repeating FRBs</strong> which in fact have latent features of repeating FRBs. We define these possibly misclassified non-repeating FRBs as FRB repeater candidates in our paper.</p>
-</blockquote>
+<p>📌 Goal: This notebook tries to reproduce the results from <a href="https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract">https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract</a> with reduced parameters.</p>
 </div>
 </div>
 <div class="cell" data-execution_count="1">
