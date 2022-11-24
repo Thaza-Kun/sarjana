@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Murthadza Aznam">
-<meta name="dcterms.date" content="2022-11-23">
+<meta name="dcterms.date" content="2022-11-24">
 
 <title>Masters Project - Parameter calculation of available data</title>
 <style>
@@ -123,10 +123,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta property="og:title" content="Masters Project - Parameter calculation of available data">
 <meta property="og:description" content="Data is obtained from [FRBSTATS](https://www.herta-experiment.org/frbstats/)">
@@ -186,7 +184,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 23, 2022</p>
+        <p class="date">November 24, 2022</p>
       </div>
     </div>
     
@@ -208,8 +206,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#parameters" id="toc-parameters" class="nav-link" data-scroll-target="#parameters">1. Parameters</a>
   <ul class="collapse">
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">1.1</a></li>
+  <li><a href="#brightness-temperature" id="toc-brightness-temperature" class="nav-link" data-scroll-target="#brightness-temperature">1.1 Brightness Temperature</a></li>
   </ul></li>
+  <li><a href="#redshift-corrected-frequency" id="toc-redshift-corrected-frequency" class="nav-link" data-scroll-target="#redshift-corrected-frequency">1.2 Redshift Corrected Frequency</a></li>
+  <li><a href="#energy" id="toc-energy" class="nav-link" data-scroll-target="#energy">1.3 Energy</a></li>
   </ul>
 </nav>
     </div>
@@ -219,331 +219,154 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>📌 Goal: This notebook tries to calculate some missing parameters from FRBSTATS using methods described in <a href="https://doi.org/10.1093/mnras/stac3206">Jia-Wei Luo (2022)</a></p>
+</div>
+</div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="getting-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="getting-the-data">0. Getting The Data</h2>
 <section id="source" class="level3">
 <h3 class="anchored" data-anchor-id="source">0.1 Source</h3>
 <p>This notebook uses data from <a href="https://www.herta-experiment.org/frbstats/">FRBSTATS</a></p>
-<div class="cell" data-execution_count="4">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>datapath <span class="op">=</span> Path(<span class="st">'..'</span>, <span class="st">'data'</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>external_datapath <span class="op">=</span> Path(datapath, <span class="st">'raw'</span>, <span class="st">'external'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>catalog: pd.DataFrame <span class="op">=</span> pd.read_csv(Path(external_datapath, <span class="st">'FRBSTATS2022-11-23_population.csv'</span>))</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>catalog</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="5">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>frb</th>
-      <th>utc</th>
-      <th>mjd</th>
-      <th>telescope</th>
-      <th>ra</th>
-      <th>dec</th>
-      <th>l</th>
-      <th>b</th>
-      <th>frequency</th>
-      <th>dm</th>
-      <th>flux</th>
-      <th>width</th>
-      <th>fluence</th>
-      <th>snr</th>
-      <th>reference</th>
-      <th>redshift</th>
-      <th>redshift_measured</th>
-      <th>ra_error</th>
-      <th>dec_error</th>
-      <th>dm_error</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>FRB 19910730A</td>
-      <td>1991-07-30 22:24:58</td>
-      <td>48467.93400</td>
-      <td>Parkes</td>
-      <td>07:06:45.900</td>
-      <td>-43:33:00.00</td>
-      <td>254.23</td>
-      <td>-15.73</td>
-      <td>430.0</td>
-      <td>591.4</td>
-      <td>0.77</td>
-      <td>113.4</td>
-      <td>87</td>
-      <td>23</td>
-      <td>https://www.wis-tns.org/object/19910730a</td>
-      <td>0.3674</td>
-      <td>-</td>
-      <td>7</td>
-      <td>7</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>FRB 19920428A</td>
-      <td>1992-04-28 18:14:24</td>
-      <td>48740.76000</td>
-      <td>Parkes</td>
-      <td>17:08:60.000</td>
-      <td>-15:36:00.00</td>
-      <td>6.64</td>
-      <td>14.35</td>
-      <td>430.0</td>
-      <td>276.3</td>
-      <td>0.36</td>
-      <td>51.6</td>
-      <td>18</td>
-      <td>7.2</td>
-      <td>https://www.wis-tns.org/object/19920428a</td>
-      <td>0.1782</td>
-      <td>-</td>
-      <td>7</td>
-      <td>7</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>FRB 19920913A</td>
-      <td>1992-09-13 0:51:50</td>
-      <td>48878.03600</td>
-      <td>Parkes</td>
-      <td>15:03:00.000</td>
-      <td>-05:12:00.00</td>
-      <td>352.43</td>
-      <td>44.66</td>
-      <td>430.0</td>
-      <td>3337.9</td>
-      <td>0.23</td>
-      <td>157</td>
-      <td>37</td>
-      <td>8.2</td>
-      <td>https://www.wis-tns.org/object/19920913a</td>
-      <td>2.8319</td>
-      <td>-</td>
-      <td>7</td>
-      <td>7</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FRB 19921212A</td>
-      <td>1992-12-12 6:10:05</td>
-      <td>48968.25700</td>
-      <td>Parkes</td>
-      <td>21:46:15.000</td>
-      <td>-07:46:60.00</td>
-      <td>47.91</td>
-      <td>-42.14</td>
-      <td>430.0</td>
-      <td>838.9</td>
-      <td>0.62</td>
-      <td>201</td>
-      <td>126</td>
-      <td>24.9</td>
-      <td>https://www.wis-tns.org/object/19921212a</td>
-      <td>0.7945</td>
-      <td>-</td>
-      <td>7</td>
-      <td>7</td>
-      <td>-</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>FRB 20010125A</td>
-      <td>2001-01-25 0:29:16</td>
-      <td>51934.02032</td>
-      <td>Parkes</td>
-      <td>19:06:53.000</td>
-      <td>-40:37:14.00</td>
-      <td>356.64</td>
-      <td>-20.02</td>
-      <td>1372.5</td>
-      <td>790.3</td>
-      <td>0.54</td>
-      <td>10.6</td>
-      <td>5.72</td>
-      <td>25</td>
-      <td>https://www.wis-tns.org/object/20010125a</td>
-      <td>0.7083</td>
-      <td>-</td>
-      <td>7.5</td>
-      <td>7.5</td>
-      <td>3</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>814</th>
-      <td>FRB 20220501C</td>
-      <td>2022-05-01 2:11:09</td>
-      <td>59700.09108</td>
-      <td>ASKAP</td>
-      <td>23:29:50.000</td>
-      <td>-32:27:00.00</td>
-      <td>11.26</td>
-      <td>-71.55</td>
-      <td>863.5</td>
-      <td>449.5</td>
-      <td>-</td>
-      <td>-</td>
-      <td>30</td>
-      <td>16.1</td>
-      <td>https://www.wis-tns.org/object/20220501c</td>
-      <td>0.4558</td>
-      <td>-</td>
-      <td>3</td>
-      <td>3</td>
-      <td>0.2</td>
-    </tr>
-    <tr>
-      <th>815</th>
-      <td>FRB 20220610A</td>
-      <td>2022-06-10 22:26:43</td>
-      <td>59740.93522</td>
-      <td>ASKAP</td>
-      <td>23:23:60.000</td>
-      <td>-33:31:00.00</td>
-      <td>8.87</td>
-      <td>-70.13</td>
-      <td>1271.5</td>
-      <td>1458.1</td>
-      <td>-</td>
-      <td>5.6</td>
-      <td>43</td>
-      <td>29.8</td>
-      <td>https://www.wis-tns.org/object/20220610a</td>
-      <td>1.3836</td>
-      <td>-</td>
-      <td>3</td>
-      <td>3</td>
-      <td>0.2</td>
-    </tr>
-    <tr>
-      <th>816</th>
-      <td>FRB 20220725A</td>
-      <td>2022-07-25 21:54:53</td>
-      <td>59785.91311</td>
-      <td>ASKAP</td>
-      <td>22:26:60.000</td>
-      <td>+34:52:60.00</td>
-      <td>92.14</td>
-      <td>-19.21</td>
-      <td>919.5</td>
-      <td>290.4</td>
-      <td>-</td>
-      <td>-</td>
-      <td>-</td>
-      <td>12.7</td>
-      <td>https://www.wis-tns.org/object/20220725a</td>
-      <td>0.2591</td>
-      <td>-</td>
-      <td>50</td>
-      <td>80</td>
-      <td>0.3</td>
-    </tr>
-    <tr>
-      <th>817</th>
-      <td>FRB 20220918A</td>
-      <td>2022-09-18 17:33:34</td>
-      <td>59840.73164</td>
-      <td>ASKAP</td>
-      <td>01:10:57.900</td>
-      <td>-70:47:05.90</td>
-      <td>300.61</td>
-      <td>-46.26</td>
-      <td>1271.5</td>
-      <td>656.8</td>
-      <td>-</td>
-      <td>-</td>
-      <td>55</td>
-      <td>26.4</td>
-      <td>https://www.wis-tns.org/object/20220918a</td>
-      <td>0.6313</td>
-      <td>-</td>
-      <td>8</td>
-      <td>8</td>
-      <td>0.4</td>
-    </tr>
-    <tr>
-      <th>818</th>
-      <td>FRB 20221106A</td>
-      <td>2022-11-06 21:27:33</td>
-      <td>59889.89413</td>
-      <td>ASKAP_Incoherent</td>
-      <td>03:46:38.100</td>
-      <td>-25:39:44.90</td>
-      <td>221.03</td>
-      <td>-50.94</td>
-      <td>1631.5</td>
-      <td>343.8</td>
-      <td>-</td>
-      <td>-</td>
-      <td>80</td>
-      <td>35.1</td>
-      <td>https://www.wis-tns.org/object/20221106a</td>
-      <td>0.3393</td>
-      <td>-</td>
-      <td>11</td>
-      <td>11</td>
-      <td>0.8</td>
-    </tr>
-  </tbody>
-</table>
-<p>819 rows × 20 columns</p>
-</div>
+<div class="cell" data-execution_count="46">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>catalog: pd.DataFrame <span class="op">=</span> pd.read_csv(Path(external_datapath, <span class="st">"FRBSTATS2022-11-23_population.csv"</span>)).replace(<span class="st">"-"</span>, <span class="va">None</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Labeling repeaters</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>rptrs: pd.DataFrame <span class="op">=</span> pd.read_csv(Path(external_datapath, <span class="st">"FRBSTATS2022-11-23_repeaters.csv"</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">"label"</span>] <span class="op">=</span> [</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"repeater"</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> name <span class="kw">in</span> [<span class="op">*</span>rptrs[<span class="st">"name"</span>].to_list(), <span class="op">*</span>rptrs[<span class="st">"samples"</span>].to_list()]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span> <span class="st">"non-repeater"</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name <span class="kw">in</span> catalog[<span class="st">"frb"</span>]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">"repeater"</span>] <span class="op">=</span> [</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="va">False</span> <span class="cf">if</span> name <span class="op">==</span> <span class="st">"non-repeater"</span> <span class="cf">else</span> <span class="va">True</span> <span class="cf">for</span> name <span class="kw">in</span> catalog[<span class="st">"label"</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> catalog.dropna(axis<span class="op">=</span><span class="dv">0</span>, subset<span class="op">=</span>[<span class="st">'flux'</span>, <span class="st">'fluence'</span>, <span class="st">'redshift'</span>, <span class="st">'frequency'</span>]).astype({<span class="st">'flux'</span>: <span class="bu">float</span>, <span class="st">'fluence'</span>: <span class="bu">float</span>, <span class="st">'width'</span>: <span class="bu">float</span>, <span class="st">'redshift'</span>: <span class="bu">float</span>})</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>catalog.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Int64Index: 636 entries, 0 to 813
+Data columns (total 22 columns):
+ #   Column             Non-Null Count  Dtype  
+---  ------             --------------  -----  
+ 0   frb                636 non-null    object 
+ 1   utc                636 non-null    object 
+ 2   mjd                636 non-null    float64
+ 3   telescope          636 non-null    object 
+ 4   ra                 636 non-null    object 
+ 5   dec                636 non-null    object 
+ 6   l                  636 non-null    float64
+ 7   b                  636 non-null    float64
+ 8   frequency          636 non-null    float64
+ 9   dm                 636 non-null    float64
+ 10  flux               636 non-null    float64
+ 11  width              634 non-null    float64
+ 12  fluence            636 non-null    float64
+ 13  snr                634 non-null    object 
+ 14  reference          636 non-null    object 
+ 15  redshift           636 non-null    float64
+ 16  redshift_measured  16 non-null     object 
+ 17  ra_error           587 non-null    object 
+ 18  dec_error          587 non-null    object 
+ 19  dm_error           628 non-null    object 
+ 20  label              636 non-null    object 
+ 21  repeater           636 non-null    bool   
+dtypes: bool(1), float64(9), object(12)
+memory usage: 109.9+ KB</code></pre>
 </div>
 </div>
 </section>
 </section>
 <section id="parameters" class="level2">
 <h2 class="anchored" data-anchor-id="parameters">1. Parameters</h2>
-<section id="section" class="level3">
-<h3 class="anchored" data-anchor-id="section">1.1</h3>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>rptrs <span class="op">=</span> pd.read_csv(Path(external_datapath, <span class="st">"FRBSTATS2022-11-23_repeaters.csv"</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'labels'</span>] <span class="op">=</span> [<span class="st">'repeater'</span> <span class="cf">if</span> name <span class="kw">in</span> [<span class="op">*</span>rptrs[<span class="st">'name'</span>].to_list(), <span class="op">*</span>rptrs[<span class="st">'samples'</span>].to_list()] <span class="cf">else</span> <span class="st">'non-repeater'</span> <span class="cf">for</span> name <span class="kw">in</span> catalog[<span class="st">'frb'</span>]]</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'labels'</span>].value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>non-repeater    612
-repeater        207
-Name: labels, dtype: int64</code></pre>
+<section id="brightness-temperature" class="level3">
+<h3 class="anchored" data-anchor-id="brightness-temperature">1.1 Brightness Temperature</h3>
+<p><span id="eq-brightness-temp"><span class="math display">\[
+    T_B = \frac{S_\nu D_L^2}{2\pi k_B (\nu\Delta t)^2(1+z)}
+\tag{1}\]</span></span> where: - <span class="math inline">\(S_\nu\)</span> = peak specific flux, in Jy - <span class="math inline">\(D_L\)</span> = luminosity distance, in Gpc - <span class="math inline">\(\Delta t\)</span> = burst duration, in ms - <span class="math inline">\(\nu\)</span> = central frequency, in GHz - <span class="math inline">\(k_B\)</span> = Boltzmann constant - <span class="math inline">\(z\)</span> = redshift</p>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>H_0 <span class="op">=</span> <span class="fl">67.4</span><span class="op">*</span><span class="dv">1000</span><span class="op">*</span><span class="dv">100</span>  <span class="co"># cm s^-1 Mpc^-1</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="dv">29979245800</span> <span class="co"># cm s^-1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Mpc_to_cm <span class="op">=</span> <span class="fl">3.085677581491367E24</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Gyr_to_s <span class="op">=</span> <span class="fl">3.15576E16</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>Hubble_time <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>(H_0 <span class="op">/</span> Mpc_to_cm <span class="op">*</span> Gyr_to_s)  <span class="co"># Gyr</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>Hubble_distance <span class="op">=</span> c<span class="op">/</span>H_0  <span class="co"># Mpc</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Omega_b <span class="op">=</span> <span class="fl">0.0224</span><span class="op">/</span>((H_0)<span class="op">/</span><span class="dv">1000</span><span class="op">/</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>)<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Omega_m <span class="op">=</span> <span class="fl">0.315</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>Omega_Lambda <span class="op">=</span> <span class="fl">0.685</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>f_IGM <span class="op">=</span> <span class="fl">0.83</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>chi <span class="op">=</span> <span class="dv">7</span><span class="op">/</span><span class="dv">8</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> <span class="fl">6.6743e-8</span> <span class="co"># cm^3 g^-1 s^-2</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>m_p <span class="op">=</span> <span class="fl">1.67262192e-24</span> <span class="co"># g</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>dm_factor <span class="op">=</span> <span class="dv">3</span><span class="op">*</span>c<span class="op">*</span>H_0<span class="op">/</span>(Mpc_to_cm)<span class="op">**</span><span class="dv">2</span><span class="op">*</span><span class="fl">1e6</span><span class="op">*</span>Omega_b<span class="op">*</span>f_IGM<span class="op">*</span>chi<span class="op">/</span>(<span class="dv">8</span><span class="op">*</span>np.pi<span class="op">*</span>G<span class="op">*</span>m_p)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>DM_host_lab <span class="op">=</span> <span class="fl">70.0</span> <span class="co"># pc cm^-3</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>DM_halo <span class="op">=</span> <span class="fl">30.0</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> comoving_distance_at_z(z): <span class="co"># Mpc</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    zp1 <span class="op">=</span> <span class="fl">1.0</span><span class="op">+</span>z</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    h0_up <span class="op">=</span> np.sqrt(<span class="dv">1</span><span class="op">+</span>Omega_m<span class="op">/</span>Omega_Lambda) <span class="op">*</span> scipy.special.hyp2f1(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">4</span><span class="op">/</span><span class="dv">3</span>,<span class="op">-</span>Omega_m<span class="op">/</span>Omega_Lambda)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    hz_up <span class="op">=</span> zp1 <span class="op">*</span> np.sqrt(<span class="dv">1</span><span class="op">+</span>Omega_m<span class="op">*</span>zp1<span class="op">**</span><span class="dv">3</span><span class="op">/</span>Omega_Lambda) <span class="op">*</span> scipy.special.hyp2f1(<span class="dv">1</span><span class="op">/</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">/</span><span class="dv">2</span>,<span class="dv">4</span><span class="op">/</span><span class="dv">3</span>,<span class="op">-</span>Omega_m<span class="op">*</span>zp1<span class="op">**</span><span class="dv">3</span><span class="op">/</span>Omega_Lambda)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    h0_down <span class="op">=</span> np.sqrt(Omega_Lambda <span class="op">+</span> Omega_m)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    hz_down <span class="op">=</span> np.sqrt(Omega_Lambda <span class="op">+</span> Omega_m <span class="op">*</span> zp1<span class="op">**</span><span class="dv">3</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Hubble_distance <span class="op">*</span> (hz_up<span class="op">/</span>hz_down<span class="op">-</span>h0_up<span class="op">/</span>h0_down)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> luminosity_distance_at_z(z): <span class="co"># Mpc</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">1.</span> <span class="op">+</span> z) <span class="op">*</span> comoving_distance_at_z(z)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="co"># ? I am not sure why it is log_10 of the value when there is none in formula?</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   Maybe need to do some pen and paper.</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'brightness_temperature'</span>] <span class="op">=</span> np.log10(<span class="fl">1.1e35</span> </span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>                            <span class="op">*</span> catalog[<span class="st">'flux'</span>] </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>                            <span class="op">*</span> (catalog[<span class="st">'width'</span>]<span class="op">*</span><span class="dv">1000</span>)<span class="op">**</span>(<span class="op">-</span><span class="dv">2</span>) </span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>                            <span class="op">*</span> (catalog[<span class="st">'frequency'</span>]<span class="op">/</span><span class="dv">1000</span>)<span class="op">**</span>(<span class="op">-</span><span class="dv">2</span>) </span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>                            <span class="op">*</span> (luminosity_distance_at_z(catalog[<span class="st">'redshift'</span>])<span class="op">/</span><span class="dv">1000</span>)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">1</span><span class="op">+</span>catalog[<span class="st">'redshift'</span>])</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>                        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-
-
 </section>
+</section>
+<section id="redshift-corrected-frequency" class="level2">
+<h2 class="anchored" data-anchor-id="redshift-corrected-frequency">1.2 Redshift Corrected Frequency</h2>
+<p>A redshift is calculated using: <span class="math display">\[
+    1 + z = \frac{f_\text{emit}}{f_\text{obs}}
+\]</span> therefore, the emission frequency is: <span class="math display">\[
+    f_\text{emit} = f_\text{obs}(1 + z)
+\]</span> where we take the observed frequency to be the peak frequency.</p>
+<div class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'rest_frequency'</span>] <span class="op">=</span> catalog[<span class="st">'frequency'</span>] <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> catalog[<span class="st">'redshift'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="energy" class="level2">
+<h2 class="anchored" data-anchor-id="energy">1.3 Energy</h2>
+<p><span id="eq-burst-energy"><span class="math display">\[
+    E = 4\pi \frac{D_L^2 F \nu_c}{1-z}
+\tag{2}\]</span></span> where: - <span class="math inline">\(E\)</span> = energy, in erg - <span class="math inline">\(F\)</span> = fluence, in Jy ms - <span class="math inline">\(\nu_c\)</span> = peak frequence, in MHz</p>
+<div class="cell" data-execution_count="77">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> Check units of all these calculations</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'energy'</span>] <span class="op">=</span> <span class="fl">1e-23</span> <span class="op">*</span> catalog[<span class="st">'frequency'</span>] <span class="op">*</span> <span class="fl">1e6</span> <span class="op">*</span> catalog[<span class="st">'fluence'</span>] <span class="op">/</span> <span class="dv">1000</span> <span class="op">*</span> (<span class="dv">4</span><span class="op">*</span>np.pi<span class="op">*</span>(luminosity_distance_at_z(catalog[<span class="st">'redshift'</span>])<span class="op">*</span>Mpc_to_cm)<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (<span class="dv">1</span><span class="op">+</span>catalog[<span class="st">'redshift'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
 </section>
 
 </main> <!-- /main -->
