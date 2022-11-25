@@ -7,27 +7,22 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from src.paths import graph_path
-from src.source.papers import (
+from sarjana.utils.paths import graph_path
+from sarjana.source.papers import (
     load_FRBSTATS,
     load_hashimoto2022,
 )
-from src.learning import (
+from sarjana.learning import (
     reduce_dimension_to_2,
     run_hdbscan,
-    separate_repeater_and_non_repeater,
-    train_test_split_subset,
 )
-from src.utils import (
-    Mpc_to_cm,
-    luminosity_distance_at_z,
-    logflow,
-    WorkflowMetadata,
-    WorkflowResult,
-    flowlogger,
-)
+from sarjana.learning.preprocessors import separate_repeater_and_non_repeater, train_test_split_subset
+from sarjana.data.constants import Mpc_to_cm, luminosity_distance_at_z
+from sarjana.utils.types import WorkflowMetadata, WorkflowResult
+from sarjana.utils.logger import logflow
+from sarjana.workflows import flowlogger
 
-from src.workflows.replications import compare_with_chen2021
+from sarjana.workflows.replications import compare_with_chen2021
 
 
 @logflow(

@@ -7,10 +7,16 @@ import pandas as pd
 import seaborn as sns
 from sklearn.metrics import fbeta_score
 
-from src.learning import separate_repeater_and_non_repeater, train_test_split_subset, reduce_dimension_to_2, run_hdbscan
-from src.paths import collected_data_path, graph_path
-from src.source.papers import load_chen2021, load_hashimoto2022
-from src.utils import logflow, WorkflowResult, WorkflowMetadata
+from sarjana.data.collections import load_chen2021, load_hashimoto2022
+from sarjana.learning import (
+    reduce_dimension_to_2,
+    run_hdbscan,
+)
+from sarjana.learning.preprocessors import separate_repeater_and_non_repeater, train_test_split_subset
+from sarjana.utils.paths import collected_datapath, graph_path
+from sarjana.utils.types import WorkflowMetadata, WorkflowResult
+from sarjana.utils.logger import logflow
+
 
 def get_chen2021_repeater_candidates(
     filename: Optional[str] = "chen2021_candidates",
@@ -21,7 +27,7 @@ def get_chen2021_repeater_candidates(
         True if "repeater" in item else False for item in data["group"]
     ]
     data = data[data["candidate"] == True][["tns_name", "cluster"]]
-    data.to_csv(Path(collected_data_path, f"{filename}.csv"), index=False)
+    data.to_csv(Path(collected_datapath, f"{filename}.csv"), index=False)
     return data
 
 
@@ -33,8 +39,13 @@ def compare_with_chen2021(
     )
     chen_2021["group"] = chen_2021["group"].apply(lambda x: x[:-2])
     data["source"] = "this work"
-    score_this = data.merge(chen_2021, on='tns_name')
-    score = fbeta_score(score_this['group_y'], score_this['group_x'], beta=2, pos_label='repeater_cluster')
+    score_this = data.merge(chen_2021, on="tns_name")
+    score = fbeta_score(
+        score_this["group_y"],
+        score_this["group_x"],
+        beta=2,
+        pos_label="repeater_cluster",
+    )
     data = pd.concat([data, chen_2021])
     logging.debug(
         f"Data concatenated with chen et. al. (2021). Shape: {data.shape}. Columns: {data.columns}"
@@ -48,14 +59,14 @@ def compare_with_chen2021(
 
 
 @logflow(
-    name='chen2021_UMAP-HDBSCAN',
-    description='Replicating Chen et. al. (2021) "Uncloaking hidden repeating fast radio bursts with unsupervised machine learning" doi:10.1093/mnras/stab2994'
+    name="chen2021_UMAP-HDBSCAN",
+    description='Replicating Chen et. al. (2021) "Uncloaking hidden repeating fast radio bursts with unsupervised machine learning" doi:10.1093/mnras/stab2994',
 )
 def bo_han_chen_2021(
     min_cluster_size: int = 19,
     seed: int = 42,
     filename_prefix: str = "replicate_chen2021",
-    **kwargs
+    **kwargs,
 ) -> WorkflowResult:
     params: List[str] = [
         # Observational
@@ -111,14 +122,11 @@ def bo_han_chen_2021(
     )
     result = WorkflowMetadata(
         parameters={
-            'columns': params,
-            'seed': seed,
-            'min_cluster_size': min_cluster_size
+            "columns": params,
+            "seed": seed,
+            "min_cluster_size": min_cluster_size,
         },
-        timestamp=datetime.now().strftime('%Y-%m-%d:%H:%M'),
-        score={
-            'value': score,
-            'metric': 'f2_score'
-        }
+        timestamp=datetime.now().strftime("%Y-%m-%d:%H:%M"),
+        score={"value": score, "metric": "f2_score"},
     )
     return data, result
