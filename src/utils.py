@@ -1,35 +1,105 @@
-from typing import Callable, List, Optional, TypeVar
+import json
+from datetime import datetime
+from pathlib import Path
+from typing import Callable, List, Optional, TypeVar, Dict, Tuple
 
 import logging
 
 import numpy as np
-import pandas as pd
 import scipy
+from pandas import DataFrame
+import pandas as pd
+from dataclasses import dataclass, asdict
 
-DataFunc = TypeVar("DataFunc", bound=Callable[..., pd.DataFrame])
+from src.paths import data_path
+
+
+@dataclass
+class ParameterRecord:
+    columns: List[str]
+    min_cluster_size: int
+    seed: int
+
+
+@dataclass
+class ScoreRecord:
+    value: float
+    metric: str
+
+
+@dataclass
+class WorkflowMetadata:
+    timestamp: datetime
+    parameters: ParameterRecord
+    score: ScoreRecord
+    name: str = ""
+
+
+WorkflowResult = TypeVar("WorkflowResult", bound=Tuple[DataFrame, WorkflowMetadata])
+DataFunc = TypeVar("DataFunc", bound=Callable[..., DataFrame])
+FlowFunc = TypeVar("FlowFunc", bound=Callable[..., WorkflowResult])
 StringOptions = TypeVar("StringOptions", bound=Optional[List[str]])
+
+formatter = logging.Formatter("%(levelname)s::%(name)s::%(message)s")
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+
+datalogger = logging.getLogger(f"{__name__}:data:")
+datalogger.addHandler(stream_handler)
+
+
+flowlogger = logging.getLogger(f"{__name__}:workflow:")
+flowlogger.addHandler(stream_handler)
 
 
 def logdata(
+    msg: str,
     properties: StringOptions = None,
     show_info: bool = False,
-    msg: str = "Data log:",
 ) -> DataFunc:
     info: List[str] = [msg]
 
     def decorator(func: DataFunc) -> DataFunc:
-        def wrapped(*args, **kwargs) -> pd.DataFrame:
-            data: pd.DataFrame = func(*args, **kwargs)
+        def wrapper(*args, **kwargs) -> DataFrame:
+            data: DataFrame = func(*args, **kwargs)
             if properties:
                 info.extend(
                     [f"{prop.title()}: {getattr(data, prop)}" for prop in properties]
                 )
             if show_info:
                 info.append("\n{}".format(data.info(verbose=True, null_counts=True)))
-            logging.info(" ".join(info))
+            datalogger.debug(" ".join(info))
             return data
 
-        return wrapped
+        return wrapper
+
+    return decorator
+
+
+def logresult(result: WorkflowMetadata) -> None:
+    workflow_logfile = Path(data_path, "workflow_log.json")
+    with open(workflow_logfile, "r") as f:
+        logs = json.load(f)
+    logs.append(asdict(result))
+    with open(workflow_logfile, "w") as f:
+        json.dump(logs, f, indent=4)
+
+
+def logflow(name: str, description: Optional[str] = None) -> FlowFunc:
+    def decorator(func: FlowFunc) -> FlowFunc:
+        def wrapper(*args, **kwargs) -> WorkflowResult:
+            pd.options.mode.chained_assignment = None
+            flowlogger.info("Running {}:: {}".format(name, description))
+            debug = kwargs.get("debug", False)
+            if debug:
+                datalogger.setLevel(logging.DEBUG)
+                flowlogger.setLevel(logging.DEBUG)
+            data, metadata = func(*args, **kwargs)
+            metadata.name = name
+            logresult(metadata)
+            return data, metadata
+
+        return wrapper
 
     return decorator
 

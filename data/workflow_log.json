@@ -1,0 +1,1752 @@
+[
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 2
+        },
+        "score": {
+            "value": 0.7916464303059738,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 3
+        },
+        "score": {
+            "value": 0.7712765957446808,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 4
+        },
+        "score": {
+            "value": 0.8337361043982601,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 5
+        },
+        "score": {
+            "value": 0.8790944123314065,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 6
+        },
+        "score": {
+            "value": 0.8527131782945736,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 7
+        },
+        "score": {
+            "value": 0.879786718371304,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 8
+        },
+        "score": {
+            "value": 0.8679706601466993,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 9
+        },
+        "score": {
+            "value": 0.8893762183235868,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 10
+        },
+        "score": {
+            "value": 0.9600367478180982,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 11
+        },
+        "score": {
+            "value": 0.9104186952288218,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 12
+        },
+        "score": {
+            "value": 0.9682687820811944,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 13
+        },
+        "score": {
+            "value": 0.949667616334283,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 14
+        },
+        "score": {
+            "value": 0.9324386857936142,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 15
+        },
+        "score": {
+            "value": 0.9745762711864407,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 16
+        },
+        "score": {
+            "value": 0.9732645403377111,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 17
+        },
+        "score": {
+            "value": 0.965583173996176,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 18
+        },
+        "score": {
+            "value": 0.8868243243243242,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9504320145520692,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 20
+        },
+        "score": {
+            "value": 0.9792354884379424,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 21
+        },
+        "score": {
+            "value": 0.9504320145520692,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 22
+        },
+        "score": {
+            "value": 0.974056603773585,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:49",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 23
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 24
+        },
+        "score": {
+            "value": 0.9380610412926391,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 25
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 26
+        },
+        "score": {
+            "value": 0.9417889256980596,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 27
+        },
+        "score": {
+            "value": 0.9362370902559497,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 28
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 29
+        },
+        "score": {
+            "value": 0.9380610412926391,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 30
+        },
+        "score": {
+            "value": 0.9380610412926391,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 31
+        },
+        "score": {
+            "value": 0.944846292947559,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 32
+        },
+        "score": {
+            "value": 0.9330035971223021,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 33
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 34
+        },
+        "score": {
+            "value": 0.8764607679465776,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 35
+        },
+        "score": {
+            "value": 0.956959706959707,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 36
+        },
+        "score": {
+            "value": 0.9422903516681694,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 37
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 38
+        },
+        "score": {
+            "value": 0.9168987929433613,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 39
+        },
+        "score": {
+            "value": 0.9291835814163284,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 40
+        },
+        "score": {
+            "value": 0.931417979610751,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 41
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 42
+        },
+        "score": {
+            "value": 0.9516202647193062,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 43
+        },
+        "score": {
+            "value": 0.8853288364249579,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 44
+        },
+        "score": {
+            "value": 0.9504320145520692,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 45
+        },
+        "score": {
+            "value": 0.9063373718546133,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 46
+        },
+        "score": {
+            "value": 0.9103576405016257,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 47
+        },
+        "score": {
+            "value": 0.8984374999999999,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 48
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:12:51",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 49
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-11/25/22:13:04",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9604779411764706,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:13:08",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9737212576255279,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:19",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9820160908660672,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:19",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:25",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.8845829823083403,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:25",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:27",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9631336405529954,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:27",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5307262569832402,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:35",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9504320145520692,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:35",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5064308681672026,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:38",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.8760951188986232,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:39",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5140961857379768,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:40",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9478458049886622,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:40",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:46",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9815515610217597,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:46",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5055292259083729,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:57",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9770664118490207,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-11-25:15:57",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.45918367346938777,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    }
+]

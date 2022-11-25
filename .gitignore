@@ -1,6 +1,7 @@
 .venv
 *.pyc
 .vscode
+.idea
 
 */luojiawei2022/*
 

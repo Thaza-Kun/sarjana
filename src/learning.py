@@ -1,16 +1,13 @@
 import logging
 from typing import List, Optional, Tuple
 
-import pandas as pd
-
-import umap
 from hdbscan import HDBSCAN
 from sklearn.model_selection import train_test_split
-
+import pandas as pd
 from utils import logdata
 
 
-@logdata()
+@logdata("Separating repeaters and non-repeaters.", show_info=True)
 def separate_repeater_and_non_repeater(
     data: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -30,7 +27,7 @@ def separate_repeater_and_non_repeater(
     return repeating, non_repeating
 
 
-@logdata()
+@logdata("Splitting training and testing data.", show_info=True)
 def train_test_split_subset(
     subsample: pd.DataFrame,
     sidesample: Optional[pd.DataFrame] = None,
@@ -54,7 +51,7 @@ def train_test_split_subset(
     return train, test
 
 
-@logdata(msg="Dimension reduced.", properties=["shape", "columns"])
+@logdata("Dimension reduced.", properties=["shape"], show_info=True)
 def reduce_dimension_to_2(
     sample: pd.DataFrame,
     params: List[str],
@@ -83,6 +80,8 @@ def reduce_dimension_to_2(
     logging.info(f"Reducing dimension using '{technique.lower()}'")
     final_dimension = 2
     if technique.lower() == "umap":
+        import umap
+
         n_neighbors = kwargs.pop("n_neighbors", 8)
         min_dist = kwargs.pop("min_dist", 0.1)
         model: umap.UMAP = umap.UMAP(
@@ -114,7 +113,7 @@ def reduce_dimension_to_2(
     return data
 
 
-@logdata(msg="HDBSCAN Complete.", properties=["shape", "columns"])
+@logdata("HDBSCAN Complete.", properties=["shape"], show_info=True)
 def run_hdbscan(
     data: pd.DataFrame,
     columns: List[str],
