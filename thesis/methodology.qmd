@@ -2,7 +2,6 @@
 ## Data Source
 <!-- TODO Beautify -->
 Listed below are open data on FRBs released by their respective telescopes that might be helpful for the research:
-Telescope	Server	Data
 
 - CHIME/FRB
     * Server: CANFAR
@@ -44,6 +43,12 @@ This study can be divided roughly into four phases and is expected to be 2 years
 2.	Selection of FRBs. Phase 2 is the selection phase where several FRBs with interesting properties will be chosen. The selection phase includes the gathering of observation data on the selected FRB.
 3.	Feature study. Phase 3 will study the chosen FRBs for features that contribute to the interesting properties mentioned in phase 2. This is expected to be longest of the four phases.
 4.	Thesis writing and defence.
+
+:::{.figure}
+
+![](../_assets/gantt-chart.png)
+
+:::
 
 <!-- TODO Gantt Chart Here refer https://mermaid-js.github.io/mermaid/#/gantt -->
 <!-- ? DO we have to? -->

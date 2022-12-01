@@ -3,6 +3,8 @@ project:
   output-dir: ../_book
   preview: 
       port: 4000
+  pre-render: 
+    - python ./scripts/gantt.py
 
 format:
   html:
@@ -14,7 +16,7 @@ book:
   title: "Characteristic Study Of Selected Fast Radio Bursts (FRB) Transients"
   author: "Murthadza Aznam"
   # TODO To be changed when published
-  date: now
+  date: '2022-07-15'
   chapters:
     - index.qmd
     - literature.qmd

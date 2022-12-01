@@ -13,63 +13,7 @@ title-block-banner: true
 
 ## Plan
 
-:::{.panel-tabset}
-
-```{python}
-#| echo: false
-import plotly.express as px
-import pandas as pd
-from datetime import datetime
-
-```
-
-## Minimum
-```{python}
-#| echo: false
-#| fig-width: 100% 
-
-semesters=2
-df = pd.read_csv(f'./data/meta/schedule-{semesters}sem.csv')
-
-fig = px.timeline(df, x_start='start', x_end='end', y='description', color='phase', title=f'Gantt chart for {semesters} semesters (Minimum)')
-fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
-
-today = datetime.now()
-fig.update_layout(shapes=[
-    dict(
-      type='line',
-      yref='paper', y0=0, y1=1,
-      xref='x', x0=today, x1=today
-    )
-])
-
-fig.show()
-```
-
-## GOT
-
-```{python}
-#| echo: false
-
-semesters=4
-df = pd.read_csv(f'./data/meta/schedule-{semesters}sem.csv')
-
-fig = px.timeline(df, x_start='start', x_end='end', y='description', color='phase', title=f'Gantt chart for {semesters} semesters (Graduate on Time)')
-fig.update_yaxes(autorange="reversed") # otherwise tasks are listed from the bottom up
-
-today = datetime.now()
-fig.update_layout(shapes=[
-    dict(
-      type='line',
-      yref='paper', y0=0, y1=1,
-      xref='x', x0=today, x1=today
-    )
-])
-
-fig.show()
-```
-:::
-
+![](./_assets/gantt-chart.png)
 
 ## Notebooks
 
