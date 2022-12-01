@@ -6,7 +6,7 @@ import pandas as pd
 from astropy.time import Time
 
 from sarjana.utils.paths import collected_datapath, external_datapath
-from sarjana.utils.logger import logdata
+from sarjana.loggers.logger import logdata
 
 
 def load_repeater_candidates() -> pd.DataFrame:

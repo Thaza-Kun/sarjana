@@ -1748,5 +1748,155 @@
             "metric": "f2_score"
         },
         "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:12:48",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9604779411764706,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:12:48",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5317164179104478,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:12:50",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9504320145520692,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:12:50",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5400372439478583,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:12:52",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.914661824784385,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:12:52",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.4568527918781726,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
     }
 ]

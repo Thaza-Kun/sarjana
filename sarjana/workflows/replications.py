@@ -12,10 +12,13 @@ from sarjana.learning import (
     reduce_dimension_to_2,
     run_hdbscan,
 )
-from sarjana.learning.preprocessors import separate_repeater_and_non_repeater, train_test_split_subset
+from sarjana.learning.preprocessors import (
+    separate_repeater_and_non_repeater,
+    train_test_split_subset,
+)
 from sarjana.utils.paths import collected_datapath, graph_path
 from sarjana.utils.types import WorkflowMetadata, WorkflowResult
-from sarjana.utils.logger import logflow
+from sarjana.loggers.logger import logflow
 
 
 def get_chen2021_repeater_candidates(

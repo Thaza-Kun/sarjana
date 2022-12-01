@@ -4,7 +4,7 @@ from typing import List
 import pandas as pd
 from hdbscan import HDBSCAN
 
-from sarjana.utils.logger import logdata
+from sarjana.loggers.logger import logdata
 
 
 @logdata("HDBSCAN Complete.", properties=["shape"], show_info=True)

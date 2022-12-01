@@ -4,10 +4,10 @@ from typing import Tuple, Optional
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from sarjana.utils.logger import logdata
+from sarjana.loggers.logger import logdata
 
 
-@logdata("Separating repeaters and non-repeaters.", show_info=True)
+@logdata("Separating repeaters and non-repeaters.", show_info=False)
 def separate_repeater_and_non_repeater(
     data: pd.DataFrame,
 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -27,7 +27,7 @@ def separate_repeater_and_non_repeater(
     return repeating, non_repeating
 
 
-@logdata("Splitting training and testing data.", show_info=True)
+@logdata("Splitting training and testing data.", show_info=False)
 def train_test_split_subset(
     subsample: pd.DataFrame,
     sidesample: Optional[pd.DataFrame] = None,

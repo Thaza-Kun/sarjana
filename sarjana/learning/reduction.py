@@ -3,7 +3,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-from sarjana.utils.logger import logdata
+from sarjana.loggers.logger import logdata
 
 
 @logdata("Dimension reduced.", properties=["shape"], show_info=True)
