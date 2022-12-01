@@ -8,12 +8,13 @@
 # Processed data
 data/processed/
 data/interim/
-
+data/graphs/debug/*
 
 # Quarto generated output
 *.quarto/
 *_book/
 *_site/
+*_files/
 /.quarto/
 
 /.luarc.json
