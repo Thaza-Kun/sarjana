@@ -8,13 +8,24 @@ import pandas as pd
 from pandas import DataFrame
 
 from sarjana.data import datalogger
+from sarjana.preamble import ExecutionOptions
 from sarjana.utils.paths import datapath
-from sarjana.utils.types import WorkflowMetadata, WorkflowResult, DataFunc, FlowFunc, StringOptions
+from sarjana.utils.types import (
+    WorkflowMetadata,
+    WorkflowResult,
+    DataFunc,
+    FlowFunc,
+    StringOptions,
+)
 from sarjana.workflows import flowlogger
 
 formatter = logging.Formatter("%(levelname)s::%(name)s::%(message)s")
 stream_handler = logging.StreamHandler()
 stream_handler.setFormatter(formatter)
+
+if ExecutionOptions.Mode == "debug":
+    datalogger.setLevel(logging.DEBUG)
+    flowlogger.setLevel(logging.DEBUG)
 
 
 def logdata(

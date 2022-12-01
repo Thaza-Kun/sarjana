@@ -3,11 +3,10 @@ from workflows.experiments import UMAP_HDBSCAN_FRBSTATS
 
 import logging
 from sarjana.utils.logger import datalogger, flowlogger
-
-datalogger.setLevel(logging.DEBUG)
-flowlogger.setLevel(logging.DEBUG)
+from sarjana.preamble import ExecutionOptions
 
 if __name__ == "__main__":
+    ExecutionOptions.Mode = "debug"
     seed = 42
     size = 19
     # for size in range(2, 50):

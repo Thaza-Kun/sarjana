@@ -8,7 +8,7 @@ import pandas as pd
 import seaborn as sns
 
 from sarjana.utils.paths import graph_path
-from sarjana.source.papers import (
+from sarjana.data.collections import (
     load_FRBSTATS,
     load_hashimoto2022,
 )
@@ -17,7 +17,7 @@ from sarjana.learning import (
     run_hdbscan,
 )
 from sarjana.learning.preprocessors import separate_repeater_and_non_repeater, train_test_split_subset
-from sarjana.data.constants import Mpc_to_cm, luminosity_distance_at_z
+from sarjana.transients.constants import Mpc_to_cm, luminosity_distance_at_z
 from sarjana.utils.types import WorkflowMetadata, WorkflowResult
 from sarjana.utils.logger import logflow
 from sarjana.workflows import flowlogger
