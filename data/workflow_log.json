@@ -1898,5 +1898,1208 @@
             "metric": "f2_score"
         },
         "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:17:58",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9604779411764706,
+            "metric": "f2_score"
+        },
+        "name": "chen2021_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:17:58",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 2
+        },
+        "score": {
+            "value": 0.6735751295336788,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 3
+        },
+        "score": {
+            "value": 0.6583969465648855,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 4
+        },
+        "score": {
+            "value": 0.6238698010849909,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 5
+        },
+        "score": {
+            "value": 0.6009615384615385,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 6
+        },
+        "score": {
+            "value": 0.5887230514096187,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 7
+        },
+        "score": {
+            "value": 0.5760000000000001,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 8
+        },
+        "score": {
+            "value": 0.5514157973174366,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:00",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 9
+        },
+        "score": {
+            "value": 0.5494505494505495,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 10
+        },
+        "score": {
+            "value": 0.5546995377503852,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 11
+        },
+        "score": {
+            "value": 0.5449330783938815,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 12
+        },
+        "score": {
+            "value": 0.5545774647887324,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 13
+        },
+        "score": {
+            "value": 0.5317164179104478,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 14
+        },
+        "score": {
+            "value": 0.5407523510971787,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 15
+        },
+        "score": {
+            "value": 0.5251798561151079,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 16
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 17
+        },
+        "score": {
+            "value": 0.5023923444976076,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 18
+        },
+        "score": {
+            "value": 0.5140961857379768,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.5317164179104478,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 20
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:01",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 21
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 22
+        },
+        "score": {
+            "value": 0.5140961857379768,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 23
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 24
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 25
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 26
+        },
+        "score": {
+            "value": 0.5317164179104478,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 27
+        },
+        "score": {
+            "value": 0.537037037037037,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 28
+        },
+        "score": {
+            "value": 0.5206611570247934,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 29
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 30
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 31
+        },
+        "score": {
+            "value": 0.5323193916349811,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 32
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 33
+        },
+        "score": {
+            "value": 0.5178571428571428,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 34
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:02",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 35
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 36
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 37
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 38
+        },
+        "score": {
+            "value": 0.5212014134275618,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 39
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 40
+        },
+        "score": {
+            "value": 0.5140961857379768,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 41
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 42
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 43
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 44
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 45
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 46
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 47
+        },
+        "score": {
+            "value": 0.4261954261954262,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:03",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 48
+        },
+        "score": {
+            "value": 0.5080213903743316,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2022-12-01:18:04",
+        "parameters": {
+            "columns": [
+                "frequency",
+                "dm",
+                "flux",
+                "width",
+                "fluence",
+                "redshift",
+                "energy",
+                "rest_frequency",
+                "brightness_temperature",
+                "rest_time_width"
+            ],
+            "seed": 42,
+            "min_cluster_size": 49
+        },
+        "score": {
+            "value": 0.4301675977653631,
+            "metric": "f2_score"
+        },
+        "name": "FRBSTATS_UMAP-HDBSCAN"
     }
 ]

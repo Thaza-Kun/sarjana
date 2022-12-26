@@ -20,8 +20,12 @@ from sarjana.learning.preprocessors import (
     separate_repeater_and_non_repeater,
     train_test_split_subset,
 )
-from sarjana.transients.constants import Mpc_to_cm
-from sarjana.transients.parameters import luminosity_distance_at_z
+from sarjana.transients.parameters import (
+    brightness_temperature,
+    burst_energy,
+    rest_frequency,
+    rest_time_width,
+)
 from sarjana.utils.types import WorkflowMetadata, WorkflowResult
 from sarjana.loggers.logger import logflow
 from sarjana.loggers.workflow import flowlogger
@@ -48,30 +52,12 @@ def UMAP_HDBSCAN_FRBSTATS(
         .dropna(axis=0, subset=params)
         .astype({key: float for key in params})
     )
-    data.loc[:, ["energy"]] = np.log10(
-        1e-23
-        * data["frequency"]
-        * 1e6
-        * data["fluence"]
-        / 1000
-        * (4 * np.pi * (luminosity_distance_at_z(data["redshift"]) * Mpc_to_cm) ** 2)
-        / (1 + data["redshift"])
-    )
-    data.loc[:, ["rest_frequency"]] = data["frequency"] * (1 + data["redshift"])
-    data.loc[:, ["brightness_temperature"]] = np.log10(
-        1.1e35
-        * data["flux"]
-        * (data["width"] * 1000) ** (-2)
-        * (data["frequency"] / 1000) ** (-2)
-        * (luminosity_distance_at_z(data["redshift"]) / 1000) ** 2
-        / (1 + data["redshift"])
-    )
+    data.loc[:, ["energy"]] = np.log10(burst_energy(data))
+    data.loc[:, ["rest_frequency"]] = rest_frequency(data)
+    data.loc[:, ["brightness_temperature"]] = np.log10(brightness_temperature(data))
+    data.loc[:, ["rest_time_width"]] = rest_time_width(data)
     params.extend(
-        [
-            "energy",
-            "rest_frequency",
-            "brightness_temperature",
-        ]
+        ["energy", "rest_frequency", "brightness_temperature", "rest_time_width"]
     )
 
     repeating, non_repeating = separate_repeater_and_non_repeater(data=data)
