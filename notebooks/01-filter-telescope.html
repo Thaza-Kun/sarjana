@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Masters Project – filter-repeaters</title>
+<title>Masters Project – filter-telescope</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -167,14 +167,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 <div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> Clean this</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>hashimoto: pd.DataFrame <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/Hashimoto2022_chimefrbcat1.csv'</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>hashimoto</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="3">
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/FRBSTATS2022-11-23_population.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data.telescope.value_counts()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<pre><code>CHIME               632
+ASKAP                56
+Parkes               40
+UTMOST               17
+GBT                  15
+Arecibo              14
+LPA                  11
+WSRT/Apertif          6
+FAST                  5
+VLA                   4
+Effelsberg            4
+GMRT                  4
+SRT                   3
+MeerKAT               3
+ATA                   1
+Tianlai               1
+DSA                   1
+Stockert              1
+ASKAP_Incoherent      1
+Name: telescope, dtype: int64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data[data.frb <span class="op">==</span> <span class="st">"FRB 20201124A"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
 
 <div>
 
@@ -182,320 +207,74 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <thead>
     <tr>
       <th></th>
-      <th>tns_name</th>
-      <th>previous_name</th>
-      <th>repeater_name</th>
+      <th>frb</th>
+      <th>utc</th>
+      <th>mjd</th>
+      <th>telescope</th>
       <th>ra</th>
-      <th>ra_err</th>
-      <th>ra_notes</th>
       <th>dec</th>
-      <th>dec_err</th>
-      <th>dec_notes</th>
-      <th>gl</th>
-      <th>...</th>
-      <th>weight_fluence_error_m</th>
-      <th>weight</th>
-      <th>weight_error_p</th>
-      <th>weight_error_m</th>
-      <th>weighted_logrhoA</th>
-      <th>weighted_logrhoA_error_p</th>
-      <th>weighted_logrhoA_error_m</th>
-      <th>weighted_logrhoB</th>
-      <th>weighted_logrhoB_error_p</th>
-      <th>weighted_logrhoB_error_m</th>
+      <th>l</th>
+      <th>b</th>
+      <th>frequency</th>
+      <th>dm</th>
+      <th>flux</th>
+      <th>width</th>
+      <th>fluence</th>
+      <th>snr</th>
+      <th>reference</th>
+      <th>redshift</th>
+      <th>redshift_measured</th>
+      <th>ra_error</th>
+      <th>dec_error</th>
+      <th>dm_error</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>FRB20180725A</td>
-      <td>180725.J0613+67</td>
-      <td>-9999</td>
-      <td>93.42</td>
-      <td>0.04</td>
-      <td>-9999</td>
-      <td>67.10</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>147.29</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>FRB20180727A</td>
-      <td>180727.J1311+26</td>
-      <td>-9999</td>
-      <td>197.70</td>
-      <td>0.10</td>
-      <td>-9999</td>
-      <td>26.40</td>
-      <td>0.30</td>
-      <td>-9999</td>
-      <td>24.76</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>FRB20180729A</td>
-      <td>180729.J1316+55</td>
-      <td>-9999</td>
-      <td>199.40</td>
-      <td>0.10</td>
-      <td>-9999</td>
-      <td>55.58</td>
-      <td>0.08</td>
-      <td>-9999</td>
-      <td>115.26</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FRB20180729B</td>
-      <td>180729.J0558+56</td>
-      <td>-9999</td>
-      <td>89.90</td>
-      <td>0.30</td>
-      <td>-9999</td>
-      <td>56.50</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>156.90</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>FRB20180730A</td>
-      <td>180730.J0353+87</td>
-      <td>-9999</td>
-      <td>57.39</td>
-      <td>0.03</td>
-      <td>-9999</td>
-      <td>87.20</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>125.11</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>594</th>
-      <td>FRB20190701A</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>277.50</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>59.00</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>88.29</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>595</th>
-      <td>FRB20190701B</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>302.90</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>80.20</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>112.88</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>596</th>
-      <td>FRB20190701C</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>96.40</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>81.60</td>
-      <td>0.30</td>
-      <td>-9999</td>
-      <td>132.18</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>597</th>
-      <td>FRB20190701D</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>112.10</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>66.70</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>149.28</td>
-      <td>...</td>
-      <td>0.000649</td>
-      <td>1.361506</td>
-      <td>0.574701</td>
-      <td>0.206776</td>
-      <td>0.813142</td>
-      <td>0.485293</td>
-      <td>0.109293</td>
-      <td>0.894742</td>
-      <td>0.25519</td>
-      <td>0.19035</td>
-    </tr>
-    <tr>
-      <th>598</th>
-      <td>FRB20190701E</td>
-      <td>-9999</td>
-      <td>-9999</td>
-      <td>138.60</td>
-      <td>0.20</td>
-      <td>-9999</td>
-      <td>61.71</td>
-      <td>0.04</td>
-      <td>-9999</td>
-      <td>153.27</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <th>773</th>
+      <td>FRB 20201124A</td>
+      <td>2020-11-24 8:50:42</td>
+      <td>59177.36854</td>
+      <td>CHIME</td>
+      <td>05:07:57.600</td>
+      <td>+26:11:24.00</td>
+      <td>177.65</td>
+      <td>-8.47</td>
+      <td>600.0</td>
+      <td>410.83</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>13.78</td>
+      <td>https://www.wis-tns.org/object/20201124a</td>
+      <td>0.2443</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+      <td>3.23</td>
     </tr>
   </tbody>
 </table>
-<p>599 rows × 107 columns</p>
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> hashimoto.groupby(<span class="st">'repeater_name'</span>).groups</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>data.pop(<span class="st">'-9999'</span>) <span class="co"># Removes non repeaters</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>repeaters <span class="op">=</span> pd.DataFrame({<span class="st">'name'</span>: data.keys(), <span class="st">'sample_id'</span>:data.values()})</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>repeaters <span class="op">=</span> repeaters.explode([<span class="st">'sample_id'</span>])</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> hashimoto.reset_index()</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>rp <span class="op">=</span> repeaters.merge(df[[<span class="st">'index'</span>,<span class="st">'tns_name'</span>]], right_on<span class="op">=</span><span class="st">'index'</span>, left_on<span class="op">=</span><span class="st">'sample_id'</span>)<span class="co">#.rename(columns={'tns_name': 'samples'})[['name', 'samples']]</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>rp.groupby(<span class="st">'name'</span>).tns_name.aggregate(<span class="bu">list</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>rptes <span class="op">=</span> rp.groupby(<span class="st">'name'</span>).tns_name.aggregate(<span class="bu">list</span>).items()</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>rptrs <span class="op">=</span> pd.DataFrame(rptes, columns<span class="op">=</span>[<span class="st">'name'</span>, <span class="st">'samples'</span>])</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>rptrs[<span class="st">'source'</span>] <span class="op">=</span> <span class="st">'Hashimoto2022'</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>rptrs.to_json(<span class="st">'../data/raw/collected/repeaters.json'</span>, orient<span class="op">=</span><span class="st">'records'</span>, indent<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>chimefrb <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/Hashimoto2022_chimefrbcat1.csv'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>chimefrb.tns_name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>0      FRB20180725A
+1      FRB20180727A
+2      FRB20180729A
+3      FRB20180729B
+4      FRB20180730A
+           ...     
+594    FRB20190701A
+595    FRB20190701B
+596    FRB20190701C
+597    FRB20190701D
+598    FRB20190701E
+Name: tns_name, Length: 599, dtype: object</code></pre>
 </div>
-<div class="cell" data-execution_count="80">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert FRBSTATS Repeaters list into our JSON</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_json(<span class="st">'../data/raw/external/FRBSTAT2022-11-23_repeaters.json'</span>)[<span class="st">'children'</span>].explode()</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame.from_records([<span class="op">*</span>df])</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>children <span class="op">=</span> df[<span class="st">'children'</span>].explode().reset_index().groupby(<span class="st">'index'</span>).<span class="bu">apply</span>(<span class="kw">lambda</span> x: x[<span class="st">'children'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.get(<span class="st">'name'</span>)))</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.reset_index().merge(children, on<span class="op">=</span><span class="st">'index'</span>).rename(columns<span class="op">=</span>{<span class="st">'children_y'</span>: <span class="st">'samples'</span>})[[<span class="st">'name'</span>, <span class="st">'samples'</span>]]</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>df.to_json(<span class="st">'../data/raw/collected/FRBSTATS2022-11-23_repeaters.json'</span>, orient<span class="op">=</span><span class="st">'records'</span>, indent<span class="op">=</span><span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 

@@ -2,30 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/index.html</loc>
-    <lastmod>2022-12-06T13:52:14.559Z</lastmod>
+    <lastmod>2022-12-27T06:12:14.596Z</lastmod>
   </url>
   <url>
-    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/01-get-data.html</loc>
-    <lastmod>2022-12-06T13:52:15.247Z</lastmod>
+    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/01-filter-telescope.html</loc>
+    <lastmod>2022-12-27T06:12:15.252Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/02-UMAP-HDBSCAN.html</loc>
-    <lastmod>2022-12-06T13:52:15.703Z</lastmod>
+    <lastmod>2022-12-27T06:12:15.740Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/03-filter-repeaters.html</loc>
-    <lastmod>2022-12-06T13:52:16.011Z</lastmod>
+    <lastmod>2022-12-27T06:12:16.052Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/04-UMAP-HDBSCAN-reduced-params.html</loc>
-    <lastmod>2022-12-06T13:52:16.447Z</lastmod>
+    <lastmod>2022-12-27T06:12:16.508Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/05-calculate-params.html</loc>
-    <lastmod>2022-12-06T13:52:16.767Z</lastmod>
+    <lastmod>2022-12-27T06:12:16.848Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/06-repeaters-and-non-repeaters-statisticaly-similar-ensembles.html</loc>
+    <lastmod>2022-12-27T06:12:17.168Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/07-classification-mechanism.html</loc>
+    <lastmod>2022-12-27T06:12:17.480Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/about.html</loc>
-    <lastmod>2022-12-06T13:52:17.075Z</lastmod>
+    <lastmod>2022-12-27T06:12:17.780Z</lastmod>
   </url>
 </urlset>
