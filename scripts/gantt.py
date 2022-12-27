@@ -29,16 +29,15 @@ thesis_duration = (thesis_end - thesis_start).days + 1
 data.loc[:, ["rel_start"]] = data.start.apply(lambda x: (x - thesis_start).days)
 
 # Create custom x-ticks and x-tick labels
-x_ticks = [i for i in range(thesis_start.day, thesis_duration + 1)]
+x_ticks = [i for i in range(thesis_duration + 1)]
 x_labels = [(thesis_start + dt.timedelta(days=i)) for i in x_ticks]
 
 ticks = pd.DataFrame(data={"ticks": x_ticks, "labels": x_labels})
-tick_interval = ticks[ticks.labels.apply(lambda x: x.is_month_start)].ticks
-tick_labels = ticks[ticks.labels.apply(lambda x: x.is_month_start)].labels.apply(
-    lambda x: x.strftime("%b %Y")
-)
+tick_filter = ticks["labels"].apply(lambda x: x.is_month_start)
+tick_interval = ticks[tick_filter]["ticks"]
+tick_labels = ticks[tick_filter]["labels"].apply(lambda x: x.strftime("%b %Y"))
 
-now = dt.date.today().day + thesis_start.day
+now = (pd.Timestamp.today() - thesis_start).days
 
 plt.figure(figsize=(15, 6))
 plt.title("Masters Study Progress")
