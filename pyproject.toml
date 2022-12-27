@@ -8,7 +8,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.8,<3.10"
 asyncio = "^3.4.3"
 mw-plot = "^0.9.0"
 umap-learn = "^0.5.3"
