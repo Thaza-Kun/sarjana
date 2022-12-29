@@ -242,12 +242,25 @@ Note
 <h2 class="anchored" data-anchor-id="getting-the-data">0. Getting The Data</h2>
 <section id="source" class="level3">
 <h3 class="anchored" data-anchor-id="source">0.1 Source</h3>
-<p>The data underlying said article are available in the references below: 1. Spitler et al.&nbsp;(<a href="https://www.nature.com/articles/nature17168">2016</a>); 2. CHIME/FRB Collaboration (<a href="https://www.nature.com/articles/s41586-018-0864-x">2019a</a>); 3. Kumar et al.&nbsp;(<a href="https://iopscience.iop.org/article/10.3847/2041-8213/ab5b08">2019</a>); 4. CHIME/FRB Collaboration (<a href="https://iopscience.iop.org/article/10.3847/2041-8213/ab4a80">2019b</a>); 5. Fonseca et al.&nbsp;(<a href="https://iopscience.iop.org/article/10.3847/2041-8213/ab7208">2020</a>).</p>
+<p>The data underlying said article are available in the references below:</p>
+<ol type="1">
+<li>Spitler et al.&nbsp;(<a href="https://www.nature.com/articles/nature17168">2016</a>);</li>
+<li>CHIME/FRB Collaboration (<a href="https://www.nature.com/articles/s41586-018-0864-x">2019a</a>);</li>
+<li>Kumar et al.&nbsp;(<a href="https://iopscience.iop.org/article/10.3847/2041-8213/ab5b08">2019</a>);</li>
+<li>CHIME/FRB Collaboration (<a href="https://iopscience.iop.org/article/10.3847/2041-8213/ab4a80">2019b</a>);</li>
+<li>Fonseca et al.&nbsp;(<a href="https://iopscience.iop.org/article/10.3847/2041-8213/ab7208">2020</a>).</li>
+</ol>
 <p>Some data of FRBs are taken from the data base of FRBCAT, available at http://www.frbcat.org/.</p>
 <section id="non-repeaters" class="level4">
 <h4 class="anchored" data-anchor-id="non-repeaters">0.1.1 Non-Repeaters</h4>
-<p>However, I have not been able to effectively filter out repeater from the whole population in the FRBCAT Database so I used the FRBSTATS<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as a proxy with the described filters: - <code>width</code> &lt;= 35 - is not identified as <code>repeater</code> - The FRB is observed between FRBCAT’s minimum dan maximum <code>utc</code> datetime<br>
-- <code>telescope</code> is also available in the FRBCAT catalogue, except ‘CHIME/FRB’<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>However, I have not been able to effectively filter out repeater from the whole population in the FRBCAT Database so I used the FRBSTATS<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as a proxy with the described filters:</p>
+<ul>
+<li><code>width</code> &lt;= 35</li>
+<li>is not identified as <code>repeater</code></li>
+<li>The FRB is observed between FRBCAT’s minimum dan maximum <code>utc</code> datetime<br>
+</li>
+<li><code>telescope</code> is also available in the FRBCAT catalogue, except ‘CHIME/FRB’<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+</ul>
 <p>Using the described filters, I have been able to obtain 88 data points. It is close to the papers sample of 80 ~ 91<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <div class="cell" data-execution_count="66">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load FRBCAT Catalogue (to be used in some filters)</span></span>
