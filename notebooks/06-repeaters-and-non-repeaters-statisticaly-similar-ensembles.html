@@ -233,10 +233,11 @@ Note
 </blockquote>
 </div>
 </div>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="72">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns<span class="op">;</span> sns.set_theme()</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="getting-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="getting-the-data">0. Getting The Data</h2>
@@ -253,7 +254,18 @@ Note
 <p>Some data of FRBs are taken from the data base of FRBCAT, available at http://www.frbcat.org/.</p>
 <section id="non-repeaters" class="level4">
 <h4 class="anchored" data-anchor-id="non-repeaters">0.1.1 Non-Repeaters</h4>
-<p>However, I have not been able to effectively filter out repeater from the whole population in the FRBCAT Database so I used the FRBSTATS<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as a proxy with the described filters:</p>
+<p>However, I have not been able to effectively filter out repeater from the whole population in the FRBCAT Database. Therefore, I joined it with FRBSTATS where the repeater population has been listed on its <code>utc</code> column rounded to the nearest second.</p>
+<div class="callout-warning callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Deprecated
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>So I used the FRBSTATS<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> as a proxy with the described filters:</p>
 <ul>
 <li><code>width</code> &lt;= 35</li>
 <li>is not identified as <code>repeater</code></li>
@@ -261,35 +273,46 @@ Note
 </li>
 <li><code>telescope</code> is also available in the FRBCAT catalogue, except ‘CHIME/FRB’<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
 </ul>
+</div>
+</div>
 <p>Using the described filters, I have been able to obtain 88 data points. It is close to the papers sample of 80 ~ 91<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load FRBCAT Catalogue (to be used in some filters)</span></span>
+<div class="cell" data-execution_count="83">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load FRBCAT Catalogue</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>frbcat <span class="op">=</span> pd.read_csv(<span class="st">"../data/raw/external/frbcat_20221227.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">'utc'</span>])</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>frbcat.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>frbcat <span class="op">=</span> pd.read_csv(<span class="st">"../data/raw/external/frbcat_20221227.csv"</span>, parse_dates<span class="op">=</span>[<span class="st">'utc'</span>]).rename(</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>{</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>        <span class="st">'rop_sampling_time'</span>: <span class="st">'sampling_time'</span>,</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'rop_bandwidth'</span>: <span class="st">'bandwidth_MHz'</span>,</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'rop_centre_frequency'</span>: <span class="st">'center_freq_MHz'</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        })</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>frbcat[<span class="st">'utc'</span>] <span class="op">=</span> frbcat[<span class="st">'utc'</span>].<span class="bu">round</span>(<span class="st">'S'</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>frbcat <span class="op">=</span> frbcat[frbcat[<span class="st">'rmp_width'</span>] <span class="op">&lt;=</span> <span class="dv">35</span>]</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>frbcat.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
-RangeIndex: 129 entries, 0 to 128
-Data columns (total 11 columns):
- #   Column        Non-Null Count  Dtype         
----  ------        --------------  -----         
- 0   frb_name      129 non-null    object        
- 1   utc           129 non-null    datetime64[ns]
- 2   telescope     129 non-null    object        
- 3   rop_raj       129 non-null    object        
- 4   rop_decj      129 non-null    object        
- 5   rop_gl        129 non-null    float64       
- 6   rop_gb        129 non-null    float64       
- 7   rmp_dm        129 non-null    float64       
- 8   rmp_dm_error  124 non-null    float64       
- 9   rmp_width     129 non-null    float64       
- 10  rmp_snr       127 non-null    float64       
-dtypes: datetime64[ns](1), float64(6), object(4)
-memory usage: 11.2+ KB</code></pre>
+Int64Index: 107 entries, 0 to 117
+Data columns (total 14 columns):
+ #   Column           Non-Null Count  Dtype         
+---  ------           --------------  -----         
+ 0   frb_name         107 non-null    object        
+ 1   utc              107 non-null    datetime64[ns]
+ 2   telescope        107 non-null    object        
+ 3   rop_raj          107 non-null    object        
+ 4   rop_decj         107 non-null    object        
+ 5   rop_gl           107 non-null    float64       
+ 6   rop_gb           107 non-null    float64       
+ 7   sampling_time    106 non-null    float64       
+ 8   bandwidth_MHz    107 non-null    float64       
+ 9   center_freq_MHz  107 non-null    float64       
+ 10  rmp_dm           107 non-null    float64       
+ 11  rmp_dm_error     107 non-null    float64       
+ 12  rmp_width        107 non-null    float64       
+ 13  rmp_snr          104 non-null    float64       
+dtypes: datetime64[ns](1), float64(9), object(4)
+memory usage: 12.5+ KB</code></pre>
 </div>
 </div>
-<div class="cell">
+<div class="cell" data-execution_count="119">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load FRBSTATS catalogue and do appropriate filter</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># A separate list is used because FRBCAT uses a different name</span></span>
@@ -302,72 +325,75 @@ memory usage: 11.2+ KB</code></pre>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    dtype<span class="op">=</span>{telescope: <span class="bu">float</span> <span class="cf">for</span> telescope <span class="kw">in</span> frbstats_telescope_names_available_in_frbcat},</span>
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    na_values<span class="op">=</span>[<span class="st">"-"</span>]</span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Label repeaters</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>frbstats[<span class="st">"repeater"</span>] <span class="op">=</span> <span class="va">False</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>frbstats.loc[frbstats[<span class="st">"frb"</span>].isin(repeaters_samples[<span class="st">"samples"</span>]),<span class="st">"repeater"</span>] <span class="op">=</span> <span class="va">True</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>selected_data <span class="op">=</span> frbstats[</span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    (frbstats[<span class="st">'repeater'</span>] <span class="op">==</span> <span class="va">False</span>) <span class="op">&amp;</span> </span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    (frbstats[<span class="st">"width"</span>] <span class="op">&lt;=</span> <span class="dv">35</span>) <span class="op">&amp;</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    (frbstats[<span class="st">"telescope"</span>].isin(frbstats_telescope_names_available_in_frbcat)) <span class="op">&amp;</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    (frbstats[<span class="st">'telescope'</span>] <span class="op">!=</span> <span class="st">'CHIME'</span>) <span class="op">&amp;</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    (frbstats[<span class="st">"utc"</span>].between(frbcat[<span class="st">"utc"</span>].<span class="bu">min</span>(), frbcat[<span class="st">"utc"</span>].<span class="bu">max</span>()))</span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>selected_data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>frbstats[<span class="st">'utc'</span>].<span class="bu">round</span>(<span class="st">'S'</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Label repeaters</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>frbstats[<span class="st">"repeater"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>frbstats.loc[frbstats[<span class="st">"frb"</span>].isin(repeaters_samples[<span class="st">"samples"</span>]),<span class="st">"repeater"</span>] <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="co"># !! Filter is deprecated</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="co"># selected_data = frbstats[</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">#     (frbstats['repeater'] == False) &amp; </span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="co">#     (frbstats["width"] &lt;= 35) &amp;</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="co">#     (frbstats["telescope"].isin(frbstats_telescope_names_available_in_frbcat)) &amp;</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="co">#     (frbstats['telescope'] != 'CHIME') &amp;</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a><span class="co">#     (frbstats["utc"].between(frbcat["utc"].min(), frbcat["utc"].max()))</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">#     ]</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>selected_data <span class="op">=</span> pd.merge(frbcat[[<span class="st">'utc'</span>, <span class="st">'sampling_time'</span>, <span class="st">'bandwidth_MHz'</span>, <span class="st">'center_freq_MHz'</span>, <span class="st">'rmp_width'</span>]], frbstats[frbstats[<span class="st">'repeater'</span>] <span class="op">==</span> <span class="va">False</span>], on<span class="op">=</span><span class="st">'utc'</span>)</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Handle NaN values</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>selected_data.loc[selected_data[<span class="st">'width'</span>].isna(), [<span class="st">'width'</span>]] <span class="op">=</span> selected_data[<span class="st">'rmp_width'</span>]</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>selected_data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
-Int64Index: 88 entries, 4 to 765
-Data columns (total 21 columns):
+Int64Index: 84 entries, 0 to 83
+Data columns (total 25 columns):
  #   Column             Non-Null Count  Dtype         
 ---  ------             --------------  -----         
- 0   frb                88 non-null     object        
- 1   utc                88 non-null     datetime64[ns]
- 2   mjd                88 non-null     float64       
- 3   telescope          88 non-null     object        
- 4   ra                 88 non-null     object        
- 5   dec                88 non-null     object        
- 6   l                  88 non-null     float64       
- 7   b                  88 non-null     float64       
- 8   frequency          88 non-null     float64       
- 9   dm                 88 non-null     float64       
- 10  flux               74 non-null     float64       
- 11  width              88 non-null     float64       
- 12  fluence            85 non-null     float64       
- 13  snr                86 non-null     float64       
- 14  reference          88 non-null     object        
- 15  redshift           87 non-null     float64       
- 16  redshift_measured  7 non-null      float64       
- 17  ra_error           81 non-null     float64       
- 18  dec_error          81 non-null     float64       
- 19  dm_error           83 non-null     float64       
- 20  repeater           88 non-null     bool          
-dtypes: bool(1), datetime64[ns](1), float64(14), object(5)
-memory usage: 14.5+ KB</code></pre>
+ 0   utc                84 non-null     datetime64[ns]
+ 1   sampling_time      83 non-null     float64       
+ 2   bandwidth_MHz      84 non-null     float64       
+ 3   center_freq_MHz    84 non-null     float64       
+ 4   rmp_width          84 non-null     float64       
+ 5   frb                84 non-null     object        
+ 6   mjd                84 non-null     float64       
+ 7   telescope          84 non-null     object        
+ 8   ra                 84 non-null     object        
+ 9   dec                84 non-null     object        
+ 10  l                  84 non-null     float64       
+ 11  b                  84 non-null     float64       
+ 12  frequency          84 non-null     float64       
+ 13  dm                 84 non-null     float64       
+ 14  flux               77 non-null     float64       
+ 15  width              84 non-null     float64       
+ 16  fluence            81 non-null     float64       
+ 17  snr                82 non-null     float64       
+ 18  reference          84 non-null     object        
+ 19  redshift           83 non-null     float64       
+ 20  redshift_measured  6 non-null      float64       
+ 21  ra_error           83 non-null     float64       
+ 22  dec_error          83 non-null     float64       
+ 23  dm_error           82 non-null     float64       
+ 24  repeater           84 non-null     bool          
+dtypes: bool(1), datetime64[ns](1), float64(18), object(5)
+memory usage: 18.5+ KB</code></pre>
 </div>
 </div>
-<p>In order the accept that both these data describe the same sample, I plotted the overlap between our selected data and the original FRBCAT data. Note that, 1. the FRBCAT is not filtered out so it may contain repeaters or not, and 2. CHIME/FRB data is deliberately excluded in the FRBSTATS source</p>
-<div class="cell">
+<p>In order the accept that both these data describe the same sample, I plotted the overlap between our selected data and the original FRBCAT data.</p>
+<div class="cell" data-execution_count="113">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>frbcat_ <span class="op">=</span> frbcat.rename(columns<span class="op">=</span>{<span class="st">'frb_name'</span>:<span class="st">'frb'</span>,<span class="st">'rop_raj'</span>: <span class="st">'ra'</span>, <span class="st">'rop_decj'</span>: <span class="st">'dec'</span>, <span class="st">'rop_gb'</span>: <span class="st">'b'</span>, <span class="st">'rop_gl'</span>: <span class="st">'l'</span>, <span class="st">'rmp_width'</span>: <span class="st">'width'</span>, <span class="st">'rmp_dm'</span>: <span class="st">'dm'</span>, <span class="st">'rmp_snr'</span>: <span class="st">'snr'</span>})</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>frbcat_.loc[:, [<span class="st">'source'</span>]] <span class="op">=</span> <span class="st">'frbcat'</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>frbstats_ <span class="op">=</span> selected_data[[<span class="st">'frb'</span>, <span class="st">'utc'</span>, <span class="st">'telescope'</span>, <span class="st">'ra'</span>, <span class="st">'dec'</span>, <span class="st">'l'</span>, <span class="st">'b'</span>, <span class="st">'dm'</span>, <span class="st">'width'</span>, <span class="st">'snr'</span>]]</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>frbstats_.loc[:, [<span class="st">'source'</span>]] <span class="op">=</span> <span class="st">'frbstats'</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>frbpopulation_merged <span class="op">=</span> pd.concat([frbcat_, frbstats_])</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>frbpopulation_merged, x<span class="op">=</span><span class="st">'l'</span>, y<span class="op">=</span><span class="st">'b'</span>, style<span class="op">=</span><span class="st">'source'</span>, hue<span class="op">=</span><span class="st">'telescope'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_16520\2803677944.py:4: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  frbstats_.loc[:, ['source']] = 'frbstats'</code></pre>
-</div>
-<div class="cell-output cell-output-display" data-execution_count="72">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1e95e7494f0&gt;</code></pre>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>frbpopulation_merged, x<span class="op">=</span><span class="st">'utc'</span>, y<span class="op">=</span><span class="st">'width'</span>, style<span class="op">=</span><span class="st">'source'</span>, hue<span class="op">=</span><span class="st">'telescope'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="113">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1c66dc687c0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
-<p><img src="06-repeaters-and-non-repeaters-statisticaly-similar-ensembles_files/figure-html/cell-6-output-3.png" class="img-fluid"></p>
+<p><img src="06-repeaters-and-non-repeaters-statisticaly-similar-ensembles_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 </section>
@@ -375,11 +401,11 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <h4 class="anchored" data-anchor-id="repeaters">0.1.2 Repeaters</h4>
 <p>Data on repeaters are easy to obtain. The authors are kind enough to provide table on all 20 samples used in the study.</p>
 <p><img src="xiang-han2020-table1.png" class="img-fluid"></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>xianghan <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/XiangHan2020_ensemble-repeaters.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="87">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>xianghan <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/XiangHan2020_ensemble-repeaters.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
-<div class="cell-output cell-output-display" data-execution_count="77">
+<div class="cell" data-execution_count="88">
+<div class="cell-output cell-output-display" data-execution_count="88">
 <table class="table table-sm table-striped">
 <colgroup>
 <col style="width: 2%">
@@ -637,18 +663,39 @@ See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stab
 <h2 class="anchored" data-anchor-id="preprocessing">1.0 Preprocessing</h2>
 <section id="parameters" class="level3">
 <h3 class="anchored" data-anchor-id="parameters">1.1 Parameters</h3>
+<p>We first process our data to uncover these parameters:</p>
 <ol type="1">
 <li>Pulse width</li>
 <li>Radio Luminosity</li>
 </ol>
-<p>Our data of FRBs are taken from the data base of FRB Catalogue, and those for repeating FRBs come from FRBCAT and published papers (mentioned above).</p>
-<p>According to FRBCAT, there is a significant gap between ∼35 and ∼300 ms in pulse width. However, we notice that the measurements with pulse width larger than ∼300 ms all come from one radio facility, i.e.&nbsp;the radio telescope BSA LPI of the Pushchino Radio Astronomy Observatory, in which the time interval between samples is 100 ms (Fedorova &amp; Rodin 2019). Considering that there may exist some observational bias effects in these data, we only include the pulses with a width shorter than ∼35 ms (80 non-repeaters). For non-repeating FRBs, the possibility of repetition cannot be rejected; in particular, repeating signals from FRB171019 have been observed (Kumar et al.&nbsp;2019) in 2019. However, our analysis is based on the current observational data, and the phenomenon of repeating signals in non-repeaters is difficult to predict at present. Therefore, we treat the apparently non-repeating sources as real non-repeaters under current circumstances. For repeating FRBs, two or more observations are included. Thus, we calculate the average pulse width and radio luminosity of each source as representative of its pulse width and radio luminosity, respectively. Since the pulse width in the FRBCAT is the observed width, which is easily affected by dispersion, to study the pulse width more accurately, we need to introduce the intrinsic width that is estimated by equation: <span class="math display">\[
+<section id="pulse-width" class="level4">
+<h4 class="anchored" data-anchor-id="pulse-width">1.1.1 Pulse Width</h4>
+<p>Since the pulse width in the FRBCAT is the observed width, which is easily affected by dispersion, to study the pulse width more accurately, we need to introduce the intrinsic width that is estimated by equation: <span class="math display">\[
 t_i = \sqrt{t^2_\text{obs} − t^2_\text{DM} − t^2_s}
 \]</span> In the above formula, <span class="math inline">\(t_i(t_\text{obs})\)</span> is the intrinsic width (observed width), with <span class="math inline">\(t_s\)</span> being the sampling time that depends on the instrument, and <span class="math inline">\(t_\text{DM}\)</span> is the dispersion smearing time-scale as calculated in the following: <span class="math display">\[
 t_\text{DM} = 8.3 \times 10^{−3} \text{DM}\frac{\Delta ν_\text{MHz}}{ν^3_\text{GHz}} ms,
-\]</span> where DM is the dispersion measure, <span class="math inline">\(\Delta ν_\text{MHz}\)</span> is the channel bandwidth in the unit of MHz, and <span class="math inline">\(ν_\text{GHz}\)</span> is the central frequency in the unit of GHz. Therefore, the pulse width in the following text represents the intrinsic width. In Table 1, we summarize the properties of 20 repeating FRBs, by listing the observed width, intrinsic width, flux density, fluence, and luminosity distance.</p>
+\]</span> where DM is the dispersion measure, <span class="math inline">\(\Delta ν_\text{MHz}\)</span> is the channel bandwidth in the unit of MHz, and <span class="math inline">\(ν_\text{GHz}\)</span> is the central frequency in the unit of GHz. Therefore, the pulse width in the following text represents the intrinsic width.</p>
+<div class="cell" data-execution_count="144">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dispersion_smearing_timescale(dispersion_measure, bandwidth_MHz, center_freq_GHz) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">8.3e-6</span> <span class="op">*</span> dispersion_measure <span class="op">*</span> (bandwidth_MHz <span class="op">/</span> center_freq_GHz<span class="op">**</span><span class="dv">3</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> instrinsic_width(observed_width, sampling_time, dispersion_measure, bandwidth_MHz, center_freq_GHz) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(<span class="bu">abs</span>((observed_width<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> dispersion_smearing_timescale(dispersion_measure, bandwidth_MHz, center_freq_GHz)<span class="op">**</span><span class="dv">2</span> <span class="op">-</span> sampling_time<span class="op">**</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="146">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>selected_data.loc[:, <span class="st">'intrinsic_width_ms'</span>] <span class="op">=</span> instrinsic_width(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    selected_data[<span class="st">'width'</span>], </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    selected_data[<span class="st">'sampling_time'</span>], </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    selected_data[<span class="st">'dm'</span>], </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    selected_data[<span class="st">'bandwidth_MHz'</span>], </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    selected_data[<span class="st">'center_freq_MHz'</span>]<span class="op">*</span><span class="fl">0.001</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="radio-luminosity" class="level4">
+<h4 class="anchored" data-anchor-id="radio-luminosity">1.1.2 Radio Luminosity</h4>
 
 
+</section>
 </section>
 </section>
 
