@@ -12,6 +12,14 @@ from sarjana.transients.constants import (
 
 # TODO Understand this
 def comoving_distance_at_z(z):  # Mpc
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
+
+    Args:
+        z (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     zp1 = 1.0 + z
     h0_up = np.sqrt(1 + Omega_m / Omega_Lambda) * scipy.special.hyp2f1(
         1 / 3, 1 / 2, 4 / 3, -Omega_m / Omega_Lambda
@@ -27,43 +35,121 @@ def comoving_distance_at_z(z):  # Mpc
 
 
 def luminosity_distance_at_z(z):  # Mpc
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
+
+    Args:
+        z (_type_): _description_
+
+    Returns:
+        _type_: _description_
+    """
     return (1.0 + z) * comoving_distance_at_z(z)
 
 
-def burst_energy(data: pd.DataFrame) -> pd.DataFrame:
+def rest_luminosity(
+    z: float,
+    fluence: float,
+    frequency: float,
+    rest_frequency: float,
+    spectral_idx: float,
+) -> float:
+    """Adopted from Hashimoto 2019 https://doi.org/10.1093/mnras/stz1715
+
+    Args:
+        z (float): _description_
+        fluence (float): _description_
+        frequency (float): _description_
+        rest_frequency (float): _description_
+        spectral_idx (float): _description_
+
+    Returns:
+        float: _description_
+    """
+    numerator = 4 * np.pi * (luminosity_distance_at_z(z) ** 2)
+    denominator = (1 + z) ** (2 + spectral_idx)
+    frequency_ratio = (rest_frequency / frequency) ** spectral_idx
+    return (numerator / denominator) * frequency_ratio * fluence
+
+
+def burst_energy(center_frequency, fluence, redshift) -> float:
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
+
+    Args:
+        center_frequency (_type_): _description_
+        fluence (_type_): _description_
+        redshift (_type_): _description_
+
+    Returns:
+        float: _description_
+    """
     return (
         1e-23
-        * data["frequency"]
+        * center_frequency
         * 1e6
-        * data["fluence"]
+        * fluence
         / 1000
-        * (4 * np.pi * (luminosity_distance_at_z(data["redshift"]) * Mpc_to_cm) ** 2)
-        / (1 + data["redshift"])
+        * (4 * np.pi * (luminosity_distance_at_z(redshift) * Mpc_to_cm) ** 2)
+        / (1 + redshift)
     )
 
 
-def rest_frequency(data: pd.DataFrame) -> pd.DataFrame:
-    return data["frequency"] * (1 + data["redshift"])
+def rest_frequency(center_frequency, redshift) -> float:
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
+
+    Args:
+        center_frequency (_type_): _description_
+        redshift (_type_): _description_
+
+    Returns:
+        float: _description_
+    """
+    return center_frequency * (1 + redshift)
 
 
-def frequency_diff_by_dm(data: pd.DataFrame) -> pd.DataFrame:
-    pass
+def rest_frequency_bandwidth(low_freq, high_freq, redshift) -> float:
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
+
+    Args:
+        low_freq (_type_): _description_
+        high_freq (_type_): _description_
+        redshift (_type_): _description_
+
+    Returns:
+        float: _description_
+    """
+    return (high_freq - low_freq)(1 + redshift)
 
 
-def rest_frequency_bandwidth(data: pd.DataFrame) -> pd.DataFrame:
-    return (data["high_freq"] - data["low_freq"])(1 + data["redshift"])
+def rest_time_width(time_width, redshift) -> float:
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
+
+    Args:
+        time_width (_type_): _description_
+        redshift (_type_): _description_
+
+    Returns:
+        float: _description_
+    """
+    return time_width / (1 + redshift)
 
 
-def rest_time_width(data: pd.DataFrame) -> pd.DataFrame:
-    return data["width"] / (1 + data["redshift"])
+def brightness_temperature(flux, width, center_frequency, redshift) -> float:
+    """Adopted from Luo Jia-Wei 2022 https://doi.org/10.1093/mnras/stac3206
 
+    Args:
+        flux (_type_): _description_
+        width (_type_): _description_
+        center_frequency (_type_): _description_
+        redshift (_type_): _description_
 
-def brightness_temperature(data: pd.DataFrame) -> pd.DataFrame:
+    Returns:
+        float: _description_
+    """
     return (
         1.1e35
-        * data["flux"]
-        * (data["width"] * 1000) ** (-2)
-        * (data["frequency"] / 1000) ** (-2)
-        * (luminosity_distance_at_z(data["redshift"]) / 1000) ** 2
-        / (1 + data["redshift"])
+        * flux
+        * (width * 1000) ** (-2)
+        * (center_frequency / 1000) ** (-2)
+        * (luminosity_distance_at_z(redshift) / 1000) ** 2
+        / (1 + redshift)
     )
