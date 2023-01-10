@@ -123,19 +123,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta property="og:title" content="Masters Project - Reproducing Cui Xiang-Han et. al (2020)‘s ’Fast radio bursts: do repeaters and non-repeaters originate in statistically similar ensembles?’">
 <meta property="og:description" content="Is it possible that repeaters and non-repeaters have different mechanisms?">
-<meta property="og:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/jupyter-python.jpg">
+<meta property="og:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/imgs/jupyter-python.jpg">
 <meta property="og:site-name" content="Masters Project">
 <meta name="twitter:title" content="Masters Project - Reproducing Cui Xiang-Han et. al (2020)‘s ’Fast radio bursts: do repeaters and non-repeaters originate in statistically similar ensembles?’">
 <meta name="twitter:description" content="Is it possible that repeaters and non-repeaters have different mechanisms?">
-<meta name="twitter:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/jupyter-python.jpg">
+<meta name="twitter:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/imgs/jupyter-python.jpg">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -240,12 +237,12 @@ Note
 </blockquote>
 </div>
 </div>
-<div class="cell" data-execution_count="2">
+<div class="cell" data-execution_count="38">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns<span class="op">;</span> sns.set_theme()</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.interpolate <span class="im">as</span> interpolate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="getting-the-data" class="level2">
 <h2 class="anchored" data-anchor-id="getting-the-data">0. Getting The Data</h2>
@@ -399,7 +396,7 @@ memory usage: 18.5+ KB</code></pre>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>sns.relplot(data<span class="op">=</span>frbpopulation_merged, x<span class="op">=</span><span class="st">'utc'</span>, y<span class="op">=</span><span class="st">'width'</span>, style<span class="op">=</span><span class="st">'source'</span>, hue<span class="op">=</span><span class="st">'telescope'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="5">
-<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x2292bc91580&gt;</code></pre>
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x29d3b58f9a0&gt;</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <p><img src="06-repeaters-and-non-repeaters-statisticaly-similar-ensembles_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
@@ -409,7 +406,7 @@ memory usage: 18.5+ KB</code></pre>
 <section id="repeaters" class="level4">
 <h4 class="anchored" data-anchor-id="repeaters">0.1.2 Repeaters</h4>
 <p>Data on repeaters are easy to obtain. The authors are kind enough to provide table on all 20 samples used in the study.</p>
-<p><img src="xiang-han2020-table1.png" class="img-fluid"></p>
+<p><img src="imgs/xiang-han2020-table1.png" class="img-fluid"></p>
 <div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>xianghan <span class="op">=</span> pd.read_csv(<span class="st">'../data/raw/external/XiangHan2020_ensemble-repeaters.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -444,7 +441,7 @@ memory usage: 18.5+ KB</code></pre>
 <tr class="odd">
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: left;">FRB121102.J000+00</td>
+<td style="text-align: left;">FRB121102</td>
 <td style="text-align: right;">4.82</td>
 <td style="text-align: right;">4.78</td>
 <td style="text-align: right;">0.25</td>
@@ -466,7 +463,7 @@ memory usage: 18.5+ KB</code></pre>
 <tr class="odd">
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: left;">FRB171019.J000+00</td>
+<td style="text-align: left;">FRB171019</td>
 <td style="text-align: right;">4.62</td>
 <td style="text-align: right;">4.08</td>
 <td style="text-align: right;">nan</td>
@@ -711,6 +708,131 @@ t_\text{DM} = 8.3 \times 10^{−3} \text{DM}\frac{\Delta ν_\text{MHz}}{ν^3_\te
 </section>
 <section id="radio-luminosity" class="level4">
 <h4 class="anchored" data-anchor-id="radio-luminosity">1.1.2 Radio Luminosity</h4>
+<p>Radio luminosity is estimated using the formula below: <span class="math display">\[
+    L_\text{radio} \approx SD^2
+\]</span> where <span class="math inline">\(S\)</span> is the flux density and <span class="math inline">\(D\)</span> is the luminosity distance</p>
+<div class="cell" data-execution_count="110">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Jy_to_erg_s <span class="op">=</span> <span class="fl">1e-23</span> <span class="co"># erg s-1 cm-2 Hz-1</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Gpc_to_m <span class="op">=</span> <span class="fl">3.0857e16</span> <span class="op">*</span> <span class="fl">1e6</span> <span class="co"># m</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>m_to_cm <span class="op">=</span> <span class="dv">100</span> <span class="co">#cm</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> radio_luminosity_approx(flux_density: <span class="bu">float</span>, luminosity_distance: <span class="bu">float</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Approximation of radio luminosity</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">        flux_density (float): flux density in Jy</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">        luminosity_distance (float): Luminosity distance in Gpc</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">        float: radio luminosity in erg/s /Hz</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    flux_density_erg_s <span class="op">=</span> flux_density<span class="op">*</span>Jy_to_erg_s</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    luminosity_distance_cm <span class="op">=</span> luminosity_distance<span class="op">*</span>Gpc_to_m<span class="op">*</span>m_to_cm</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> flux_density_erg_s<span class="op">*</span>(luminosity_distance_cm<span class="op">**</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The formula for luminosity distance in this notebook is taken from the python implementation of</p>
+<div class="cell" data-execution_count="100">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>c_km_s <span class="op">=</span> <span class="fl">299792.458</span> <span class="co"># velocity of light in km/sec</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>H_0_km_s_Mpc: <span class="bu">float</span> <span class="op">=</span> <span class="fl">69.6</span> <span class="co"># km s^-1 Mpc^-1</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> luminosity_distance(z: <span class="bu">float</span>, Omega_matter: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.268</span>, Omega_vacuum:<span class="bu">float</span> <span class="op">=</span> <span class="fl">0.714</span>, H_0_km_s_Mpc: <span class="bu">float</span> <span class="op">=</span> <span class="fl">69.6</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Calculate luminosity distance at redshift based on the python's implementation of [CosmoCalc](https://www.astro.ucla.edu/~wright/CosmoCalc.html)</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">    Args:</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">        z (float): redshift</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">        Omega_matter (float, optional): Total matter density. Defaults to 0.268.</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">        Omega_vacuum (float, optional): Cosmological Constant. Defaults to 0.714.</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">        H_0_km_s_Mpc (float, optional): Hubbles constant in km s^-1 Mpc^-1. Defaults to 69.6.</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">    Returns:</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">        float: Luminosity distance in Mpc</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    h <span class="op">=</span> H_0_km_s_Mpc<span class="op">/</span><span class="fl">100.</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    Omega_radiation <span class="op">=</span> <span class="fl">4.165E-5</span><span class="op">/</span>(h<span class="op">*</span>h)   <span class="co"># includes 3 massless neutrino species, T0 = 2.72528</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    Omega_curvature <span class="op">=</span> <span class="dv">1</span><span class="op">-</span>Omega_matter<span class="op">-</span>Omega_radiation<span class="op">-</span>Omega_vacuum</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> z[<span class="dv">0</span>]</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>    az <span class="op">=</span> <span class="fl">1.0</span><span class="op">/</span>(<span class="dv">1</span><span class="op">+</span><span class="fl">1.0</span><span class="op">*</span>z)</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>    DTT <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    DCMR <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    n<span class="op">=</span><span class="dv">1000</span>         <span class="co"># number of points in integrals</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># do integral over a=1/(1+z) from az to 1 in n steps, midpoint rule</span></span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n):</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>        a <span class="op">=</span> az<span class="op">+</span>(<span class="dv">1</span><span class="op">-</span>az)<span class="op">*</span>(i<span class="op">+</span><span class="fl">0.5</span>)<span class="op">/</span>n</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>        adot <span class="op">=</span> np.sqrt(Omega_curvature<span class="op">+</span>(Omega_matter<span class="op">/</span>a)<span class="op">+</span>(Omega_radiation<span class="op">/</span>(a<span class="op">*</span>a))<span class="op">+</span>(Omega_vacuum<span class="op">*</span>a<span class="op">*</span>a))</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>        DTT <span class="op">=</span> DTT <span class="op">+</span> <span class="fl">1.</span><span class="op">/</span>adot</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>        DCMR <span class="op">=</span> DCMR <span class="op">+</span> <span class="fl">1.</span><span class="op">/</span>(a<span class="op">*</span>adot)</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>    DTT <span class="op">=</span> (<span class="fl">1.</span><span class="op">-</span>az)<span class="op">*</span>DTT<span class="op">/</span>n</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>    DCMR <span class="op">=</span> (<span class="fl">1.</span><span class="op">-</span>az)<span class="op">*</span>DCMR<span class="op">/</span>n</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>    ratio <span class="op">=</span> <span class="fl">1.00</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.sqrt(<span class="bu">abs</span>(Omega_curvature))<span class="op">*</span>DCMR</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> x <span class="op">&gt;</span> <span class="fl">0.1</span>:</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> Omega_curvature <span class="op">&gt;</span> <span class="dv">0</span>:</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>            ratio <span class="op">=</span>  <span class="fl">0.5</span><span class="op">*</span>(np.exp(x)<span class="op">-</span>np.exp(<span class="op">-</span>x))<span class="op">/</span>x </span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>            ratio <span class="op">=</span> np.sin(x)<span class="op">/</span>x</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>        y <span class="op">=</span> x<span class="op">*</span>x</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> Omega_curvature <span class="op">&lt;</span> <span class="dv">0</span>: y <span class="op">=</span> <span class="op">-</span>y</span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>        ratio <span class="op">=</span> <span class="fl">1.</span> <span class="op">+</span> y<span class="op">/</span><span class="fl">6.</span> <span class="op">+</span> y<span class="op">*</span>y<span class="op">/</span><span class="fl">120.</span></span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>    DCMT <span class="op">=</span> ratio<span class="op">*</span>DCMR</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>    DA <span class="op">=</span> az<span class="op">*</span>DCMT</span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    DL <span class="op">=</span> DA<span class="op">/</span>(az<span class="op">*</span>az)</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>    DL_Mpc <span class="op">=</span> (c_km_s<span class="op">/</span>H_0_km_s_Mpc)<span class="op">*</span>DL</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> DL_Mpc</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="101">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> redshift_from_distance(distance):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> distance<span class="op">*</span>H_0_km_s_Mpc<span class="op">/</span>c_km_s</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="118">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>selected_data[<span class="st">'radio_luminosity'</span>]   <span class="op">=</span> radio_luminosity_approx(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                                        selected_data[<span class="st">'flux'</span>], </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                        luminosity_distance(z<span class="op">=</span>selected_data[<span class="st">'redshift'</span>])<span class="op">*</span><span class="dv">1000</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                                    )</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'radio_luminosity'</span>]        <span class="op">=</span> radio_luminosity_approx(</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                                        xianghan[<span class="st">'Flux density (Jy)'</span>], </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>                                        luminosity_distance(</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>                                            z<span class="op">=</span>redshift_from_distance(xianghan[<span class="st">'Distance (Gpc)'</span>])</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>                                        )<span class="op">*</span><span class="dv">1000</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>                                    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="112">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>selected_data[<span class="st">'radio_luminosity'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="112">
+<pre><code>count    7.700000e+01
+mean     1.661798e+39
+std      2.601721e+39
+min      3.006860e+36
+25%      4.780137e+37
+50%      5.396929e+38
+75%      2.081672e+39
+max      1.137210e+40
+Name: radio_luminosity, dtype: float64</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="119">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'radio_luminosity'</span>].describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="119">
+<pre><code>count    1.800000e+01
+mean     2.319993e+32
+std      2.213047e+32
+min      6.173843e+31
+25%      1.006336e+32
+50%      1.234769e+32
+75%      2.315191e+32
+max      7.779042e+32
+Name: radio_luminosity, dtype: float64</code></pre>
+</div>
+</div>
+<p>We can see that the range is not quite the same as stated in the paper:</p>
+<ul>
+<li>Repeaters: ∼10<sup>39</sup> to ∼10<sup>42</sup> erg s<sup>−1</sup></li>
+<li>Non-repeaters: ∼10<sup>38</sup> to ∼10<sup>44</sup> erg s<sup>−1</sup></li>
+</ul>
+<p>which possibly means that there are parts of the calculations that I am missing.</p>
 </section>
 </section>
 </section>
@@ -719,291 +841,106 @@ t_\text{DM} = 8.3 \times 10^{−3} \text{DM}\frac{\Delta ν_\text{MHz}}{ν^3_\te
 <section id="andersondarling-test" class="level3">
 <h3 class="anchored" data-anchor-id="andersondarling-test">2.1 Anderson–Darling Test</h3>
 <p>An Anderson–Darling test (A-D test) is used to measure the likelihood that a sample follows a certain distribution.</p>
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'Intrinsic width (ms)'</span>].mean(), xianghan[<span class="st">'Intrinsic width (ms)'</span>].std()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="11">
-<pre><code>(5.101000000000001, 5.542362122302804)</code></pre>
+<div class="cell" data-execution_count="121">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> anderson</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>anderson_width_all <span class="op">=</span> anderson([<span class="op">*</span>xianghan[<span class="st">'Intrinsic width (ms)'</span>], <span class="op">*</span>selected_data[<span class="st">'intrinsic_width_ms'</span>].dropna()], dist<span class="op">=</span><span class="st">'norm'</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>anderson_width_xianghan <span class="op">=</span> anderson(xianghan[<span class="st">'Intrinsic width (ms)'</span>], dist<span class="op">=</span><span class="st">'norm'</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>anderson_width_nonrepeater <span class="op">=</span> anderson(selected_data[<span class="st">'intrinsic_width_ms'</span>].dropna(), dist<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.special <span class="im">import</span> erf</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'z_score'</span>] <span class="op">=</span> (xianghan[<span class="st">'Intrinsic width (ms)'</span>] <span class="op">-</span> xianghan[<span class="st">'Intrinsic width (ms)'</span>].mean())<span class="op">/</span>xianghan[<span class="st">'Intrinsic width (ms)'</span>].std()</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'pdf'</span>] <span class="op">=</span> (<span class="dv">1</span><span class="op">/</span>(xianghan[<span class="st">'Intrinsic width (ms)'</span>].std()<span class="op">*</span>np.sqrt(<span class="dv">2</span><span class="op">*</span>np.pi)))<span class="op">*</span>np.exp(<span class="op">-</span><span class="fl">0.5</span><span class="op">*</span>(xianghan[<span class="st">'z_score'</span>]<span class="op">**</span><span class="dv">2</span>))</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>sorted_pdf <span class="op">=</span> xianghan.sort_values(by<span class="op">=</span><span class="st">'Intrinsic width (ms)'</span>)[<span class="st">'pdf'</span>]</span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'erf_gauss'</span>] <span class="op">=</span> erf((xianghan[<span class="st">'z_score'</span>]<span class="op">/</span>np.sqrt(<span class="dv">2</span>)))</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'cdf'</span>] <span class="op">=</span> <span class="fl">0.5</span><span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>xianghan[<span class="st">'erf_gauss'</span>])</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'survival_func'</span>] <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> xianghan[<span class="st">'cdf'</span>]</span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>S_ <span class="op">=</span> []</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="bu">len</span>(xianghan[<span class="st">'Intrinsic width (ms)'</span>])</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, val <span class="kw">in</span> <span class="bu">enumerate</span>(xianghan[<span class="st">'Intrinsic width (ms)'</span>].sort_values(), start<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    val_1 <span class="op">=</span> ((<span class="dv">2</span><span class="op">*</span>i)<span class="op">-</span><span class="dv">1</span>)<span class="op">*</span>np.log(xianghan[<span class="st">'cdf'</span>].sort_values()[i<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    val_2 <span class="op">=</span> ((<span class="dv">2</span><span class="op">*</span>N) <span class="op">-</span> (<span class="dv">2</span><span class="op">*</span>i) <span class="op">+</span> <span class="dv">1</span>)<span class="op">*</span>np.log(xianghan[<span class="st">'cdf'</span>].sort_values()[i<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># val = np.log(xianghan['cdf'].sort_values()[i-1]) + np.log(1-xianghan['survival_func'].sort_values(ascending=False)[i-1])</span></span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    S_.append(val_1 <span class="op">+</span> val_2)</span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>coeff <span class="op">=</span> <span class="dv">1</span><span class="op">/</span>N</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>A_2 <span class="op">=</span> <span class="op">-</span><span class="bu">len</span>(xianghan[<span class="st">'Intrinsic width (ms)'</span>]) <span class="op">-</span> coeff<span class="op">*</span><span class="bu">sum</span>(S_)</span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="co"># sns.relplot(xianghan, x='Intrinsic width (ms)', y='survival_func', kind='line')</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a><span class="co"># sns.relplot(xianghan, x='Intrinsic width (ms)', y='cdf', kind='line')</span></span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a><span class="co"># sns.ecdfplot(selected_data[:int(len(selected_data['intrinsic_width_ms'])/2)], x='intrinsic_width_ms')</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="co"># sns.ecdfplot(selected_data[int(len(selected_data['intrinsic_width_ms'])/2):], x='intrinsic_width_ms')</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a><span class="co"># sns.ecdfplot(frbcat, x='intrinsic_width_ms')</span></span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>A_2<span class="op">*</span>(<span class="dv">1</span><span class="op">+</span>(<span class="dv">4</span><span class="op">/</span>N)<span class="op">-</span>(<span class="dv">25</span><span class="op">/</span>(N<span class="op">**</span><span class="dv">2</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
-<pre><code>18.309025157888357</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'survival_func'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
-<pre><code>0     0.523093
-1     0.000471
-2     0.573079
-3     0.495753
-4     0.816557
-5     0.449819
-6     0.625341
-7     0.678634
-8     0.017944
-9     0.403150
-10    0.681859
-11    0.814635
-12    0.599781
-13    0.725481
-14    0.652364
-15    0.645003
-16    0.564570
-17    0.678634
-18    0.372745
-19    0.716997
-Name: survival_func, dtype: float64</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cdf <span class="op">=</span> sorted_pdf.cumsum()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> CDF(x, y):</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    func <span class="op">=</span> interpolate.interp1d(x, y)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    cdf_at_x <span class="op">=</span> <span class="bu">list</span>()</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, k <span class="kw">in</span> <span class="bu">enumerate</span>(y):</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            cdf_at_x.append(k)</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>            cdf_at_x.append(k <span class="op">+</span> cdf_at_x[i<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(cdf_at_x)<span class="op">/</span><span class="bu">max</span>(cdf_at_x)</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> SurvivalFunc(cdf: np.ndarray) <span class="op">-&gt;</span> np.ndarray:</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">1</span><span class="op">-</span>cdf</span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>cdf <span class="op">=</span> CDF(xianghan[<span class="st">'Intrinsic width (ms)'</span>], xianghan[<span class="st">'Intrinsic width (ms)'</span>].sort_values())</span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>sf <span class="op">=</span> SurvivalFunc(cdf)</span>
-<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>S_ <span class="op">=</span> <span class="bu">list</span>()</span>
-<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, cdf_ <span class="kw">in</span> <span class="bu">enumerate</span>(cdf, start<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    coeff <span class="op">=</span> ((<span class="dv">2</span><span class="op">*</span>i)<span class="op">-</span><span class="dv">1</span>)<span class="op">/</span><span class="bu">len</span>(cdf)</span>
-<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    val <span class="op">=</span> np.log(cdf_) <span class="op">+</span> np.log(sf[i<span class="op">-</span><span class="dv">1</span>])</span>
-<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> val <span class="op">==</span> np.infty <span class="kw">or</span> val <span class="op">==</span> <span class="op">-</span>np.infty:</span>
-<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        val <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    S_.append(coeff<span class="op">*</span>val)</span>
-<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="op">-</span><span class="bu">len</span>(cdf)<span class="op">-</span><span class="bu">sum</span>(S_)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="15">
-<pre><code>12.235782299490147</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> anderson, shapiro, kstest, norm</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>anderson(xianghan[<span class="st">'Intrinsic width (ms)'</span>], dist<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="16">
-<pre><code>AndersonResult(statistic=2.386069262367567, critical_values=array([0.506, 0.577, 0.692, 0.807, 0.96 ]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]))</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>anderson(frbcat[<span class="st">'intrinsic_width_ms'</span>].dropna(), dist<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="17">
-<pre><code>AndersonResult(statistic=8.80968649682626, critical_values=array([0.556, 0.634, 0.76 , 0.887, 1.055]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]))</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> mannwhitneyu</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>mannwhitneyu(xianghan[<span class="st">'Intrinsic width (ms)'</span>][:<span class="dv">10</span>], xianghan[<span class="st">'Intrinsic width (ms)'</span>][<span class="dv">10</span>:])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="18">
-<pre><code>MannwhitneyuResult(statistic=75.5, pvalue=0.05868668127026372)</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>exclude <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">12</span>, <span class="dv">20</span>]</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 2, 19, 7  = 1.42809</span></span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 2, 12, 20 = 1.43080</span></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> xianghan[xianghan[<span class="st">'No.'</span>].isin(exclude) <span class="op">==</span> <span class="va">False</span>]</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(anderson(sample[<span class="st">'Intrinsic width (ms)'</span>], dist<span class="op">=</span><span class="st">'norm'</span>))</span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(sample[<span class="st">'Sources'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>AndersonResult(statistic=1.4308038840282826, critical_values=array([0.501, 0.571, 0.685, 0.799, 0.951]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]))
-0      FRB121102.J000+00
-2      FRB171019.J000+00
-3     FRB180916.J0158+65
-4     FRB181030.J1054+73
-5     FRB181128.J0456+63
-6       FRB181119.J12+65
-7     FRB190116.J1249+27
-8     FRB181017.J1705+68
-9     FRB190209.J0937+77
-10    FRB190222.J2052+69
-12    FRB180908.J1232+74
-13    FRB190604.J1435+53
-14      FRB190212.J18+81
-15    FRB190303.J1353+48
-16    FRB190417.J1939+59
-17    FRB190117.J2207+17
-18      FRB190213.J02+20
-Name: Sources, dtype: object</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> xianghan.rename(columns<span class="op">=</span>{<span class="st">'Intrinsic width (ms)'</span>:<span class="st">'intrinsic_width_ms'</span>, <span class="st">'Sources'</span>: <span class="st">'frb'</span>})[[<span class="st">'intrinsic_width_ms'</span>, <span class="st">'frb'</span>]]</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> frbcat.rename(columns<span class="op">=</span>{<span class="st">'frb_name'</span>:<span class="st">'frb'</span>})[[<span class="st">'intrinsic_width_ms'</span>, <span class="st">'frb'</span>]]</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>a[<span class="st">'source'</span>] <span class="op">=</span> <span class="st">'repeater'</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>b[<span class="st">'source'</span>] <span class="op">=</span> <span class="st">'non_repeater'</span></span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>together <span class="op">=</span> pd.concat([a,b])[[<span class="st">'intrinsic_width_ms'</span>, <span class="st">'source'</span>]]</span>
-<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>together</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="20">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>intrinsic_width_ms</th>
-      <th>source</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>4.780000</td>
-      <td>repeater</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>23.430000</td>
-      <td>repeater</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>4.080000</td>
-      <td>repeater</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>5.160000</td>
-      <td>repeater</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0.100000</td>
-      <td>repeater</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>113</th>
-      <td>22.975652</td>
-      <td>non_repeater</td>
-    </tr>
-    <tr>
-      <th>114</th>
-      <td>6.961764</td>
-      <td>non_repeater</td>
-    </tr>
-    <tr>
-      <th>115</th>
-      <td>24.254762</td>
-      <td>non_repeater</td>
-    </tr>
-    <tr>
-      <th>116</th>
-      <td>8.993350</td>
-      <td>non_repeater</td>
-    </tr>
-    <tr>
-      <th>117</th>
-      <td>9.370747</td>
-      <td>non_repeater</td>
-    </tr>
-  </tbody>
+<div class="cell" data-execution_count="122">
+<div class="cell-output cell-output-display" data-execution_count="122">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: left;">Sample</th>
+<th style="text-align: right;">Statistic</th>
+<th style="text-align: right;">Critical values (<span class="math inline">\(\alpha\)</span> = 0.05)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">All data</td>
+<td style="text-align: right;">12.9237</td>
+<td style="text-align: right;">0.76</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Non-repeating</td>
+<td style="text-align: right;">11.0479</td>
+<td style="text-align: right;">0.754</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Repeating</td>
+<td style="text-align: right;">2.38607</td>
+<td style="text-align: right;">0.692</td>
+</tr>
+</tbody>
 </table>
-<p>127 rows × 2 columns</p>
 </div>
 </div>
+<div class="cell" data-execution_count="128">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>anderson_lumo_all <span class="op">=</span> anderson([<span class="op">*</span>xianghan[<span class="st">'radio_luminosity'</span>].dropna(), <span class="op">*</span>selected_data[<span class="st">'radio_luminosity'</span>].dropna()], dist<span class="op">=</span><span class="st">'norm'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>anderson_lumo_xianghan <span class="op">=</span> anderson(xianghan[<span class="st">'radio_luminosity'</span>].dropna(), dist<span class="op">=</span><span class="st">'norm'</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>anderson_lumo_nonrepeater <span class="op">=</span> anderson(selected_data[<span class="st">'radio_luminosity'</span>].dropna(), dist<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>anderson(selected_data[<span class="st">'width'</span>], dist<span class="op">=</span><span class="st">'norm'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
-<pre><code>AndersonResult(statistic=11.225411788944001, critical_values=array([0.552, 0.628, 0.754, 0.879, 1.046]), significance_level=array([15. , 10. ,  5. ,  2.5,  1. ]))</code></pre>
-</div>
-</div>
-<div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Luminosity</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>Omega_m <span class="op">=</span> <span class="fl">0.315</span></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>Omega_Lambda <span class="op">=</span> <span class="fl">0.685</span></span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>H_0 <span class="op">=</span> <span class="fl">67.4</span> <span class="op">*</span> <span class="dv">1000</span> <span class="op">*</span> <span class="dv">100</span>  <span class="co"># cm s^-1 Mpc^-1</span></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="dv">29979245800</span>  <span class="co"># cm s^-1</span></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>Hubble_distance <span class="op">=</span> c <span class="op">/</span> H_0  <span class="co"># Mpc</span></span>
-<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> comoving_distance_at_z(z):  <span class="co"># Mpc</span></span>
-<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>    zp1 <span class="op">=</span> <span class="fl">1.0</span> <span class="op">+</span> z</span>
-<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>    h0_up <span class="op">=</span> np.sqrt(<span class="dv">1</span> <span class="op">+</span> Omega_m <span class="op">/</span> Omega_Lambda) <span class="op">*</span> scipy.special.hyp2f1(</span>
-<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span> <span class="op">/</span> <span class="dv">3</span>, <span class="dv">1</span> <span class="op">/</span> <span class="dv">2</span>, <span class="dv">4</span> <span class="op">/</span> <span class="dv">3</span>, <span class="op">-</span>Omega_m <span class="op">/</span> Omega_Lambda</span>
-<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>    hz_up <span class="op">=</span> (</span>
-<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>        zp1</span>
-<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span> np.sqrt(<span class="dv">1</span> <span class="op">+</span> Omega_m <span class="op">*</span> zp1<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> Omega_Lambda)</span>
-<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span> scipy.special.hyp2f1(<span class="dv">1</span> <span class="op">/</span> <span class="dv">3</span>, <span class="dv">1</span> <span class="op">/</span> <span class="dv">2</span>, <span class="dv">4</span> <span class="op">/</span> <span class="dv">3</span>, <span class="op">-</span>Omega_m <span class="op">*</span> zp1<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> Omega_Lambda)</span>
-<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>    h0_down <span class="op">=</span> np.sqrt(Omega_Lambda <span class="op">+</span> Omega_m)</span>
-<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>    hz_down <span class="op">=</span> np.sqrt(Omega_Lambda <span class="op">+</span> Omega_m <span class="op">*</span> zp1<span class="op">**</span><span class="dv">3</span>)</span>
-<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> Hubble_distance <span class="op">*</span> (hz_up <span class="op">/</span> hz_down <span class="op">-</span> h0_up <span class="op">/</span> h0_down)</span>
-<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-25"><a href="#cb32-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-26"><a href="#cb32-26" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> luminosity_distance_at_z(z):  <span class="co"># Mpc</span></span>
-<span id="cb32-27"><a href="#cb32-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">1.0</span> <span class="op">+</span> z) <span class="op">*</span> comoving_distance_at_z(z)</span>
-<span id="cb32-28"><a href="#cb32-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-29"><a href="#cb32-29" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> redshift_from_distance(distance):</span>
-<span id="cb32-30"><a href="#cb32-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> distance<span class="op">*</span>H_0<span class="op">/</span>c</span>
-<span id="cb32-31"><a href="#cb32-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-32"><a href="#cb32-32" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> brightness_temperature(flux, width, frequency, redshift) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb32-33"><a href="#cb32-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (</span>
-<span id="cb32-34"><a href="#cb32-34" aria-hidden="true" tabindex="-1"></a>        <span class="fl">1.1e35</span> <span class="op">*</span> flux</span>
-<span id="cb32-35"><a href="#cb32-35" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span> (width <span class="op">*</span> <span class="dv">1000</span>) <span class="op">**</span> (<span class="op">-</span><span class="dv">2</span>)</span>
-<span id="cb32-36"><a href="#cb32-36" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span> (frequency <span class="op">/</span> <span class="dv">1000</span>) <span class="op">**</span> (<span class="op">-</span><span class="dv">2</span>)</span>
-<span id="cb32-37"><a href="#cb32-37" aria-hidden="true" tabindex="-1"></a>        <span class="op">*</span> (luminosity_distance_at_z(redshift) <span class="op">/</span> <span class="dv">1000</span>) <span class="op">**</span> <span class="dv">2</span></span>
-<span id="cb32-38"><a href="#cb32-38" aria-hidden="true" tabindex="-1"></a>        <span class="op">/</span> (<span class="dv">1</span> <span class="op">+</span> redshift)</span>
-<span id="cb32-39"><a href="#cb32-39" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>xianghan[<span class="st">'luminosity'</span>] <span class="op">=</span> brightness_temperature(xianghan[<span class="st">'Flux density (Jy)'</span>], xianghan[<span class="st">'Intrinsic width (ms)'</span>], xianghan[<span class="st">'Observed width (ms)'</span>],redshift_from_distance(xianghan[<span class="st">'Distance (Gpc)'</span>]<span class="op">*</span><span class="dv">1000</span>))</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>sample <span class="op">=</span> xianghan.dropna()</span>
-<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>sns.histplot(sample[<span class="st">'luminosity'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
-<pre><code>&lt;AxesSubplot: xlabel='luminosity', ylabel='Count'&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="06-repeaters-and-non-repeaters-statisticaly-similar-ensembles_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+<div class="cell" data-execution_count="129">
+<div class="cell-output cell-output-display" data-execution_count="129">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: left;">Sample</th>
+<th style="text-align: right;">Statistic</th>
+<th style="text-align: right;">Critical values (<span class="math inline">\(\alpha\)</span> = 0.05)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: left;">All data</td>
+<td style="text-align: right;">13.3245</td>
+<td style="text-align: right;">0.757</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Non-repeating</td>
+<td style="text-align: right;">9.08615</td>
+<td style="text-align: right;">0.751</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: left;">Repeating</td>
+<td style="text-align: right;">2.24584</td>
+<td style="text-align: right;">0.687</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
+<p>Clearly, the results are different from what is stated from the paper.</p>
+<p><img src="imgs/xiang-han2022-table2.png" class="img-fluid"></p>
+<p>Even for the exact same data on the variable <code>xianghan</code> (Repeating) and the exact copy of the <code>Intrinsic width (ms)</code> parameters, the values are different. I have been trying to figure that out for about 3 weeks but no avail. Here are the things that I have tried:</p>
+<ul>
+<li>A custom Anderson-Darling function which yielded higher values.</li>
+<li>Excluding some values (No.&nbsp;2, 12, 20) which yielded close enough but I doubt that is the reason.</li>
+</ul>
+<p>I decided to stop trying and move on to something else.</p>
 
 
 </section>
