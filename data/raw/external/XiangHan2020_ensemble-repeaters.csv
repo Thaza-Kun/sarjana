@@ -1,6 +1,6 @@
-No.,Sources,Observed width (ms),Intrinsic width (ms),Flux density (Jy),Fluence (Jy ms),Distance (Gpc), Refs.
+No.,Sources,Observed width (ms),Intrinsic width (ms),Flux density (Jy),Fluence (Jy ms),Distance (Gpc),Refs. 
 1,FRB121102,4.82,4.78,0.25,0.372,1.61,(1) 
-2,FRB180814.J0422+73,23.45,23.43,,22.57,0.39,(2)(3) 
+2,FRB180814.J0422+73,22.57,23.43,,22.57,0.39,(2)(3) 
 3,FRB171019,4.62,4.08,,101.54,1.89,(4) 
 4,FRB180916.J0158+65,5.27,5.16,2.08,1.62,0.58,(5) 
 5,FRB181030.J1054+73,1.01,0.10,3.15,4.75,0.24,(5) 
