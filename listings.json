@@ -2,13 +2,9 @@
   {
     "listing": "/index.html",
     "items": [
-      "/notebooks/01-filter-telescope.html",
-      "/notebooks/03-filter-repeaters.html",
       "/notebooks/06-repeaters-and-non-repeaters-statisticaly-similar-ensembles.html",
-      "/notebooks/05-calculate-params.html",
       "/notebooks/04-UMAP-HDBSCAN-reduced-params.html",
-      "/notebooks/02-UMAP-HDBSCAN.html",
-      "/notebooks/07-classification-mechanism.html"
+      "/notebooks/02-UMAP-HDBSCAN.html"
     ]
   }
 ]
