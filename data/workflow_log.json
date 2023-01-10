@@ -3101,5 +3101,59 @@
             "metric": "f2_score"
         },
         "name": "FRBSTATS_UMAP-HDBSCAN"
+    },
+    {
+        "timestamp": "2023-01-02:10:38",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9400544959128065,
+            "metric": "f2_score"
+        },
+        "name": "HDBSCAN_on_important_features"
+    },
+    {
+        "timestamp": "2023-01-02:10:41",
+        "parameters": {
+            "columns": [
+                "bc_width",
+                "width_fitb",
+                "flux",
+                "fluence",
+                "scat_time",
+                "sp_idx",
+                "sp_run",
+                "high_freq",
+                "low_freq",
+                "peak_freq",
+                "z",
+                "logE_rest_400",
+                "logsubw_int_rest"
+            ],
+            "seed": 42,
+            "min_cluster_size": 19
+        },
+        "score": {
+            "value": 0.9396277802995914,
+            "metric": "f2_score"
+        },
+        "name": "HDBSCAN_on_important_features"
     }
 ]

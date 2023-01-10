@@ -26,11 +26,95 @@ from sarjana.transients.parameters import (
     rest_frequency,
     rest_time_width,
 )
-from sarjana.utils.types import WorkflowMetadata, WorkflowResult
+from sarjana.utils.types import (
+    ParameterRecord,
+    ScoreRecord,
+    WorkflowMetadata,
+    WorkflowResult,
+)
 from sarjana.loggers.logger import logflow
 from sarjana.loggers.workflow import flowlogger
 
 from sarjana.workflows.replications import compare_with_chen2021
+
+
+@logflow(
+    name="HDBSCAN_on_important_features",
+    description="We try clustering based on important features instead of on embedding space",
+)
+def HDBSCAN_important_features(
+    min_cluster_size: int = 19,
+    seed: int = 42,
+    filename_prefix: str = "HDBSCAN_important_features",
+    **kwargs,
+) -> WorkflowResult:
+    params: List[str] = [
+        # Observational
+        "bc_width",
+        "width_fitb",
+        "flux",
+        "fluence",
+        "scat_time",
+        "sp_idx",
+        "sp_run",
+        "high_freq",
+        "low_freq",
+        "peak_freq",
+        # Model dependent
+        "z",
+        "logE_rest_400",
+        "logsubw_int_rest",
+    ]
+    cluster_by = ["high_freq", "low_freq", "peak_freq", "logE_rest_400"]
+
+    dropna_subset = ["flux", "fluence", "logE_rest_400"]
+    data = load_hashimoto2022(
+        source="Hashimoto2022_chimefrbcat1.csv",
+        interval=("2018-07-25", "2019-07-01"),
+    )
+    repeating, non_repeating = separate_repeater_and_non_repeater(data=data)
+    sample, test = train_test_split_subset(
+        subsample=repeating, sidesample=non_repeating
+    )
+
+    data = run_hdbscan(
+        data=data,
+        columns=cluster_by,
+        min_cluster_size=min_cluster_size,
+        threshold=0.1,
+    )
+    # sns.relplot(data=data, x="x", y="y", hue="group").savefig(
+    #     Path(
+    #         graph_path,
+    #         f"{filename_prefix}_UMAP_HDBSCAN_{postfix}.png",
+    #     )
+    # )
+    params.extend(["group"])
+    data = reduce_dimension_to_2(
+        sample=sample,
+        params=params,
+        drop_na=dropna_subset,
+        test=test,
+        technique="UMAP",
+        seed=seed,
+    )
+    postfix: str = f"(mcs={min_cluster_size}_seed={seed})"
+    sns.relplot(data=data, x="x", y="y", hue="label").savefig(
+        Path(graph_path, f"{filename_prefix}_UMAP_{postfix}.png")
+    )
+    _, score = compare_with_chen2021(
+        data=data, filename_prefix=filename_prefix, filename_postfix=postfix
+    )
+    result = WorkflowMetadata(
+        parameters=ParameterRecord(
+            columns=params,
+            seed=seed,
+            min_cluster_size=min_cluster_size,
+        ),
+        timestamp=datetime.now().strftime("%Y-%m-%d:%H:%M"),
+        score=ScoreRecord(value=score, metric="f2_score"),
+    )
+    return data, result
 
 
 @logflow(
