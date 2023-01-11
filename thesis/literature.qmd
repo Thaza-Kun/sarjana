@@ -1,5 +1,15 @@
 # Literature Review
 ## Observed Properties
+- Dispersion Measure
+- Centre Frequency
+- Peak Frequency
+- Highest Frequency
+- Lowest Frequency
+- Scattering Time
+- Time width
+- Flux
+- Fluence
+
 ### Dispersion Measure
 As radio signals propagate through space, it interacts with mediums it encounters and thus is dispersed.
 As a consequence, its arrival time is directly dependent on its frequency with lower frequencies arriving later [@day_pinpointing_2022; @kulkarni_dispersion_2020].
@@ -51,6 +61,11 @@ $$
 $$ {#eq-RM-intergral}
 
 ## Derived Properties
+- Redshift
+- Energy
+- Intrinsic duration
+- Rest-frame intrinsic duration
+- Luminosity
 
 ### Distance Constraints
 The DM of the FRBs can be used to infer the distance of the source by estimating contributions along the line of sight.

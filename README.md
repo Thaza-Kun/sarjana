@@ -1,14 +1,15 @@
 # Masters Project
-This repository is meant to document my Masters in Physics' work under Dr Noriah Hashim and Dr Zambri Zainal in University Malaya.
+This repository is meant to document my Masters in Physics' work under Dr Noriah Hashim and Dr Zamri Zainal in University Malaya.
 
 ## Problem Statements
 
-These problem statements are taken from the proposal and will likely change and become more specific in the future:
+These problem statements are as follows:
 
-1.  What relationship of its properties can be extracted from the population of known FRBs now that we have more than 800 observed transients?
-2.  Which FRBs exhibit interesting properties compared to the rest of the population?
-3.  What might be the reason behind the interesting properties of the FRBs in question (2)?
+1.  Can we use machine learning techniques to help classify Fast Radio Bursts (FRBs)?
+2.  If machine learning algorithms uncover more than a binary classification of repeating and non-repeating FRBs, is it possible that they are sampled from different origins?
+
+(modified 2023-01-11)
 
 ## Requirements
-The `cfod` package used to access the CHIME/FRB catalog requires Linux or WSL.
-The `fruitbat` package used to calculate redshift requires Linux or WSL.
+- The `cfod` package used to access the CHIME/FRB catalog requires Linux or WSL.
+- The `fruitbat` package used to calculate redshift requires Linux or WSL.

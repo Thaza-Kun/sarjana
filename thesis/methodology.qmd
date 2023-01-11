@@ -49,6 +49,3 @@ This study can be divided roughly into four phases and is expected to be 2 years
 ![](../_assets/gantt-chart.png)
 
 :::
-
-<!-- TODO Gantt Chart Here refer https://mermaid-js.github.io/mermaid/#/gantt -->
-<!-- ? DO we have to? -->
