@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.313">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Murthadza Aznam">
+<meta name="dcterms.date" content="2023-01-12">
+
+<title>Masters Project - Comparing HDBSCAN classification statistically</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<meta property="og:title" content="Masters Project - Comparing HDBSCAN classification statistically">
+<meta property="og:description" content="Is there any statistical difference between classifications?">
+<meta property="og:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/imgs/jupyter-python.jpg">
+<meta property="og:site-name" content="Masters Project">
+<meta name="twitter:title" content="Masters Project - Comparing HDBSCAN classification statistically">
+<meta name="twitter:description" content="Is there any statistical difference between classifications?">
+<meta name="twitter:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/imgs/jupyter-python.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Masters Project</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Comparing HDBSCAN classification statistically</h1>
+            <p class="subtitle lead">Is there any statistical difference between classifications?</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Murthadza Aznam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">January 12, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#getting-the-data" id="toc-getting-the-data" class="nav-link active" data-scroll-target="#getting-the-data">0. Getting the Data</a>
+  <ul class="collapse">
+  <li><a href="#source" id="toc-source" class="nav-link" data-scroll-target="#source">0.1 Source</a></li>
+  </ul></li>
+  <li><a href="#preprocessing" id="toc-preprocessing" class="nav-link" data-scroll-target="#preprocessing">1. Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#calculating-parameters" id="toc-calculating-parameters" class="nav-link" data-scroll-target="#calculating-parameters">1.1 Calculating Parameters</a></li>
+  <li><a href="#choosing-parameters" id="toc-choosing-parameters" class="nav-link" data-scroll-target="#choosing-parameters">1.2 Choosing Parameters</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="cell" data-execution_count="82">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns<span class="op">;</span> sns.set_theme()</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="getting-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="getting-the-data">0. Getting the Data</h2>
+<section id="source" class="level3">
+<h3 class="anchored" data-anchor-id="source">0.1 Source</h3>
+<p>This notebook will make use of classifications made by <a href="https://ui.adsabs.harvard.edu/abs/2022MNRAS.509.1227C/abstract">Chen, Bo Han et. al.&nbsp;(2022)</a> and parameters calculated by <a href="https://academic.oup.com/mnras/article/511/2/1961/6507586">Hashimoto, Tetsuya et. al.&nbsp;(2022)</a>.</p>
+<div class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>chen2022 <span class="op">=</span> pd.read_csv(Path(<span class="st">'..'</span>, <span class="st">'data'</span>, <span class="st">'raw'</span>, <span class="st">'external'</span>, <span class="st">'chen2022_classification.csv'</span>))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>hashimoto2022 <span class="op">=</span> pd.read_csv(Path(<span class="st">'..'</span>, <span class="st">'data'</span>, <span class="st">'raw'</span>, <span class="st">'external'</span>, <span class="st">'Hashimoto2022_chimefrbcat1.csv'</span>))</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.merge(chen2022[[<span class="st">'tns_name'</span>, <span class="st">'group'</span>]], hashimoto2022, on<span class="op">=</span><span class="st">'tns_name'</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="76">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tns_name</th>
+      <th>group</th>
+      <th>previous_name</th>
+      <th>repeater_name</th>
+      <th>ra</th>
+      <th>ra_err</th>
+      <th>ra_notes</th>
+      <th>dec</th>
+      <th>dec_err</th>
+      <th>dec_notes</th>
+      <th>...</th>
+      <th>weight_fluence_error_m</th>
+      <th>weight</th>
+      <th>weight_error_p</th>
+      <th>weight_error_m</th>
+      <th>weighted_logrhoA</th>
+      <th>weighted_logrhoA_error_p</th>
+      <th>weighted_logrhoA_error_m</th>
+      <th>weighted_logrhoB</th>
+      <th>weighted_logrhoB_error_p</th>
+      <th>weighted_logrhoB_error_m</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>FRB20180725A</td>
+      <td>repeater_cluster_1</td>
+      <td>180725.J0613+67</td>
+      <td>-9999</td>
+      <td>93.42</td>
+      <td>0.04</td>
+      <td>-9999</td>
+      <td>67.10</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>FRB20180727A</td>
+      <td>other_cluster_6</td>
+      <td>180727.J1311+26</td>
+      <td>-9999</td>
+      <td>197.70</td>
+      <td>0.10</td>
+      <td>-9999</td>
+      <td>26.40</td>
+      <td>0.30</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FRB20180729A</td>
+      <td>other_cluster_3</td>
+      <td>180729.J1316+55</td>
+      <td>-9999</td>
+      <td>199.40</td>
+      <td>0.10</td>
+      <td>-9999</td>
+      <td>55.58</td>
+      <td>0.08</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>FRB20180729B</td>
+      <td>repeater_cluster_1</td>
+      <td>180729.J0558+56</td>
+      <td>-9999</td>
+      <td>89.90</td>
+      <td>0.30</td>
+      <td>-9999</td>
+      <td>56.50</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>FRB20180730A</td>
+      <td>other_cluster_5</td>
+      <td>180730.J0353+87</td>
+      <td>-9999</td>
+      <td>57.39</td>
+      <td>0.03</td>
+      <td>-9999</td>
+      <td>87.20</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>784</th>
+      <td>FRB20190701A</td>
+      <td>other_cluster_1</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>277.50</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>59.00</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>785</th>
+      <td>FRB20190701B</td>
+      <td>other_cluster_5</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>302.90</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>80.20</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>786</th>
+      <td>FRB20190701C</td>
+      <td>repeater_cluster_3</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>96.40</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>81.60</td>
+      <td>0.30</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>787</th>
+      <td>FRB20190701D</td>
+      <td>other_cluster_3</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>112.10</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>66.70</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>0.000649</td>
+      <td>1.361506</td>
+      <td>0.574701</td>
+      <td>0.206776</td>
+      <td>0.813142</td>
+      <td>0.485293</td>
+      <td>0.109293</td>
+      <td>0.894742</td>
+      <td>0.25519</td>
+      <td>0.19035</td>
+    </tr>
+    <tr>
+      <th>788</th>
+      <td>FRB20190701E</td>
+      <td>other_cluster_2</td>
+      <td>-9999</td>
+      <td>-9999</td>
+      <td>138.60</td>
+      <td>0.20</td>
+      <td>-9999</td>
+      <td>61.71</td>
+      <td>0.04</td>
+      <td>-9999</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>789 rows × 108 columns</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="preprocessing">1. Preprocessing</h2>
+<section id="calculating-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="calculating-parameters">1.1 Calculating Parameters</h3>
+<section id="intrinsic-width" class="level4">
+<h4 class="anchored" data-anchor-id="intrinsic-width">1.1.1 Intrinsic Width</h4>
+<p>The observed width is easily affected by dispersion, therefore we need to introduce the intrinsic width to study the pulse width more accurately. The intrinsic width is estimated by equation: <span id="eq-intrinsic-width"><span class="math display">\[
+t_i = \sqrt{t^2_\text{obs} − t^2_\text{DM} − t^2_s}
+\tag{1}\]</span></span> In the above formula, <span class="math inline">\(t_i(t_\text{obs})\)</span> is the intrinsic width (observed width), with <span class="math inline">\(t_s\)</span> being the sampling time that depends on the instrument, and <span class="math inline">\(t_\text{DM}\)</span> is the dispersion smearing time-scale as calculated in the following: <span id="eq-dispersion-smearing-time-scale"><span class="math display">\[
+t_\text{DM} = 8.3 \times 10^{−3} \text{DM}\frac{\Delta ν_\text{MHz}}{ν^3_\text{GHz}} ms,
+\tag{2}\]</span></span> where DM is the dispersion measure, <span class="math inline">\(\Delta ν_\text{MHz}\)</span> is the channel bandwidth in the unit of MHz, and <span class="math inline">\(ν_\text{GHz}\)</span> is the central frequency in the unit of GHz. Therefore, the pulse width in the following text represents the intrinsic width.</p>
+</section>
+</section>
+<section id="choosing-parameters" class="level3">
+<h3 class="anchored" data-anchor-id="choosing-parameters">1.2 Choosing Parameters</h3>
+<ul>
+<li>intrinsic width (<code>width_fb</code>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+<li>radio luminosity</li>
+<li>fluence (<code>fluence</code>)</li>
+<li>flux (<code>flux</code>)</li>
+<li>log rest-frame intrinsic duration (<code>logsubw_int_rest</code>)</li>
+<li>radio energy in the logarithmic scale integrated over 400 MHz (<code>logE_rest_400</code>)</li>
+<li>highest frequency (<code>high_freq</code>)</li>
+<li>lowest frequenc (<code>low_freq</code>)</li>
+<li>peak frequency (<code>peak_freq</code>)</li>
+</ul>
+<div class="cell" data-execution_count="77">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'diff_freq'</span>] <span class="op">=</span> data[<span class="st">'high_freq'</span>] <span class="op">-</span> data[<span class="st">'low_freq'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>identifier_params <span class="op">=</span> [</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'tns_name'</span>,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'group'</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>selected_params <span class="op">=</span> [</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">'logsubw_int_rest'</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">'logE_rest_400'</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'high_freq'</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'low_freq'</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'peak_freq'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'flux'</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'fluence'</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'width_fitb'</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'diff_freq'</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> data[[<span class="op">*</span>identifier_params, <span class="op">*</span>selected_params]]</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="78">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>tns_name</th>
+      <th>group</th>
+      <th>logsubw_int_rest</th>
+      <th>logE_rest_400</th>
+      <th>high_freq</th>
+      <th>low_freq</th>
+      <th>peak_freq</th>
+      <th>flux</th>
+      <th>fluence</th>
+      <th>width_fitb</th>
+      <th>diff_freq</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>FRB20180725A</td>
+      <td>repeater_cluster_1</td>
+      <td>-0.748199</td>
+      <td>40.208078</td>
+      <td>760.1</td>
+      <td>485.3</td>
+      <td>607.4</td>
+      <td>2.0</td>
+      <td>4.0</td>
+      <td>0.00030</td>
+      <td>274.8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>FRB20180727A</td>
+      <td>other_cluster_6</td>
+      <td>-0.073706</td>
+      <td>39.791080</td>
+      <td>800.2</td>
+      <td>400.2</td>
+      <td>493.3</td>
+      <td>0.6</td>
+      <td>2.3</td>
+      <td>0.00140</td>
+      <td>400.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>FRB20180729A</td>
+      <td>other_cluster_3</td>
+      <td>-0.948762</td>
+      <td>38.880719</td>
+      <td>692.7</td>
+      <td>400.2</td>
+      <td>525.6</td>
+      <td>12.0</td>
+      <td>20.0</td>
+      <td>0.00010</td>
+      <td>292.5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>FRB20180729B</td>
+      <td>repeater_cluster_1</td>
+      <td>-0.582195</td>
+      <td>38.561879</td>
+      <td>800.2</td>
+      <td>441.8</td>
+      <td>657.5</td>
+      <td>0.9</td>
+      <td>1.2</td>
+      <td>0.00031</td>
+      <td>358.4</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>FRB20180730A</td>
+      <td>other_cluster_5</td>
+      <td>-0.592583</td>
+      <td>41.127444</td>
+      <td>759.2</td>
+      <td>400.2</td>
+      <td>483.5</td>
+      <td>5.0</td>
+      <td>30.0</td>
+      <td>0.00047</td>
+      <td>359.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>784</th>
+      <td>FRB20190701A</td>
+      <td>other_cluster_1</td>
+      <td>-0.423913</td>
+      <td>39.639959</td>
+      <td>800.2</td>
+      <td>400.2</td>
+      <td>800.2</td>
+      <td>1.3</td>
+      <td>1.7</td>
+      <td>0.00061</td>
+      <td>400.0</td>
+    </tr>
+    <tr>
+      <th>785</th>
+      <td>FRB20190701B</td>
+      <td>other_cluster_5</td>
+      <td>-0.463004</td>
+      <td>39.870346</td>
+      <td>732.8</td>
+      <td>400.2</td>
+      <td>471.5</td>
+      <td>1.1</td>
+      <td>1.9</td>
+      <td>0.00060</td>
+      <td>332.6</td>
+    </tr>
+    <tr>
+      <th>786</th>
+      <td>FRB20190701C</td>
+      <td>repeater_cluster_3</td>
+      <td>-0.148206</td>
+      <td>40.362724</td>
+      <td>495.5</td>
+      <td>402.2</td>
+      <td>446.4</td>
+      <td>0.9</td>
+      <td>2.0</td>
+      <td>0.00140</td>
+      <td>93.3</td>
+    </tr>
+    <tr>
+      <th>787</th>
+      <td>FRB20190701D</td>
+      <td>other_cluster_3</td>
+      <td>-0.141426</td>
+      <td>40.835803</td>
+      <td>651.8</td>
+      <td>400.2</td>
+      <td>467.6</td>
+      <td>1.3</td>
+      <td>9.0</td>
+      <td>0.00140</td>
+      <td>251.6</td>
+    </tr>
+    <tr>
+      <th>788</th>
+      <td>FRB20190701E</td>
+      <td>other_cluster_2</td>
+      <td>-0.671894</td>
+      <td>39.964235</td>
+      <td>800.2</td>
+      <td>400.2</td>
+      <td>410.3</td>
+      <td>0.7</td>
+      <td>2.0</td>
+      <td>0.00040</td>
+      <td>400.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>789 rows × 11 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="108">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> itertools <span class="im">import</span> combinations</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> mannwhitneyu</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>mix_match <span class="op">=</span> pd.DataFrame([<span class="op">*</span>combinations(data[<span class="st">'group'</span>].unique(), <span class="dv">2</span>)], columns<span class="op">=</span>[<span class="st">'first'</span>, <span class="st">'second'</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>mix_match[<span class="st">'mww'</span>] <span class="op">=</span> mannwhitneyu(data[data[<span class="st">'group'</span>] <span class="op">==</span> mix_match[<span class="st">'first'</span>]][<span class="st">'width_fitb'</span>], data[data[<span class="st">'group'</span>]<span class="op">==</span>mix_match[<span class="st">'second'</span>]][<span class="st">'width_fitb'</span>])</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>mix_match</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: Can only compare identically-labeled Series objects</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="126">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> idx, (first, second) <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">zip</span>(mix_match[<span class="st">'first'</span>], mix_match[<span class="st">'second'</span>])):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    result <span class="op">=</span> mannwhitneyu(data[data[<span class="st">'group'</span>] <span class="op">==</span> first][<span class="st">'width_fitb'</span>], data[data[<span class="st">'group'</span>] <span class="op">==</span> second][<span class="st">'width_fitb'</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># print(result.__dir__())</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    mix_match.loc[idx, [<span class="st">'mww_width'</span>]] <span class="op">=</span> result.pvalue</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># mix_match.loc[:,['first']].values[0]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="127">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mix_match</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="127">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>first</th>
+      <th>second</th>
+      <th>mww_width</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>repeater_cluster_1</td>
+      <td>other_cluster_6</td>
+      <td>0.009313</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>repeater_cluster_1</td>
+      <td>other_cluster_3</td>
+      <td>0.000323</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>repeater_cluster_1</td>
+      <td>other_cluster_5</td>
+      <td>0.034013</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>repeater_cluster_1</td>
+      <td>other_cluster_2</td>
+      <td>0.021257</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>repeater_cluster_1</td>
+      <td>other_cluster_1</td>
+      <td>0.368829</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>repeater_cluster_1</td>
+      <td>repeater_cluster_3</td>
+      <td>0.201234</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>repeater_cluster_1</td>
+      <td>other_cluster_4</td>
+      <td>0.110173</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>repeater_cluster_1</td>
+      <td>repeater_cluster_2</td>
+      <td>0.014269</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>other_cluster_6</td>
+      <td>other_cluster_3</td>
+      <td>0.070644</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>other_cluster_6</td>
+      <td>other_cluster_5</td>
+      <td>0.649525</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>other_cluster_6</td>
+      <td>other_cluster_2</td>
+      <td>0.740351</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>other_cluster_6</td>
+      <td>other_cluster_1</td>
+      <td>0.702100</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>other_cluster_6</td>
+      <td>repeater_cluster_3</td>
+      <td>0.178768</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>other_cluster_6</td>
+      <td>other_cluster_4</td>
+      <td>0.973988</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>other_cluster_6</td>
+      <td>repeater_cluster_2</td>
+      <td>0.379427</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>other_cluster_3</td>
+      <td>other_cluster_5</td>
+      <td>0.382547</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>other_cluster_3</td>
+      <td>other_cluster_2</td>
+      <td>0.168447</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>other_cluster_3</td>
+      <td>other_cluster_1</td>
+      <td>0.201606</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>other_cluster_3</td>
+      <td>repeater_cluster_3</td>
+      <td>0.005728</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>other_cluster_3</td>
+      <td>other_cluster_4</td>
+      <td>0.175595</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>other_cluster_3</td>
+      <td>repeater_cluster_2</td>
+      <td>0.660534</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>other_cluster_5</td>
+      <td>other_cluster_2</td>
+      <td>0.722313</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>other_cluster_5</td>
+      <td>other_cluster_1</td>
+      <td>0.499936</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>other_cluster_5</td>
+      <td>repeater_cluster_3</td>
+      <td>0.161985</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>other_cluster_5</td>
+      <td>other_cluster_4</td>
+      <td>0.605066</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>other_cluster_5</td>
+      <td>repeater_cluster_2</td>
+      <td>0.716361</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>other_cluster_2</td>
+      <td>other_cluster_1</td>
+      <td>0.803334</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>other_cluster_2</td>
+      <td>repeater_cluster_3</td>
+      <td>0.164067</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>other_cluster_2</td>
+      <td>other_cluster_4</td>
+      <td>0.559644</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>other_cluster_2</td>
+      <td>repeater_cluster_2</td>
+      <td>0.517584</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>other_cluster_1</td>
+      <td>repeater_cluster_3</td>
+      <td>0.802093</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>other_cluster_1</td>
+      <td>other_cluster_4</td>
+      <td>0.971454</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>other_cluster_1</td>
+      <td>repeater_cluster_2</td>
+      <td>0.386282</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>repeater_cluster_3</td>
+      <td>other_cluster_4</td>
+      <td>0.401549</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>repeater_cluster_3</td>
+      <td>repeater_cluster_2</td>
+      <td>0.089872</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>other_cluster_4</td>
+      <td>repeater_cluster_2</td>
+      <td>0.452530</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="80">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> param <span class="kw">in</span> selected_params:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    sns.ecdfplot(data, x<span class="op">=</span>param, hue<span class="op">=</span><span class="st">'group'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-5.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-6.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-7.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-8.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-9-output-9.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="85">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Label randomly</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>control <span class="op">=</span> data.copy()</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>random.shuffle(control[<span class="st">'group'</span>])</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'classification'</span>] <span class="op">=</span> <span class="st">'Chen et. al (2022)'</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>control[<span class="st">'classification'</span>] <span class="op">=</span> <span class="st">'random'</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> param <span class="kw">in</span> selected_params:</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    g <span class="op">=</span> sns.FacetGrid(pd.concat([data, control]), col<span class="op">=</span><span class="st">'classification'</span>, hue<span class="op">=</span><span class="st">'group'</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    g.<span class="bu">map</span>(sns.ecdfplot, param)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    g.add_legend()</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\LENOVO\.pyenv\pyenv-win\versions\3.8.10\lib\random.py:307: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  x[i], x[j] = x[j], x[i]
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_12464\293886728.py:7: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['classification'] = 'Chen et. al (2022)'</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-5.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-6.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-7.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-8.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-9.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="07-post-HDBSCAN-statistics_files/figure-html/cell-10-output-10.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p><code>width_fitb</code> is the intrinsic width of the pulse(The CHIME/FRB Collaboration 2021 doi:10.3847/1538-4365/ac33ab)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
