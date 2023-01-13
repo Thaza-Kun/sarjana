@@ -1,0 +1,6 @@
+book:
+  chapters:
+    - index.qmd
+    - literature.qmd
+    - methodology.qmd
+    - references.qmd

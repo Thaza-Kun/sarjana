@@ -5,22 +5,23 @@ project:
       port: 4000
   pre-render: 
     - python ./scripts/gantt.py
+jupyter: python3
+execute: 
+  echo: false
+
 
 format:
   html:
     theme: cosmo
   pdf:
-    documentclass: scrreprt
+    documentclass: scrreport
+    pdf-engine: xelatex
+  docx:
+    reference-doc: ../_templates/template.docx
 
 book:
-  title: "Characteristic Study Of Selected Fast Radio Bursts (FRB) Transients"
+  title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients"
   author: "Murthadza Aznam"
-  # TODO To be changed when published
-  date: '2022-07-15'
-  chapters:
-    - index.qmd
-    - literature.qmd
-    - methodology.qmd
-    - references.qmd
+  date: 'now'
 
 bibliography: references.bib

@@ -10,13 +10,13 @@ import datetime as dt
 
 sns.set_theme()
 
-progress_file = Path(".", "data", "meta", "progress-1y.csv")
+progress_file = Path("..", "data", "meta", "progress-1y.csv")
 progress = pd.read_csv(progress_file)
 
-progress_file_got = Path(".", "data", "meta", "progress-got.csv")
+progress_file_got = Path("..", "data", "meta", "progress-got.csv")
 progress_got = pd.read_csv(progress_file_got)
 
-milestone_file = Path(".", "data", "meta", "milestones.csv")
+milestone_file = Path("..", "data", "meta", "milestones.csv")
 milestones = pd.read_csv(milestone_file, parse_dates=["date"])
 
 
@@ -91,12 +91,10 @@ def generate_gantt(
 
     if label is not None:
         plt.savefig(
-            Path(
-                ".", "_assets", "gantt-chart-{}.png".format("-".join(label.split(" ")))
-            )
+            Path("_assets", "gantt-chart-{}.png".format("-".join(label.split(" "))))
         )
     else:
-        plt.savefig(Path(".", "_assets", "gantt-chart.png"))
+        plt.savefig(Path("_assets", "gantt-chart.png"))
 
 
 if __name__ == "__main__":

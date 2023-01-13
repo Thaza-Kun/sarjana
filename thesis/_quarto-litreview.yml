@@ -1,0 +1,8 @@
+book:
+  title: 'A Review of the Fast Radio Bursts Literature'
+  subtitle: 'SMX7001'
+  chapters: 
+      - index.qmd
+      - chime-frb.qmd
+      - classifications.qmd
+      - references.qmd

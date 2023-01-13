@@ -46,6 +46,6 @@ This study can be divided roughly into four phases and is expected to be 2 years
 
 :::{.figure}
 
-![](../_assets/gantt-chart.png)
+![](_assets/gantt-chart.png)
 
 :::
