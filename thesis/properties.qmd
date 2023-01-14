@@ -1,0 +1,17 @@
+# Properties of Fast Radio Bursts
+
+## Observed Properties
+
+### Dispersion Measure {#sec-prop-dm}
+
+### Intrinsic Width
+
+### Flux Density and Fluence
+
+## Derived Properties
+
+### Distance
+
+### Brightness Temperature
+
+### Luminosity

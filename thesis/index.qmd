@@ -1,14 +1,30 @@
 # Introduction
 
-Fast radio bursts (FRBs) are bright (50 mJy – 100 Jy), milliseconds long pulses of radio signal that is extra-terrestrial in nature.
-The frequency range of FRBs reported is between  400 MHz to 8 GHz [@petroff_fast_2019].
-The underlying process of its emission is still poorly understood.
-<!-- However, its detection has rapidly increased ever since its identification in Lorimer et al., (2007).
-By June 2022, @spanakis-misirlis_frbstats_2021 has reported 806 FRB events including 25 repeaters indexed from the Transient Name Server, the CHIME/FRB Collaboration and several other cited reports. -->
+About 40 years since the discovery of pulsars [@hewish_rapidlyPulsating_1968], @lorimer_bright_2007 found an intriguing burst in the archival data of pulsar surveys collected by the Parkes Telescope.
+Pulsars are generally a weak source of radio with flux densities ranging from 0.001 to 5 Jy [@stappers_pulsars_2011]. 
+However, this burst is highly energetic with $30\pm 10$ Jy and its distance is inferred to be of extra-galactic origin which leads @lorimer_bright_2007 to conclude it as a new phenomenon.
+The burst is informally known as the 'Lorimer Burst'.
+
+Subsequent search for Lorimer Burst-like signal later supported Lorimer's hypothesis especially in @thornton_population_2013 where 4 more bursts with similar properties are reported.
+The report prompted more astronomers to discover more Lorimer Burst-like signal whether by combing through archival data or by outright detection in many telescopes around the world.
+The name 'fast radio burst' (FRB) were adopted and the Lorimer Burst is now known as FRB 20010724 following the convention FRB YYYYMMDDX [@petroff_fast_2022] where X is an additional identifier should it be necessary.
+
+FRBs are characterized as a radio pulse with durations in the order of milliseconds and a relatively high frequency dispersion (quantified as 'dispersion measure' as will be discussed in @sec-prop-dm). 
+As of the end of 2022, the number of FRB detections surpasses 800 from ~600 unique sources [@spanakis-misirlis_frbstats_2021] as compared to roughly 60 detections in 2019 [@petroff_fast_2019].
+@spanakis-misirlis_frbstats_2021 keeps an open source catalog of detected FRBs with their respective citations^[https://herta-experiment.org/frbstats].
+
+:::{.content-visible when-profile="litreview"}
+For an in-depth review of the growth of FRB research, I would suggest looking into @petroff_fast_2019 and their follow-up review @petroff_fast_2022. 
+In contrast, @bailes_discovery_FRB_2022 is a brief but a more personal record as a person working closely with Lorimer during and after the discovery.
+This review focuses on the current state of the research and how researchers study the FRB population as a whole.
+:::
+
+The origin of FRB is still unknown.
+
+![The cumulative number of detected FRBs over the years and notable landmarks as annotated text. Graph made by @bailes_discovery_FRB_2022](./_assets/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
+<!-- TODO: Redo using FRBSTATS with the annotation -->
 
 {{< include instruments.qmd >}}
-
-{{< include literature/history.qmd >}}
 
 <!-- Classifications -->
 

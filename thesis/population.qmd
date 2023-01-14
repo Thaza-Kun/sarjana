@@ -1,0 +1,64 @@
+# Fast Radio Burst Population
+
+![](./_assets/lat_long.svg)
+<!-- TODO: Use code to draw -->
+
+## The CHIME/FRB Catalog
+
+The commisioning of the CHIME telescope with a FRB processing pipeline (CHIME/FRB) marks the wealth of FRB data.
+<!-- TODO: Sembang detail CHIME/FRB -->
+CHIME/FRB has a wealth of data.
+We can see that among the 818 FRBs detected, 632 (77.1%) are CHIME/FRB.
+Plus, among all of them, CHIME/FRBs data is more thorough than others @the_chimefrbcollaboration_FirstCHIMEFRB_2021. The columns are well documented etc and the whole dataset is available to study^[https://chime-frb-open-data.github.io/].
+
+```{python}
+#| fig-cap: The number of FRBs detected by individual telescope as reported in FRBSTATS^[https://www.herta-experiment.org/frbstats/] to illustrate the sheer dominance of FRBs detected the CHIME/FRB telescope.
+#| label: fig-count-by-telescope
+import pandas as pd
+from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set_theme()
+
+frbstats_path = Path('..', 'data', 'raw', 'external', 'FRBSTATS2022-11-23_population.csv')
+frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
+# plt.yscale('log')
+to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
+counts = to_plot['telescope'].value_counts()
+
+ax = sns.countplot(to_plot, x='telescope', order=counts.index)
+for i in range(len(counts.index)):
+    ax.text(i, counts[i]+0.25, str('  {}%'.format(round(counts[i]/sum(counts)*100, 1))), fontdict=dict(
+        color='black',
+        fontsize=8,
+        horizontalalignment='center',
+    ))
+plt.xticks(rotation=90)
+# TODO: Play with size
+plt.show()
+```
+
+## Repeating and Non-Repeating FRB
+
+## Potentially Repeating FRB
+
+The only obvious differentiation of FRB is whether it is seen to repeat or not.
+@spanakis-misirlis_frbstats_2021 reports a total of 208 (25.3%) detections are associated with 24 repeater sources while 614 (74.7%) detections are non-repeating^[https://www.herta-experiment.org/frbstats as of 14th Jan 2023].
+
+It is important to note that there is no guarantee that non-repeating FRBs will not repeat. Authors such as @pleunis_fast_2021, @bohanchen_uncloaking_2021, @zhuge_machinelearningfrb_2022 and @luo_machinelearningfrb_2022 tried to predict which non-repeating FRB has the potential to repeat using differing strategies.
+
+<!-- TODO Pleunis -->
+
+### Using Machine Learning
+
+<!-- TODO: Cite VanDerPlas Python, Data Science and Machine Learning -->
+Machine learning can be divided into two types, with further specializations. The first type of machine learning is an unsupervised learning where the label of the data is not fed into the algorithm. ...
+
+@bohanchen_uncloaking_2021, @zhuge_machinelearningfrb_2022, and @luo_machinelearningfrb_2022 uses machine learning to try to uncover hidden relationships between the CHIME/FRB catalog 1 and use that hidden relationships to predict which ones is potentially repeating. 
+
+In @bohanchen_uncloaking_2021, the _Uniform Manifold Approximation and Projection_ (UMAP) [@mcinnes_UMAP_2018] is fed FRB data with 13 parameters^[(i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Note that parameters xi-xiii are model dependent.] to be reduced to 2 dimensions and then uses _Hierarchical Density Based Spatial Clustering of Applications with Noise_ (HDBSCAN) [@campello_HDBSCAN_2013] to group together related FRBs. They found that the algorithm forms neat groups of FRBs on properties such as highest frequency, peak frequency, and spectral running. Their model suggest that about 39.7% of the non-repeating samples are potentially repeating and that brings the total repeater population to about 41.9%.
+
+The fact that unsupervised learning can ... there is hidden relationships.
+
+<!-- TODO: Diagram the different workflow -->
+
+In @zhuge_machinelearningfrb_2022 and @luo_machinelearningfrb_2022...

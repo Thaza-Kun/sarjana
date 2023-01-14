@@ -3,6 +3,7 @@ book:
   subtitle: 'SMX7001'
   chapters: 
       - index.qmd
-      - chime-frb.qmd
+      - properties.qmd
+      - population.qmd
       - classifications.qmd
       - references.qmd
