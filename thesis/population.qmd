@@ -5,11 +5,15 @@
 
 ## The CHIME/FRB Catalog
 
-The commisioning of the CHIME telescope with a FRB processing pipeline (CHIME/FRB) marks the wealth of FRB data.
-<!-- TODO: Sembang detail CHIME/FRB -->
-CHIME/FRB has a wealth of data.
-We can see that among the 818 FRBs detected, 632 (77.1%) are CHIME/FRB.
-Plus, among all of them, CHIME/FRBs data is more thorough than others @the_chimefrbcollaboration_FirstCHIMEFRB_2021. The columns are well documented etc and the whole dataset is available to study^[https://chime-frb-open-data.github.io/].
+The Canadian Hydrogen Intensity Mapping Experiment (CHIME) is a stationary radio telescope located in the southern parts of British Columbia, Canada (49^∘^ 19^'^ 14^''^.52 N,  119^∘^ 37^'^ 25^''^.25 W).
+Unlike conventional dish shaped radio telescope, CHIME consists of four 20m x 100m semi-cylindrical reflectors pointed skywards to achieve 8000m^2^ area with a sensitivity between 400 to 800 MHz [@the_chimefrbcollaboration_chime_2018].
+This allows the telescope to map ≳200 square degrees of the sky continuously with three different output pipelines: CHIME/Cosmology, CHIME/FRB, and CHIME/Pulsar.
+The pipeline relevant to this study is the CHIME/FRB pipeline.
+
+The release of the first CHIME/FRB Data Catalog [@the_chimefrbcollaboration_FirstCHIMEFRB_2021] marks the exponential increase in FRB observation data as it releases a total of 536 bursts detected between 25^th^ July 2018 to 1^st^ July 2019.
+We can see in @fig-count-by-telescope that among the 818 FRBs recorded by @spanakis-misirlis_frbstats_2021, 632 (77.1%) bursts^[the count is higher because it includes bursts detected after the catalog's release.] are from the CHIME/FRB dataset.
+The CHIME/FRB data is available at [https://www.chime-frb.ca/](https://www.chime-frb.ca/).
+The open availability and its well-documented nature makes it easy for researchers to study the FRB population. 
 
 ```{python}
 #| fig-cap: The number of FRBs detected by individual telescopes as reported in FRBSTATS^[https://www.herta-experiment.org/frbstats/] to illustrate the sheer dominance of FRBs detected by the CHIME/FRB telescope.
@@ -21,10 +25,10 @@ import seaborn as sns; sns.set_theme()
 
 frbstats_path = Path('..', 'data', 'raw', 'external', 'FRBSTATS2022-11-23_population.csv')
 frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
+frbstats_data['telescope'].replace("CHIME", "CHIME/FRB", inplace=True)
 to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
 counts = to_plot['telescope'].value_counts()
 
-# plt.yscale('log')
 plt.figure(figsize=(8,4))
 ax = sns.countplot(to_plot, y='telescope', order=counts.index)
 for i in range(len(counts.index)):
@@ -34,7 +38,6 @@ for i in range(len(counts.index)):
         verticalalignment='center',
     ))
 # plt.xticks(rotation=90)
-# TODO: Play with size
 plt.show()
 ```
 
@@ -61,7 +64,7 @@ In contrast, an unsupervised learning is when the input data is unlabelled where
 Inferring relationships directly from multi-dimensional features of FRBs is hard so they make use of a machine learning technique called 'dimensional reduction' where 13 features (10 observational + 3 model-dependent) are reduced to a 2-dimensional projection space.
 The authors found that repeater FRBs tend to be very close to each other in the projection space and concluded, with the help of a clustering algortihm, that non-repeating FRBs which formed groups with said repeaters are potentially repeating.
 
-![A 2D projection space for 13 features of FRBs using the _Uniform Manifold Approximation and Projection_ (UMAP) algorithm [@mcinnes_UMAP_2018]. Note that the x and y direction of a UMAP projection has no specific meaning. However, the algorithm prioritizes preserving the local structure of the data set therefore the formation of clumps means that they are related to each other. The grouping is identified using Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN) [@campello_HDBSCAN_2013]. The 13 features are (i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Parameters xi-xiii are model dependent.](./_assets/repeater-candidates_NC_Chen2022.jpg){#fig-repeater-candidates-Chen2022 width="70%"}
+![A 2D projection space for 13 features of FRBs using the _Uniform Manifold Approximation and Projection_ (UMAP) algorithm [@mcinnes_UMAP_2018]. Note that the x and y direction of a UMAP projection has no specific meaning. However, the algorithm prioritizes preserving the local structure of the data set therefore the formation of clumps means that they are related to each other. The grouping is identified using Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN) [@campello_HDBSCAN_2013]. The 13 features are (i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Parameters xi-xiii are model dependent.](./_assets/repeater-candidates_NC_Chen2022.jpg){#fig-repeater-candidates-Chen2022 width=50%}
 
 @luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 utilizes both supervised and unsupervised learning with the methods split into two papers. 
 Their approach is not to choose any one particular algorithm as a single model but uses multiple runs of multilple algorithms and identify shared classifications.
