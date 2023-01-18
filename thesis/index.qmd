@@ -10,7 +10,7 @@ The report prompted more astronomers to discover more Lorimer Burst-like signal 
 The name 'fast radio burst' (FRB) were adopted and the Lorimer Burst is now known as FRB 20010724 following the convention FRB YYYYMMDDX [@petroff_fast_2022] where X is an additional identifier should it be necessary.
 
 FRBs are characterized as a radio pulse with durations in the order of milliseconds and a relatively high frequency dispersion (quantified as 'dispersion measure' as will be discussed in @sec-prop-dm). 
-As of the end of 2022, the number of FRB detections surpasses 800 from ~600 unique sources [@spanakis-misirlis_frbstats_2021] as compared to roughly 60 detections in 2019 [@petroff_fast_2019].
+As of the end of 2022, the number of FRB known surpasses 800 detections from ~600 unique sources [@spanakis-misirlis_frbstats_2021] as compared to roughly 60 detections in 2019 [@petroff_fast_2019].
 @spanakis-misirlis_frbstats_2021 keeps an open source catalog of detected FRBs with their respective citations^[https://herta-experiment.org/frbstats].
 
 :::{.content-visible when-profile="litreview"}

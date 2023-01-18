@@ -16,7 +16,7 @@ format:
   pdf:
     documentclass: scrreport
     pdf-engine: pdflatex
-    template: ../_templates/template.tex
+    # template: ../_templates/template.tex
   docx:
     reference-doc: ../_templates/template.docx
 
