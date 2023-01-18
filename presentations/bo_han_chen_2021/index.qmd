@@ -4,7 +4,7 @@ author: 'Bo Han Chen et. al. (2021)'
 format: 
     revealjs:
         footer: 'Murthadza bin Aznam'
-        logo: './assets/radio-cosmology-lab-logo.png'
+        logo: '../_assets/radio-cosmology-lab-logo.png'
         chalkboard: true
         theme: simple
         slide-number: true
@@ -248,7 +248,7 @@ import datetime as dt
 
 sns.set_theme()
 
-data = pd.read_csv('./assets/progress.csv')
+data = pd.read_csv('progress.csv')
 
 data.start = pd.to_datetime(data.start)
 data.end = pd.to_datetime(data.end)
