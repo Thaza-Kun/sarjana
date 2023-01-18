@@ -51,9 +51,12 @@ It is important to note that there is no guarantee that non-repeating FRBs will 
 ### Using Machine Learning
 
 <!-- TODO: Cite VanDerPlas Python, Data Science and Machine Learning -->
-Machine learning can be divided into two types, with further specializations. The first type of machine learning is an unsupervised learning where the label of the data is not fed into the algorithm. ...
+Machine learning is a set of task designed for a computer to draw more refined conclusions about a dataset so as to be able to make confident predictions about unseen data, usually by running an algorithm iteratively and self-tuning its hyperparameters.
+Algorithms of machine learning are divided into two types: supervised and unsupervised learning [@vanderplas_PythonDataScience_2016].
+A supervised learning is when the input data is labelled where the computer will try to predict the label of unseen data as the result of its training.
+In contrast, an unsupervised learning is when the input data is unlabelled where the computer will try to predict the relationships between data features to uncover a pattern.
 
-@bohanchen_uncloaking_2021, @zhuge_machinelearningfrb_2022, and @luo_machinelearningfrb_2022 uses machine learning to try to uncover hidden relationships between the CHIME/FRB catalog 1 and use that hidden relationships to predict which ones is potentially repeating. 
+@bohanchen_uncloaking_2021, @zhuge_machinelearningfrb_2022, and @luo_machinelearningfrb_2022 uses machine learning to try to uncover hidden relationships between the CHIME/FRB catalog 1 and use In contrast, an unsupervised learning is when the input data is unlabelled that hidden relationships to predict which ones is potentially repeating. 
 
 In @bohanchen_uncloaking_2021, the _Uniform Manifold Approximation and Projection_ (UMAP) [@mcinnes_UMAP_2018] is fed FRB data with 13 parameters^[(i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Note that parameters xi-xiii are model dependent.] to be reduced to 2 dimensions and then uses _Hierarchical Density Based Spatial Clustering of Applications with Noise_ (HDBSCAN) [@campello_HDBSCAN_2013] to group together related FRBs. They found that the algorithm forms neat groups of FRBs on properties such as highest frequency, peak frequency, and spectral running. Their model suggest that about 39.7% of the non-repeating samples are potentially repeating and that brings the total repeater population to about 41.9%.
 
