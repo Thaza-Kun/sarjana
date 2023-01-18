@@ -16,5 +16,7 @@ data/graphs/debug/*
 *_site/
 *_files/
 /.quarto/
+*/index.*
+!*/*.qmd
 
 /.luarc.json
