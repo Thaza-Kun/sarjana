@@ -12,7 +12,7 @@ We can see that among the 818 FRBs detected, 632 (77.1%) are CHIME/FRB.
 Plus, among all of them, CHIME/FRBs data is more thorough than others @the_chimefrbcollaboration_FirstCHIMEFRB_2021. The columns are well documented etc and the whole dataset is available to study^[https://chime-frb-open-data.github.io/].
 
 ```{python}
-#| fig-cap: The number of FRBs detected by individual telescope as reported in FRBSTATS^[https://www.herta-experiment.org/frbstats/] to illustrate the sheer dominance of FRBs detected the CHIME/FRB telescope.
+#| fig-cap: The number of FRBs detected by individual telescopes as reported in FRBSTATS^[https://www.herta-experiment.org/frbstats/] to illustrate the sheer dominance of FRBs detected by the CHIME/FRB telescope.
 #| label: fig-count-by-telescope
 import pandas as pd
 from pathlib import Path
@@ -21,18 +21,19 @@ import seaborn as sns; sns.set_theme()
 
 frbstats_path = Path('..', 'data', 'raw', 'external', 'FRBSTATS2022-11-23_population.csv')
 frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
-# plt.yscale('log')
 to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
 counts = to_plot['telescope'].value_counts()
 
-ax = sns.countplot(to_plot, x='telescope', order=counts.index)
+# plt.yscale('log')
+plt.figure(figsize=(8,4))
+ax = sns.countplot(to_plot, y='telescope', order=counts.index)
 for i in range(len(counts.index)):
-    ax.text(i, counts[i]+0.25, str('  {}%'.format(round(counts[i]/sum(counts)*100, 1))), fontdict=dict(
+    ax.text(counts[i]+0.25,i, str('{}%'.format(round(counts[i]/sum(counts)*100, 1))), fontdict=dict(
         color='black',
         fontsize=8,
-        horizontalalignment='center',
+        verticalalignment='center',
     ))
-plt.xticks(rotation=90)
+# plt.xticks(rotation=90)
 # TODO: Play with size
 plt.show()
 ```
@@ -56,12 +57,19 @@ Algorithms of machine learning are divided into two types: supervised and unsupe
 A supervised learning is when the input data is labelled where the computer will try to predict the label of unseen data as the result of its training.
 In contrast, an unsupervised learning is when the input data is unlabelled where the computer will try to predict the relationships between data features to uncover a pattern.
 
-@bohanchen_uncloaking_2021, @zhuge_machinelearningfrb_2022, and @luo_machinelearningfrb_2022 uses machine learning to try to uncover hidden relationships between the CHIME/FRB catalog 1 and use In contrast, an unsupervised learning is when the input data is unlabelled that hidden relationships to predict which ones is potentially repeating. 
+@bohanchen_uncloaking_2021 uses unsupervised machine learning to uncover hidden relationships between FRBs.
+Inferring relationships directly from multi-dimensional features of FRBs is hard so they make use of a machine learning technique called 'dimensional reduction' where 13 features (10 observational + 3 model-dependent) are reduced to a 2-dimensional projection space.
+The authors found that repeater FRBs tend to be very close to each other in the projection space and concluded, with the help of a clustering algortihm, that non-repeating FRBs which formed groups with said repeaters are potentially repeating.
 
-In @bohanchen_uncloaking_2021, the _Uniform Manifold Approximation and Projection_ (UMAP) [@mcinnes_UMAP_2018] is fed FRB data with 13 parameters^[(i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Note that parameters xi-xiii are model dependent.] to be reduced to 2 dimensions and then uses _Hierarchical Density Based Spatial Clustering of Applications with Noise_ (HDBSCAN) [@campello_HDBSCAN_2013] to group together related FRBs. They found that the algorithm forms neat groups of FRBs on properties such as highest frequency, peak frequency, and spectral running. Their model suggest that about 39.7% of the non-repeating samples are potentially repeating and that brings the total repeater population to about 41.9%.
+![A 2D projection space for 13 features of FRBs using the _Uniform Manifold Approximation and Projection_ (UMAP) algorithm [@mcinnes_UMAP_2018]. Note that the x and y direction of a UMAP projection has no specific meaning. However, the algorithm prioritizes preserving the local structure of the data set therefore the formation of clumps means that they are related to each other. The grouping is identified using Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN) [@campello_HDBSCAN_2013]. The 13 features are (i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Parameters xi-xiii are model dependent.](./_assets/repeater-candidates_NC_Chen2022.jpg){#fig-repeater-candidates-Chen2022}
 
-The fact that unsupervised learning can ... there is hidden relationships.
+@luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 utilizes both supervised and unsupervised learning with the methods split into two papers. 
+Their approach is not to choose any one particular algorithm as a single model but uses multiple runs of multilple algorithms and identify shared classifications.
+The supervised learning used by @luo_machinelearningfrb_2022 includes decision tree method, random forest method, support vector machine method, and the nearest centroid method; where all of them are classification algorithms.
+The unsupervised learning used by @zhuge_machinelearningfrb_2022 includes both dimensional reduction algorithms and clustering algorithms similar to @bohanchen_uncloaking_2021 but different in the way that multiple algorithms of the same task is used such as Pricipal Component Analaysis (PCA), T-distributed Stochastic Neighbour Embedding (T-SNE), and UMAP for dimensional reduction and k-means algorithm and HDBSCAN for the clustering algorithm.
 
 <!-- TODO: Diagram the different workflow -->
 
-In @zhuge_machinelearningfrb_2022 and @luo_machinelearningfrb_2022...
+There is still no consensus on which model best fit the use case of identifying potentially repeating FRBs.
+In spite of that, the fact that algorithms can identify that repeaters are similar to each other than to non-repeaters without knowledge of its repeating nature shows that there is an underlying difference between repeaters and non-repeaters.
+It is implied in all of the approaches [@bohanchen_uncloaking_2021, @luo_machinelearningfrb_2022, @zhuge_machinelearningfrb_2022] that potentially repeating FRBs have latent features of an identified repeater.

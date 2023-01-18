@@ -1,0 +1,1 @@
+bibtex-tidy --curly --numeric --tab --align=13 --sort=key --duplicates=key --no-escape --sort-fields --strip-comments --no-remove-dupe-fields ./thesis/references.bib

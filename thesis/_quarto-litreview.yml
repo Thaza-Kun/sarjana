@@ -5,5 +5,4 @@ book:
       - index.qmd
       - properties.qmd
       - population.qmd
-      - classifications.qmd
       - references.qmd
