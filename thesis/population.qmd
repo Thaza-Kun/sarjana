@@ -1,6 +1,9 @@
 # Fast Radio Burst Population
 
-![](./_assets/lat_long.svg)
+<!-- TODO: Isi -->
+
+![The distribution of FRBs across the sky [@spanakis-misirlis_frbstats_2021].](./_assets/lat_long.svg)
+
 <!-- TODO: Use code to draw -->
 
 ## The CHIME/FRB Catalog

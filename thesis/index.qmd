@@ -21,7 +21,8 @@ This review focuses on the current state of the research and how researchers stu
 
 The origin of FRB is still unknown.
 
-![The cumulative number of detected FRBs over the years and notable landmarks as annotated text. Graph made by @bailes_discovery_FRB_2022](./_assets/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
+![The cumulative number of detected FRBs over the years and notable landmarks as annotated text [@bailes_discovery_FRB_2022].](./_assets/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
+
 <!-- TODO: Redo using FRBSTATS with the annotation -->
 
 {{< include instruments.qmd >}}
