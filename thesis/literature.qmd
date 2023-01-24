@@ -1,13 +1,7 @@
 # Literature Review
-## Observed Properties
-- Centre Frequency
-- Peak Frequency
-- Highest Frequency
-- Lowest Frequency
 
+:::{.as-subchapter}
+{{< include properties.qmd >}}
 
-## Derived Properties
-- Redshift
-- Energy
-- Intrinsic duration
-- Rest-frame intrinsic duration
+{{< include classification.qmd >}}
+:::

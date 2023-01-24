@@ -1,4 +1,5 @@
 book:
+  subtitle: 'SMX7001'
   chapters:
     - index.qmd
     - literature.qmd

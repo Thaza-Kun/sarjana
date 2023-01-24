@@ -2,7 +2,7 @@
 
 About 40 years since the discovery of pulsars [@hewish_rapidlyPulsating_1968], @lorimer_bright_2007 found an intriguing burst in the archival data of pulsar surveys collected by the Parkes Telescope.
 Pulsars are generally a weak source of radio with flux densities ranging from 0.001 to 5 Jy [@stappers_pulsars_2011]. 
-However, this burst is highly energetic with $30\pm 10$ Jy and its distance is inferred to be of extra-galactic origin which leads @lorimer_bright_2007 to conclude it as a new phenomenon.
+However, this burst is highly energetic with $30\pm 10$ Jy flux density and its distance is inferred to be of extra-galactic origin which leads @lorimer_bright_2007 to conclude it as a new phenomenon.
 The burst is informally known as the 'Lorimer Burst'.
 
 Subsequent search for Lorimer Burst-like signal later supported Lorimer's hypothesis especially in @thornton_population_2013 where 4 more bursts with similar properties are reported.
@@ -10,27 +10,65 @@ The report prompted more astronomers to discover more Lorimer Burst-like signal 
 The name 'fast radio burst' (FRB) were adopted and the Lorimer Burst is now known as FRB 20010724 following the convention FRB YYYYMMDDX [@petroff_fast_2022] where X is an additional identifier should it be necessary.
 
 FRBs are characterized as a radio pulse with durations in the order of milliseconds and a relatively high frequency dispersion (quantified as 'dispersion measure' as will be discussed in @sec-prop-dm). 
-As of the end of 2022, the number of FRB known surpasses 800 detections from ~600 unique sources [@spanakis-misirlis_frbstats_2021] as compared to roughly 60 detections in 2019 [@petroff_fast_2019].
-@spanakis-misirlis_frbstats_2021 keeps an open source catalog of detected FRBs with their respective citations^[https://herta-experiment.org/frbstats].
+Its origin is still unknown but as of the end of 2022, the number of FRB known surpasses 800 detections from ~600 unique sources [@spanakis-misirlis_frbstats_2021] as compared to roughly 60 detections in 2019 [@petroff_fast_2019].
+Therefore, the prospect of research on the origin of FRB seems promising.
 
 :::{.content-visible when-profile="litreview"}
 For an in-depth review of the growth of FRB research, I would suggest looking into @petroff_fast_2019 and their follow-up review @petroff_fast_2022. 
 In contrast, @bailes_discovery_FRB_2022 is a brief but a more personal record as a person working closely with Lorimer during and after the discovery.
-This review focuses on the current state of the research and how researchers study the FRB population as a whole.
-:::
-
-The origin of FRB is still unknown.
+This review focuses on the properties of FRB and attempts to classify them further by said properties.
 
 ![The cumulative number of detected FRBs over the years and notable landmarks as annotated text [@bailes_discovery_FRB_2022].](./_assets/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
 
 <!-- TODO: Redo using FRBSTATS with the annotation -->
+:::
 
-{{< include instruments.qmd >}}
+:::{.content-visible when-profile="proposal"}
+This proposal will be structured as follows: @sec-properties lists some of the known properties of a FRB. Some of these properties are taken directly from measurements while some of these properties are inferred from their observational properties and from certain assumptions about the cosmology of the universe. @sec-classification discusses some known types of FRB and some attempts to further subclassify them.
+:::
 
-<!-- Classifications -->
 
-<!-- Machine Learning -->
+## Catalog
 
-<!-- Statistics -->
+Several catalogs exist for the study of FRBs.
+The first one is the FRBCAT @petroff_FRBCATFastRadio_2016 which is no longer maintained past July 2020^[<https://www.frbcat.org/>].
+The maintainers pointed users to refer to the Transient Naming Server (TNS)^[<https://www.wis-tns.org/>] instead which contains various other transients so it can be a bit hard to navigate.
+Another catalog that can be used to study FRBs is the FRBSTATS catalog [@spanakis-misirlis_frbstats_2021] which is open sourced with an easier to use dashboard compared to TNS.
+One other catalog is the CHIME/FRB Catalog^[<https://www.chime-frb.ca/>] released by the Canadian Hydrogen Intensity Mapping Experiment (CHIME) observatory [@the_chimefrbcollaboration_FirstCHIMEFRB_2021].
+
+![The distribution of FRBs across the sky using the FRBSTATS Catalog [@spanakis-misirlis_frbstats_2021].](./_assets/lat_long.svg){#fig-frb-dist}
+
+<!-- TODO: Use code to draw -->
+
+The catalog used depends on the use-case of the paper.
+For example, @bailes_discovery_FRB_2022 used the FRBSTATS Catalog to show a statistical overview of the growth of FRB detections.
+Other authors, including @hashimoto_EnergyFunctionsFast_2022, @bohanchen_uncloaking_2021, @pleunis_FastRadioBurst_2021 to name a few, used the CHIME/FRB Catalog because it is well-documented and very comprehensive.
+Limiting one's study to only the CHIME/FRB telescope is not much of a loss for a statistical study because as we can see in @fig-count-by-telescope that among the 818 FRBs recorded by @spanakis-misirlis_frbstats_2021, 632 (77.3%) bursts^[the count is higher because it includes bursts detected after the catalog's release.] are from the CHIME/FRB telescope.
+
+```{python}
+#| fig-cap: The number of FRBs detected by individual telescopes as reported in FRBSTATS^[https://www.herta-experiment.org/frbstats/] to illustrate the sheer dominance of FRBs detected by the CHIME/FRB telescope.
+#| label: fig-count-by-telescope
+
+import pandas as pd
+from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set_theme()
+
+frbstats_path = Path('..', 'data', 'raw', 'external', 'FRBSTATS2022-11-23_population.csv')
+frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
+frbstats_data['telescope'].replace("CHIME", "CHIME/FRB", inplace=True)
+to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
+counts = to_plot['telescope'].value_counts()
+
+plt.figure(figsize=(8,4))
+ax = sns.countplot(to_plot, y='telescope', order=counts.index)
+for i in range(len(counts.index)):
+    ax.text(counts[i]+0.25,i, str('{}%'.format(round(counts[i]/sum(counts)*100, 1))), fontdict=dict(
+        color='black',
+        fontsize=8,
+        verticalalignment='center',
+    ))
+plt.show()
+```
 
 {{< include problems.qmd >}}

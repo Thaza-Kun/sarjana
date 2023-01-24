@@ -1,5 +1,8 @@
 # Methodology
 ## Data Source
+
+
+
 <!-- TODO Beautify -->
 Listed below are open data on FRBs released by their respective telescopes that might be helpful for the research:
 

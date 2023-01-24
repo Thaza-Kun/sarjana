@@ -26,3 +26,5 @@ book:
   date: 'now'
 
 bibliography: references.bib
+filters: 
+  - include-subchapters.lua

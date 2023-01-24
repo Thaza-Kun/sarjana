@@ -71,8 +71,6 @@ If so, how do we identify them?
 
 A 2d mapping of 10+ selected features of FRBs using different techniques shows FRBs with similar features clump together.
 :::
-<!-- TODO: Chen, luo and zhuge -->
-<!-- TODO: Pictures -->
 
 :::{.notes}
 <!-- 30 sec -->

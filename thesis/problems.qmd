@@ -1,15 +1,24 @@
 :::{.content-visible unless-profile="litreview"}
 ## Problem Statement
-This proposal aims to answer questions such as:
 
-1. What relationship of its properties can be extracted from the population of known FRBs now that we have more than 800 observed transients?
-2. Which FRBs exhibit interesting properties compared to the rest of the population?
-3. What might be the reason behind the interesting properties of the FRBs in question (2)?
+It is very apparent that the nature of FRB is currently unknown.
+@petroff_fast_2019 counted at least 55 papers on the theories for the progenitor models of FRB, most of which involves a neutron star.
+This research does not attempt to add a new progenitor theory into the literature.
+However, this theoretical aspect of the study of FRB can benefit from having an understanding in the difference and similarities between known FRBs.
+
+The most obvious difference between FRBs is that some of them repeat but some of them seem to not repeat. 
+Some literature have found differences in morphology and distribution discussed later in the same section.
+All these differences will be discussed in @sec-classification.
+
+However, these literatures does not address the possibility of a subtype within their respective known types.
+This research aims to address that possibility with the assumption that both repeaters and non-repeaters may not have a single origin but multiple origins with overlapping properties making up the 'fast radio burst' phenomena.
+These are the questions that this research proposes to answer:
+
+1. Does subsets of repeaters and non-repeaters with specific criteria show statistical significance as opposed to randomly assigning subset labels? 
+2. What properties of FRB makes up the differences between subsets?
+3. Finally, can these subsets be fitted into existing theories showing that they are indeed multiple phenomena masked as one?
 
 ## Objective
-Now that there is an abundant number of FRB detected, and many more are expected to be detected, this proposal aims to:
 
-1. Study the distribution of FRBs to understand the relationship between its properties.
-2. Study the properties of selected samples of FRB to gain insight on its source or emission mechanism.
-3. Implement programming methods for the distribution study of FRBs and for the feature study of selected FRBs.
+<!-- TODO: Objective -->
 :::

@@ -1,0 +1,85 @@
+# Fast Radio Burst Classification {#sec-classification}
+
+## Repeating and Non-Repeating FRB {#sec-class-r-vs-nr}
+
+Early searches for FRB found that bursts do not repeat [@lorimer_bright_2007; @petroff_fast_2019].
+However, @spitler_RepeatingFastRadio_2016 found ten additional bursts coming from the source of FRB 121102.
+FRB 121102 is extensively studied among the known FRB with about 7% of the literature on "fast radio bursts" contains the keyword "FRB 121102" in its title or abstract up to the year 2022 as indexed by the NASA Astrophysics Data System^[<https://ui.adsabs.harvard.edu/>]
+This particular FRB is special in several ways:
+
+1. it is the first FRB detected outside of Parkes telescope [@spitler_FastRadioBurst_2014; @petroff_fast_2019], confirming it as an astronomical phenomenon.
+2. it is the first FRB detected to be repeating.
+3. it is also the only FRB to be detected actively repeating with at least 100 subbursts [@li_StatisticalPropertiesRepeating_2019b].
+
+```{python}
+#| fig-cap: The trends of papers with key words 'FRB' and 'FRB 121102' in its title or abstract as indexed by the NASA Astrophysics Data System (NASA/ADS)
+#| label: fig-literature
+
+import pandas as pd
+from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set_theme()
+
+nasa_ads_frb = pd.read_csv(
+    Path('..', 'data', 'raw', 'external', 'NASA-ADS-FRB-all-papers-count.csv')
+    )
+nasa_ads_frb121102 = pd.read_csv(
+    Path('..', 'data', 'raw', 'external', 'NASA-ADS-FRB121102-papers-count.csv')
+    )
+nasa_ads_frb['Key word'] = 'Fast Radio Bursts'
+nasa_ads_frb121102['Key word'] = 'FRB 121102'
+
+data = pd.concat([nasa_ads_frb121102, nasa_ads_frb])
+data['Items'] = data['Article Count'].apply(lambda x: ['x'] * x)
+data = data.explode('Items')
+
+plt.figure(figsize=(8,4))
+ax = sns.histplot(data, x='Year', hue='Key word', bins=len(data['Year'].unique()), element='step', multiple='dodge')
+sns.move_legend(ax, 'upper left')
+```
+
+It is important to note that there is no guarantee that non-repeating FRBs will not repeat. Authors such as @pleunis_FastRadioBurst_2021, @bohanchen_uncloaking_2021, @zhuge_machinelearningfrb_2022 and @luo_machinelearningfrb_2022 tried to predict which non-repeating FRB has the potential to repeat using differing strategies.
+
+## By Morphology {#sec-class-morphology}
+
+@pleunis_FastRadioBurst_2021 found four different morphology archetypes among the CHIME/FRB Catalog. 
+They are: (i) broadband simple burst, (ii) narrowband simple burst, (iii) complex multi-peak, and (iv) complex multi-subburst.
+The multi-peak archetype shows peaks at similar frequency ranges with with slightly different intensity.
+The complex multi-subburst archetype, however, show an apparent downwards shift in frequency with respect to time.
+
+![An single example of a FRB morphology from the CHIME/FRB Catalog numbered according to their archetype number. These are FRBs 20190527C, 20190515D, and 20181117B and the 2019 August 10 burst of repeating FRB 20190117A. [@pleunis_FastRadioBurst_2021]](./_assets/plenius-archetype.jpg){#fig-pleunis-archetype}
+
+They found that repeaters never fall under archetype (i) but archetype (iv) was almost always seen in repeaters.
+Moreover, the repeater subbursts never show an upwards shift in frequency.
+Using this information, they try to deduce which of the non-repeaters might repeat based on their morphology. 
+They expect the following FRBs to repeat: FRB 20181125A, FRB 20190308C, FRB 20190527A, FRB 20190422A, FRB 20190423A, FRB 20190601C.
+
+![The morphologies of some non-repeaters showing an apparent upward shift in frequency. [@pleunis_FastRadioBurst_2021]](./_assets/pleunis-non-repeater-upwards-shift.jpg){#fig-non-repeaters-upward-shift}
+
+A different approach, employed by @cui_FastRadioBursts_2021, looks at the statistical difference between selected properties of FRB -- namely its intrinsic pulse width and its radio luminosity.
+Even with a small sample of 20 repeater vs 91 non-repeater samples, they found a statistical difference well below the p-value of 0.05 for both of the property distributions.
+This statistical significance shows that repeaters and non-repeaters may come from different populations of FRB. 
+
+## Using Machine Learning {#sec-class-ml}
+
+Machine learning is a set of task designed for a computer to draw more refined conclusions about a dataset so as to be able to make confident predictions about unseen data, usually by running an algorithm iteratively and self-tuning its hyperparameters.
+Algorithms of machine learning are divided into two types: supervised and unsupervised learning [@vanderplas_PythonDataScience_2016].
+A supervised learning is when the input data is labelled where the computer will try to predict the label of unseen data as the result of its training.
+In contrast, an unsupervised learning is when the input data is unlabelled where the computer will try to predict the relationships between data features to uncover a pattern.
+
+@bohanchen_uncloaking_2021 uses unsupervised machine learning to uncover hidden relationships between FRBs.
+Inferring relationships directly from multi-dimensional features of FRBs is hard so they make use of a machine learning technique called 'dimensional reduction' where 13 features (10 observational + 3 model-dependent) are reduced to a 2-dimensional projection space.
+The authors found that repeater FRBs tend to be very close to each other in the projection space and concluded, with the help of a clustering algortihm, that non-repeating FRBs which formed groups with said repeaters are potentially repeating.
+
+![A 2D projection space for 13 features of FRBs using the _Uniform Manifold Approximation and Projection_ (UMAP) algorithm [@mcinnes_UMAP_2018]. Note that the x and y direction of a UMAP projection has no specific meaning. However, the algorithm prioritizes preserving the local structure of the data set therefore the formation of clumps means that they are related to each other. The grouping is identified using Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN) [@campello_HDBSCAN_2013]. The 13 features are (i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Parameters xi-xiii are model dependent.](./_assets/repeater-candidates_NC_Chen2022.jpg){#fig-repeater-candidates-Chen2022 width=50%}
+
+@luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 utilizes both supervised and unsupervised learning with the methods split into two papers. 
+Their approach is not to choose any one particular algorithm as a single model but uses multiple runs of multilple algorithms and identify shared classifications.
+The supervised learning used by @luo_machinelearningfrb_2022 includes decision tree method, random forest method, support vector machine method, and the nearest centroid method; where all of them are classification algorithms.
+The unsupervised learning used by @zhuge_machinelearningfrb_2022 includes both dimensional reduction algorithms and clustering algorithms similar to @bohanchen_uncloaking_2021 but different in the way that multiple algorithms of the same task is used such as Pricipal Component Analaysis (PCA), T-distributed Stochastic Neighbour Embedding (T-SNE), and UMAP for dimensional reduction and k-means algorithm and HDBSCAN for the clustering algorithm.
+
+<!-- TODO: Diagram the different workflow -->
+
+There is still no consensus on which model best fit the use case of identifying potentially repeating FRBs.
+In spite of that, the fact that algorithms can identify that repeaters are similar to each other than to non-repeaters without knowledge of its repeating nature shows that there is an underlying difference between repeaters and non-repeaters.
+It can be said that some non-repeating FRBs that is potentially repeating FRB have latent features of true repeaters [@bohanchen_uncloaking_2021].

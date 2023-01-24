@@ -4,5 +4,5 @@ book:
   chapters: 
       - index.qmd
       - properties.qmd
-      - population.qmd
+      - classification.qmd
       - references.qmd
