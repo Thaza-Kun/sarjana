@@ -47,7 +47,7 @@ They are: (i) broadband simple burst, (ii) narrowband simple burst, (iii) comple
 The multi-peak archetype shows peaks at similar frequency ranges with with slightly different intensity.
 The complex multi-subburst archetype, however, show an apparent downwards shift in frequency with respect to time.
 
-![An single example of a FRB morphology from the CHIME/FRB Catalog numbered according to their archetype number. These are FRBs 20190527C, 20190515D, and 20181117B and the 2019 August 10 burst of repeating FRB 20190117A. [@pleunis_FastRadioBurst_2021]](./_assets/plenius-archetype.jpg){#fig-pleunis-archetype}
+![Single examples from the CHIME/FRB Catalog of the different FRB morphologies numbered according to their archetype number. These are FRBs 20190527C, 20190515D, and 20181117B and the 2019 August 10 burst of repeating FRB 20190117A [@pleunis_FastRadioBurst_2021].](./_assets/plenius-archetype.jpg){#fig-pleunis-archetype}
 
 They found that repeaters never fall under archetype (i) but archetype (iv) was almost always seen in repeaters.
 Moreover, the repeater subbursts never show an upwards shift in frequency.

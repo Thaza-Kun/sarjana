@@ -1,52 +1,48 @@
 # Methodology
+
 ## Data Source
 
+The main source of data for this research will be the CHIME/FRB Catalog.
+The methods described by @bohanchen_uncloaking_2021, @luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 is tested against the CHIME/FRB Catalog and not from other telescopes.
+Obtaining data from other telescopes presents a bit of a challenge because of the difference in robustness between reporting.
+As an example, @the_chimefrbcollaboration_FirstCHIMEFRB_2021 reports the highest frequency and the lowest frequency of a FRB while others do not which was used by @bohanchen_uncloaking_2021 as their input parameter.
+Therefore, replicating the methods described above requires reprocessing data from their respective sources to obtain desired properties.
+Some links to the raw data is appended in @sec-appendix-raw
 
+## Subclassification Criteria
 
-<!-- TODO Beautify -->
-Listed below are open data on FRBs released by their respective telescopes that might be helpful for the research:
+A close look at @fig-repeater-candidates-Chen2022 reveals that repeaters clump together at different points on the 2D projection.
+This could be due to differences between repeaters which was not looked at by the literature.
+This research will treat the machine learning result as the initial input for subclass criteria and will be refined further throughout the research.
 
-- CHIME/FRB
-    * Server: CANFAR
-        - [doi:10.11570/19.0004](doi:10.11570/19.0004)
-        - [doi:10.11570/19.0005](doi:10.11570/19.0005)
-        - [doi:10.11570/20.0002](doi:10.11570/20.0002)
-        - [doi:10.11570/20.0006](doi:10.11570/20.0006)
-        - [doi:10.11570/20.0006](doi:10.11570/20.0006)
-        <!-- TODO Link to data paper -->
-- Parkes
-    * Sever: gDCMP	
-        - [https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data](https://data-portal.hpc.swin.edu.au/dataset/parkes-frbs-archival-data)
-        - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-high-time-resolution-universe-survey-high-latitude)
-        - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-140514)
-        - [https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215](https://data-portal.hpc.swin.edu.au/dataset/fast-radio-burst-data-frb-150215)
-        <!-- TODO Link to data paper -->
-- Lovell
-    * Server: Zenodo
-        - [https://zenodo.org/record/3974768#.YGWzqK8zap0](https://zenodo.org/record/3974768#.YGWzqK8zap0)
-        <!-- TODO Link to data paper -->
-- STARE2
-    * Server: CalTechDATA
-        - [https://data.caltech.edu/records/1647](https://data.caltech.edu/records/1647)
-        <!-- TODO Link to data paper -->
+This research will proceed with the assumption that some data clusters may actually be a single subclass and is separated due to the assumption of the algorithm.
+This assumption is also used by @bohanchen_uncloaking_2021 such that even though the paper reports the algorithm finding 9 data clusters of FRB, they put all of them into a binary label of whether it is a 'repeater cluster' or a 'non-repeater cluster'.
+We may test whether all of the subclass has statistical difference between each other or only some of them display a significant difference.
 
+## Statistical Test
 
-Other than that, the FRBSTATS^[@spanakis-misirlis_frbstats_2021 [https://www.herta-experiment.org/frbstats/](https://www.herta-experiment.org/frbstats/)] website provides an open-source live update of known FRBs, its properties, and its references. This will be helpful for statistical analysis for the entire population. It can be accessed programmatically via an Application Programming Interface (API) or downloaded as a comma separated value (.csv) or excel (.xlsx) files.
+We will use a statistical test to measure the difference between populations.
+The test employed shall not make any assumption about the shape of the distribution of the data because the shape its distribution is still uncertain [@cui_FastRadioBursts_2021; @cui_StatisticalPropertiesFast_2021].
+As such, tests such as the Kilmogorov--Smirnov test (KS test) and the Mann--Whitney--Wilcoxon test (MWW test) is adequate for this study because they do not assume the shape of distribution but rather on the differences between the shape of each data's cumulative density function [@ivezic_StatisticsDataMining_2020].
+The MWW test have been used by @cui_FastRadioBursts_2021 to test the differences between the intrinsic pulse width and radio luminosities of the repeaters and non-repeaters.
 
-## Data Analysis
-The study will be using Python3.8 or higher to conduct the analysis of the data. It has good support for `.hd5`, `.msgpack`, `.fits` and other common file formats used in astronomy and statistics. In addition to that, the CHIME/FRB Open Data package that aims to assist the analysis of CHIME/FRB datasets, and the ‘astropy’ package (a reliable package for astronomy) is also written in Python.
+<!-- TODO There must be a name to this resampling(?) method? 👇 -->
 
-## Expected Outcome
-The study expects to output the distribution of selected properties mentioned throughout the proposal and pick out important characteristics from the distribution.
+To introduce a control to the test, we will swap the labels of the FRBs randomly and test their differences.
+The chosen subclassification is expected to show a significant difference rather than choosing a random label.
 
 ## Timeline
-This study can be divided roughly into four phases and is expected to be 2 years long:
 
-1.	Distribution study. Phase 1 will consist of a statistical study to the whole population of known FRBs. This is done to get a big picture of the landscape of FRBs.
-2.	Selection of FRBs. Phase 2 is the selection phase where several FRBs with interesting properties will be chosen. The selection phase includes the gathering of observation data on the selected FRB.
-3.	Feature study. Phase 3 will study the chosen FRBs for features that contribute to the interesting properties mentioned in phase 2. This is expected to be longest of the four phases.
-4.	Thesis writing and defence.
+<!-- TODO Expand on timeline -->
+This study is expected to be conducted in four phases:
 
+1.	Exploration phase. 
+2.	Signal Processing phase. 
+3.	Statistical phase.
+4.  Theoretical phase.
+5.	Thesis writing and defence.
+
+<!-- TODO New Gantt chart -->
 :::{.figure}
 
 ![](_assets/gantt-chart.png)

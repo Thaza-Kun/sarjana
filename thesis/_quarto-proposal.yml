@@ -5,3 +5,5 @@ book:
     - literature.qmd
     - methodology.qmd
     - references.qmd
+  appendices: 
+    - appendix/sources.qmd

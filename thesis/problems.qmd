@@ -1,5 +1,5 @@
 :::{.content-visible unless-profile="litreview"}
-## Problem Statement
+## Problem Statement {#sec-problem}
 
 It is very apparent that the nature of FRB is currently unknown.
 @petroff_fast_2019 counted at least 55 papers on the theories for the progenitor models of FRB, most of which involves a neutron star.
@@ -20,5 +20,10 @@ These are the questions that this research proposes to answer:
 
 ## Objective
 
-<!-- TODO: Objective -->
+Following the questions defined in @sec-problem, here are the objectives of this study:
+
+1. To employ several methods that can be used to differentiate known FRBs.
+2. To study the statistical differences between properties of FRBs which will thus define characteristics of the respective subclasses.
+3. To compare several theories of FRB where their properties can be evaluated and match them with the subsets.
+
 :::
