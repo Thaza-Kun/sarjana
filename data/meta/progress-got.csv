@@ -1,11 +1,13 @@
-start,end,phase,color,task
-2022-10-17,2023-03-31,Data Exploration,blue,Data Collection
-2022-10-17,2022-11-07,Data Exploration,blue,Exploratory Machine Learning
-2022-11-08,2022-12-11,Data Exploration,blue,Testing Algortihm on FRBSTATS
-2022-12-12,2023-01-14,Data Exploration,blue,Running Algortihm on FRBSTATS
-2023-01-15,2023-03-19,Mechanism Study,#FFB81C,Literature Review
-2023-01-15,2023-02-26,Mechanism Study,#FFB81C,Statistical Test
-2023-02-27,2023-03-31,Mechanism Study,#FFB81C,Mechanism Matching
-2023-04-01,2023-05-27,Feature Study,green,Test Feature Prediction
-2023-05-28,2023-06-30,Feature Study,green,Run Feature Prediction
-2023-10-16,2024-10-14,Thesis Writing,red,Thesis Writing
+start,end,phase,task
+2022-10-17,2023-04-17,Data Exploration,Data Collection
+2022-10-17,2022-12-26,Data Exploration,Literature Review
+2022-10-17,2022-11-07,Data Exploration,Exploratory Machine Learning
+2022-11-08,2022-12-26,Data Exploration,Machine Learning on Chosen Dataset
+2022-12-26,2023-04-17,Statistical Study,Literature Review
+2022-12-26,2023-01-26,Statistical Study,Exploratory Statistical Testing
+2023-01-26,2023-03-26,Statistical Study,Statistical Testing
+2023-03-27,2023-05-15,Statistical Study,Model Fitting
+2023-05-15,2023-06-27,Extrapolation,Signal Processing
+2023-06-27,2023-07-27,Extrapolation,Machine Learning on Processed Data
+2023-07-27,2023-10-16,Theoretical Study,Theoretical Model Matching
+2023-10-16,2024-10-14,Thesis Writing,Thesis Writing

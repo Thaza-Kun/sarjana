@@ -60,17 +60,24 @@ def generate_gantt(
 
     now = (pd.Timestamp.today() - thesis_start).days
 
+    legend_colors = {
+        phase: sns.color_palette()[idx]
+        for idx, phase in enumerate(progress["phase"].unique())
+    }
+
+    progress["color"] = [legend_colors[key] for key in progress["phase"]]
+
     plt.figure(figsize=(15, 6))
     if label is not None:
         plt.title("Masters Study Progress ({})".format(label))
     else:
         plt.title("Masters Study Progress")
     plt.barh(
-        y=progress.task,
-        left=progress.rel_start,
-        width=progress.duration,
-        color=progress.color,
-        label=progress.phase,
+        y=progress["task"],
+        left=progress["rel_start"],
+        width=progress["duration"],
+        color=progress["color"],
+        label=progress["phase"],
     )
     plt.gca().invert_yaxis()
     plt.axvline(x=now, color="orange")
@@ -81,7 +88,6 @@ def generate_gantt(
     plt.grid(axis="y")
 
     # Legends
-    legend_colors = {row.phase: row.color for row in progress.itertuples()}
     legend_elems = [
         Patch(facecolor=legend_colors[key], label=key) for key in legend_colors
     ]
