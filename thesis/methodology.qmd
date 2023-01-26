@@ -42,9 +42,13 @@ This study is expected to be conducted in four phases:
 4.  Theoretical phase.
 5.	Thesis writing and defence.
 
-<!-- TODO New Gantt chart -->
-:::{.figure}
+```{python}
+#| warning: false
+import pandas as pd
+from pathlib import Path
+from sarjana.scripts import gantt
 
-![](_assets/gantt-chart.png)
-
-:::
+progress = pd.read_csv(Path('..', 'data', 'meta', 'progress-got.csv'), parse_dates=['start', 'end'])
+milestones = pd.read_csv(Path('..', 'data', 'meta', 'milestones.csv'), parse_dates=['date'])
+gantt.generate_gantt(progress, milestones=milestones, show=True)
+```

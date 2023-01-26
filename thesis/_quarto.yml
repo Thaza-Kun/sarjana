@@ -4,7 +4,7 @@ project:
   preview: 
       port: 4000
   pre-render: 
-    - python ./scripts/gantt.py
+    - pip install sarjana
 jupyter: python3
 execute: 
   echo: false

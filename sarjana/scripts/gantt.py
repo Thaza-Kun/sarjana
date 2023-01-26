@@ -10,20 +10,13 @@ import datetime as dt
 
 sns.set_theme()
 
-progress_file = Path(".", "data", "meta", "progress-1y.csv")
-progress = pd.read_csv(progress_file)
-
-progress_file_got = Path(".", "data", "meta", "progress-got.csv")
-progress_got = pd.read_csv(progress_file_got)
-
-milestone_file = Path(".", "data", "meta", "milestones.csv")
-milestones = pd.read_csv(milestone_file, parse_dates=["date"])
-
 
 def generate_gantt(
     progress: pd.DataFrame,
     label: Optional[str] = None,
     milestones: Optional[pd.DataFrame] = None,
+    show: bool = False,
+    save: bool = False,
 ) -> None:
     progress["start"] = pd.to_datetime(progress["start"])
     progress["end"] = pd.to_datetime(progress["end"])
@@ -44,10 +37,6 @@ def generate_gantt(
     progress.loc[:, ["rel_start"]] = progress["start"].apply(
         lambda x: (x - thesis_start).days
     )
-    if milestones is not None:
-        milestones.loc[:, ["rel_date"]] = milestones["date"].apply(
-            lambda x: (x - thesis_start).days
-        )
 
     # Create custom x-ticks and x-tick labels
     x_ticks = [i for i in range(thesis_duration + 1)]
@@ -60,9 +49,10 @@ def generate_gantt(
 
     now = (pd.Timestamp.today() - thesis_start).days
 
+    palette = sns.color_palette()
+
     legend_colors = {
-        phase: sns.color_palette()[idx]
-        for idx, phase in enumerate(progress["phase"].unique())
+        phase: palette[idx] for idx, phase in enumerate(progress["phase"].unique())
     }
 
     progress["color"] = [legend_colors[key] for key in progress["phase"]]
@@ -81,9 +71,6 @@ def generate_gantt(
     )
     plt.gca().invert_yaxis()
     plt.axvline(x=now, color="orange")
-    if milestones is not None:
-        for date in milestones["rel_date"]:
-            plt.axvline(x=date, color="blue")
     plt.xticks(ticks=tick_interval, labels=tick_labels, rotation=90)
     plt.grid(axis="y")
 
@@ -93,18 +80,74 @@ def generate_gantt(
     ]
     plt.legend(handles=legend_elems)
 
+    if milestones is not None:
+        milestones.loc[:, ["rel_date"]] = milestones["date"].apply(
+            lambda x: (x - thesis_start).days
+        )
+        locations = [3, 4, 6, 7]
+        idx = 0
+        thesis_writing_location = len(progress["task"].unique()) - 1
+        for date, name in zip(milestones["rel_date"], milestones["name"]):
+            plt.plot(
+                date,
+                locations[idx],
+                marker="*",
+                color="#fdfd96",
+                markersize=23,
+                markeredgecolor="#c23b23",
+                markeredgewidth=2,
+            )
+            center = int((len(name) * 5) / 2)
+            plt.text(
+                date - center,
+                locations[idx] - 0.7,
+                name,
+            )
+            idx += 1
+
+    # progress["task"].index
+    # TODO Milestones
+    # plt.text(
+    #     progress["rel_start"][0] + progress["duration"][0] + 10,
+    #     progress["task"].index[0] + 0.15,
+    #     "Cubaan",
+    # )
+    # plt.plot(
+    #     progress["rel_start"][0] + progress["duration"][0],
+    #     progress["task"].index[0],
+    #     marker="*",
+    #     color="#fdfd96",
+    #     markersize=23,
+    #     markeredgecolor="#c23b23",
+    #     markeredgewidth=2,
+    # )
+
     plt.tight_layout()
 
-    if label is not None:
-        plt.savefig(
-            Path(
-                ".", "_assets", "gantt-chart-{}.png".format("-".join(label.split(" ")))
+    if show:
+        plt.show()
+
+    if save:
+        if label is not None:
+            plt.savefig(
+                Path(
+                    ".",
+                    "_assets",
+                    "gantt-chart-{}.png".format("-".join(label.split(" "))),
+                )
             )
-        )
-    else:
-        plt.savefig(Path(".", "_assets", "gantt-chart.png"))
+        else:
+            plt.savefig(Path(".", "_assets", "gantt-chart.png"))
 
 
 if __name__ == "__main__":
+    progress_file = Path("..", "..", "data", "meta", "progress-1y.csv")
+    progress = pd.read_csv(progress_file)
+
+    progress_file_got = Path("..", "..", "data", "meta", "progress-got.csv")
+    progress_got = pd.read_csv(progress_file_got)
+
+    milestone_file = Path("..", "..", "data", "meta", "milestones.csv")
+    milestones = pd.read_csv(milestone_file, parse_dates=["date"])
     generate_gantt(progress, milestones=None)
     generate_gantt(progress_got, label="GOT", milestones=milestones)

@@ -12,7 +12,7 @@ This particular FRB is special in several ways:
 3. it is also the only FRB to be detected actively repeating with at least 100 subbursts [@li_StatisticalPropertiesRepeating_2019b].
 
 ```{python}
-#| fig-cap: The trends of papers with key words 'FRB' and 'FRB 121102' in its title or abstract as indexed by the NASA Astrophysics Data System (NASA/ADS)
+#| fig-cap: The trends of papers with key words 'Fast Radio Burst' and 'FRB 121102' in its title or abstract as indexed by the NASA Astrophysics Data System (NASA/ADS)
 #| label: fig-literature
 
 import pandas as pd
