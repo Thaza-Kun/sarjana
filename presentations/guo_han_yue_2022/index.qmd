@@ -1,0 +1,236 @@
+---
+title: 'A possible subclassification of fast radio bursts'
+author: '[Guo, Han-Yue & Wei, Hao (2022)](https://ui.adsabs.harvard.edu/abs/2022JCAP...07..010G)'
+format: 
+    revealjs:
+        footer: 'Murthadza bin Aznam'
+        logo: '../_assets/radio-cosmology-lab-logo.png'
+        chalkboard: true
+        theme: simple
+        slide-number: true
+bibliography: references.bib
+output-file: 'slides'
+---
+
+# Introduction
+
+## Motivation
+
+- Neighbouring fields (supernova and Gamma Ray Bursts) have subclassifications
+    - Supernova: type Ia, Ib, Ic, II-P, II-L, & IIn
+    - Gamma ray burst: type I, & II
+- FRB might also have subclasses based on the age of population.
+    - Related to star formation history
+
+## Motivation 
+
+- Both @zhang_CHIMEFastRadio_2022 and @qiang_FastRadioBurst_2022 found that the whole FRB population in the CHIME/FRB Catalog does not track the star formation history.
+
+- The authors hypothesized that only some of the population, not all, track star formation history while others do not.
+
+## Motivation
+
+- Therefore the authors suggest a new classification scheme based on whether it is associated with a young or old stellar population
+
+![](./figures/subclass_scheme.png)
+
+
+# Method
+
+## Data Composition
+
+- 430 non-repeaters
+- 17 repeaters
+
+## Procedure {.smaller}
+::::{.columns}
+:::{.column width='40%'}
+- To select the critical value for the dividing line, the authors defined a set of critical values in the selected properties and iteratively compare the populations' statistical difference.
+- The separation with the smallest p-value is selected as the critical values.
+- It results in 7 distinct regions with 3 possibly merged regions.
+:::
+:::{.column width='60%'}
+![Selected properties' critical value against the resulting p-value if separated by said values. The critical values with the least p-value is presented as a green line in bottom right corner.](./figures/gradient-descent.png){height=400px}
+:::
+::::
+
+## Procedure {.smaller}
+- For each region:
+    - the authors test redshift distribution between the inside and outside of the selected region using Kolmogorov--Smirnov test.
+    - the authors test whether one of the inside--outside pair follow a star formation history simulation following methods described in @zhang_CHIMEFastRadio_2022 and @qiang_FastRadioBurst_2022 using these equations:
+    $$
+        \frac{dN}{dt_\text{obs}\,dz} = \frac{1}{1+z}\cdot\frac{dN}{dt\,dV}\frac{c}{H_0}\cdot\frac{4\pi d^2_C}{h(z)},
+    $$
+    $$
+        \frac{dN}{dt\,dV}\propto \text{SFH}(z)\propto\frac{(1+z)^{2.6}}{1+((1+z)/3.2)^{6.2}},
+    $$
+    $$
+        \frac{dN}{dE}\propto\frac{E}{E_c}^{-\alpha}\exp{(-\frac{E}{E_c})}
+    $$
+
+## Results
+### Distribution
+![The distribution of repeaters (red) and non-repeaters (blue) in the $\nu W-L_\nu$ phase space with the divided line. Number labels are imposed by presenter.](./figures/transient-duration-vs-luminence-labelled.png)
+
+## Results
+### Redshift
+::::{.columns}
+:::{.column width="35%"}
+![](./figures/transient-duration-vs-luminence-labelled.png)
+:::
+:::{.column width="65%"}
+![](./figures/implication-redshift.png)
+:::
+::::
+The authors found that both region 3 and region 8 creates a nice inside--ouside pair.
+
+## Results
+### Simulation (Region 3)
+
+![](./figures/SFH-model-region-3.png)
+
+The star formation history simulation (magenta) compared with non-repeater FRB population (blue) outside of region 3.
+
+## Results
+### Simulation (Region 8)
+
+![](./figures/SFH-model-region-8.png)
+
+The star formation history simulation (magenta) compared with non-repeater FRB population (blue) outside of region 8.
+
+## Results
+
+- Since the inside--outside pair for region 8 shows a more significant difference for redshift distribution and higher correlation on the simulation, it is chosen by the author as the distinction criteria for type Ia and type Ib FRB.
+- Non-repeating FRB inside region 8 are considered as type Ia (Do not track star formation history)  
+- Non-repeating FRB outside of region 8 are considered as type Ib (Do track star formation history)
+
+## Implications {.smaller}
+### (1) 
+
+![](./figures/3D-DM-E-T_DM-E-vW.png)
+
+Type Ia (blue) and Type Ib (red) occupy different areas on the $DM_E-\log E-\log T_B$ and $DM_E-\log E-\log \nu W$ space.
+
+## Implications {.smaller}
+### (2) 
+
+![](./figures/2D-F-S-DM.png)
+
+Type Ia (blue) found strong linear correlation in these 2d space between $F_\nu$, $S_\nu$, and $DM_E$; while Type Ib (red) do not.
+
+## Implications {.smaller}
+### (3) 
+
+![](./figures/2D-E-L-DM.png)
+
+However, strong linear correlation is found in the the 2d spaces between $\log E$, $\log L_\nu$, and $\log DM_E$ for both Type Ia (blue), Type Ib (red), and also for Type I generally with slightly different slopes.
+
+## Implications {.smaller}
+### (4) 
+
+![](./figures/3D-DM-F-S_DM-E-L.png)
+
+Combining previous correlations, they found a plane of best fit with an even higher correlation for the 3D space of $\log DM_E$--$\log F_\nu$--$\log S_\nu$ for Type Ia (blue) and of $\log DM_E$--$\log E$--$\log L_\nu$ for Type Ib (red).
+
+## Repeaters?
+
+- Since the repeater population is small, the authors cannot do statistical test.
+- So the authors speculated that:
+    - Type IIa: $L_\nu \leq 10^{29}$ erg/s/Hz & $T_B \geq 10^{30}$ K
+    - Type IIb: otherwise
+
+## Conclusion
+
+![](./figures/subclass_scheme.png)
+
+## References {.smaller}
+:::{#refs}
+:::
+
+# Thank You
+
+## Progress Report
+
+:::{width="100%"}
+```{python}
+#| echo: false
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+import datetime as dt
+
+sns.set_theme()
+palette = sns.color_palette()
+
+progress = pd.read_csv('progress.csv', parse_dates=['start', 'end'])
+
+# progress["start"] = pd.to_datetime(progress["start"])
+# progress["end"] = pd.to_datetime(progress["end"])
+
+# Add duration
+progress.loc[:, ["duration"]] = (progress.end - progress.start).apply(
+    lambda x: x.days + 1
+)
+
+# Sort in ascending order
+progress = progress.sort_values(by="start", ascending=True)
+
+thesis_start = progress["start"].min()
+thesis_end = progress["end"].max()
+thesis_duration = (thesis_end - thesis_start).days + 1
+
+# Add relative start
+progress.loc[:, ["rel_start"]] = progress["start"].apply(
+    lambda x: (x - thesis_start).days
+)
+
+# Create custom x-ticks and x-tick labels
+x_ticks = [i for i in range(thesis_duration + 1)]
+x_labels = [(thesis_start + dt.timedelta(days=i)) for i in x_ticks]
+
+ticks = pd.DataFrame(data={"ticks": x_ticks, "labels": x_labels})
+tick_filter = ticks["labels"].apply(lambda x: x.is_month_start)
+tick_interval = ticks[tick_filter]["ticks"]
+tick_labels = ticks[tick_filter]["labels"].apply(lambda x: x.strftime("%b %Y"))
+
+now = (pd.Timestamp.today() - thesis_start).days
+
+
+legend_colors = {
+    phase: palette[idx] for idx, phase in enumerate(progress["phase"].unique())
+}
+
+progress["color"] = [legend_colors[key] for key in progress["phase"]]
+
+plt.figure(figsize=(15, 6))
+plt.title("Masters Study Progress")
+plt.barh(
+    y=progress["task"],
+    left=progress["rel_start"],
+    width=progress["duration"],
+    color=progress["color"],
+    label=progress["phase"],
+)
+plt.gca().invert_yaxis()
+plt.axvline(x=now, color="orange")
+plt.xticks(ticks=tick_interval, labels=tick_labels, rotation=90)
+plt.grid(axis="y")
+
+# Legends
+legend_elems = [
+    Patch(facecolor=legend_colors[key], label=key) for key in legend_colors
+]
+plt.legend(handles=legend_elems)
+plt.show()
+```
+:::
+
+## Publication Report {.smaller}
+1. Statistical Test for Machine Learning Aided Subclassification.
+    - Status: Data Preparation
+    - Methodology:
+        - M-W-W test can be used to test whether two samples might come from the same distribution.
+        - The current paper can also be considered in the subclassification scheme.
+        - The morphology^[Pleunis et al (2021), "Fast Radio Burst Morphology in the First CHIME/FRB Catalog": <https://iopscience.iop.org/article/10.3847/1538-4357/ac33ac>] of signal can also be considered.
