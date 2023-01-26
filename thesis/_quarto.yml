@@ -3,8 +3,8 @@ project:
   output-dir: ../_book
   preview: 
       port: 4000
-  pre-render: 
-    - pip install sarjana
+  # pre-render: 
+  #   - pip install sarjana
 jupyter: python3
 execute: 
   echo: false
@@ -22,7 +22,7 @@ format:
 
 book:
   title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients"
-  author: "Murthadza Aznam"
+  author: "Murthadza Aznam (S2163122)"
   date: 'now'
 
 bibliography: references.bib

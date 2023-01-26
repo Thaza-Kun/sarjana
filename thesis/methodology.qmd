@@ -1,6 +1,6 @@
 # Methodology
 
-## Data Source
+## Data Source {#sec-data}
 
 The main source of data for this research will be the CHIME/FRB Catalog.
 The methods described by @bohanchen_uncloaking_2021, @luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 is tested against the CHIME/FRB Catalog and not from other telescopes.
@@ -33,17 +33,19 @@ The chosen subclassification is expected to show a significant difference rather
 
 ## Timeline
 
-<!-- TODO Expand on timeline -->
 This study is expected to be conducted in four phases:
 
-1.	Exploration phase. 
-2.	Signal Processing phase. 
-3.	Statistical phase.
-4.  Theoretical phase.
-5.	Thesis writing and defence.
+1.	Data Exploration. This is the phase where I replicate results from important papers. The aim is to familiarize with the data and methods.
+2.  Theoretical Study. This is the phase where I familiarize with the theoretical aspect of fast radio bursts. The aim is to understand the differences and similarities between them and develop suitable methodologies for testing.
+3.	Statistical Study. This is the phase where I process the data and test the properties selected in phase 2.
+4.  Extrapolation. This is the phase where I the same consideration with data outside of CHIME/FRB. As mentioned in @sec-data, the other telescope requires the raw data to be collected and processed; which is why 'data collection' extends beyond 'Data Exploration'
+5.	Thesis writing. This is where I write my dissertation and finish my study.
 
 ```{python}
 #| warning: false
+#| fig-cap: The expected timeline of the different phases of study. The star represents milestones provided by the university. The vertical orange line represents 'now'.
+#| label: fig-gantt
+
 import pandas as pd
 from pathlib import Path
 from sarjana.scripts import gantt
