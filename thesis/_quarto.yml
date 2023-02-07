@@ -23,7 +23,8 @@ format:
 book:
   title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients"
   author: "Murthadza Aznam (S2163122)"
-  date: 'now'
+  date: '27 Jan 2023'
+  date-format: 'DD MMM YYYY'
 
 bibliography: references.bib
 filters: 

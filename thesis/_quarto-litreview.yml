@@ -1,8 +1,9 @@
 book:
-  title: 'A Review of the Fast Radio Bursts Literature'
+  title: 'A Literature Review of Fast Radio Bursts and Its Classification Efforts'
   subtitle: 'SMX7001'
-  chapters: 
+  chapters:
       - index.qmd
       - properties.qmd
       - classification.qmd
+      - literature/conclusion.qmd
       - references.qmd

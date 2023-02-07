@@ -1,4 +1,5 @@
 book:
+  title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients (Proposal)"
   subtitle: 'SMX7001'
   chapters:
     - index.qmd

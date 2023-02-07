@@ -1,8 +1,0 @@
-## Identification of Fast Radio Bursts
-
-The first Fast Radio Burst is identified by @lorimer_bright_2007 in an archival data of the Parkes Telescope.
-It is since then dubbed the Lorimer Bursts.
-@bailes_discovery_FRB_2022 who worked closely with Lorimer recalls how Fast Radio Bursts are first identified and how research on FRBs expanded after that.
-
-### Serendipity of Pulsar
-

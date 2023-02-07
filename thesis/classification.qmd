@@ -83,3 +83,16 @@ The unsupervised learning used by @zhuge_machinelearningfrb_2022 includes both d
 There is still no consensus on which model best fit the use case of identifying potentially repeating FRBs.
 In spite of that, the fact that algorithms can identify that repeaters are similar to each other than to non-repeaters without knowledge of its repeating nature shows that there is an underlying difference between repeaters and non-repeaters.
 It can be said that some non-repeating FRBs that is potentially repeating FRB have latent features of true repeaters [@bohanchen_uncloaking_2021].
+
+## Star Formation History
+
+@guo_PossibleSubclassificationFast_2022 employed a somewhat ad-hoc approach to the subclassification of FRB.
+They proposed an additional classification based on their association with a old (type a) or young (type b) stellar population.
+In total, they divide FRBs into four: Type Ia, Ib, IIa, and IIb; where type I and type II corresponds to non-repeating and repeating FRB respectively.
+
+They approached the problem by finding a critical value for separation of selected properties that produces the lowest p-value.
+This results in 10 regions with 3 of them being a combined region as shown in @fig-transient-duration-vs-luminence_guo2022.
+They foung that region 8 produces the most significant amount of redshift distribution between the inside and the outside region.
+Their method mainly revolves around the idea that only some of the known FRB track star formation history (found by author to be of type IIb) contrary to the claim by @zhang_CHIMEFastRadio_2022 and @qiang_FastRadioBurst_2022 that the whole population of FRB do not track the star formation rate.
+
+![The distribution of repeaters (red) and non-repeaters (blue) in the $\nu W-L_\nu$ phase space with the divided line. Regions are labelled as per the paper but added by author. Regions with parentheses marks a combined region [@guo_PossibleSubclassificationFast_2022].](./_assets/transient-duration-vs-luminence-labelled_guo2022.png){#fig-transient-duration-vs-luminence_guo2022}

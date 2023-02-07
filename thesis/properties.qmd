@@ -45,7 +45,7 @@ t_\text{dispersion} = 8.3\times 10^{-3} \text{DM} \frac{\Delta_\text{bandwidth}\
 $${#eq-time-width-smearing}
 where $\Delta_\text{bandwidth}\nu_\text{MHz}$ is the channel bandwidth and $\nu_\text{GHz}$ is the central frequency with their respective units in subscript.
 It is important to note that some datasets have already given their FRB intrinsic width such as the column `width_fitb` in the CHIME/FRB Catalog [@the_chimefrbcollaboration_FirstCHIMEFRB_2021].
-z
+
 ### Flux Density and Fluence
 
 The fluence, $\mathcal{F}$, of a transient is the total energy received by the antenna throughout the duration of the signal typically measured in Jansky seconds, $\text{J}\cdot\text{s}$.
@@ -72,7 +72,7 @@ $$
 $$ {#eq-RM-intergral}
 
 ## Derived Properties
-### Luminosity
+<!-- ### Luminosity -->
 <!-- TODO: Isi -->
 
 ### Redshift
@@ -91,8 +91,14 @@ The Milky Way disc contribution can be calculated using an electron density mode
 Two EDMs often quoted in the FRB literature is the NE2001 [@cordes_NE2001NewModel_2002] and the YMW16 [@yao_NewElectronDensityModel_2017].
 Its value highly depends on its galactic latitude as there is little material higher up in the latitude so its DM is expected to be small [@thornton_population_2013].
 
-The redshift of FRB ...
-<!-- TODO: Describe IGM to calculate IGM, @hashimoto_EnergyFunctionsFast_2022, @hashimoto_NoRedshiftEvolution_2020, @hashimoto_LuminosityDurationRelation_2019 -->
+The redshift of FRB can be calculated by the $\text{DM}_\text{IGM}$ [@hashimoto_NoRedshiftEvolution_2020],
+$$
+\text{DM}_\text{IGM}(z) = \Omega_b \frac{3H_0c}{8\pi G m_p}
+    \times \int_0^z \frac{(1 + z′) f_\text{IGM}(z′) (Y_H X_{e,H}(z′) + \frac{1}{2}Y_p X_{e,He}(z′))}{\{\Omega_m (1 + z′)^3 + \Omega_\Lambda(1 + z′)^{3[1+w(z′)]}\}1/2} dz′,
+$$
+assuming a flat universe. 
+$X_{e,}$ and $Y$ are the ionization fractions and mass fractions of the intergalatic hydrogen (H) and helium (He) accordingly.
+$f_\text{IGM}$ is the fraction of baryons in the IGM.
 
 <!-- TODO: Isi
 ### Luminosity Distance

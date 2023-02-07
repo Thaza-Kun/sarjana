@@ -113,7 +113,7 @@ Type Ia (blue) and Type Ib (red) occupy different areas on the $DM_E-\log E-\log
 
 ## Implications {.smaller}
 ### (2) 
-
+n
 ![](./figures/2D-F-S-DM.png)
 
 Type Ia (blue) found strong linear correlation in these 2d space between $F_\nu$, $S_\nu$, and $DM_E$; while Type Ib (red) do not.
