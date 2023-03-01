@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/notebooks/08-chime-open-data.html",
       "/notebooks/07-post-HDBSCAN-statistics.html",
       "/notebooks/06-repeaters-and-non-repeaters-statisticaly-similar-ensembles.html",
       "/notebooks/04-UMAP-HDBSCAN-reduced-params.html",
