@@ -1,78 +1,97 @@
-from typing import Optional
+from typing import Any
+import numpy as np
+import pandas as pd
+import seaborn as sns
+
+import scipy
+
 import typer
-import rich
 
-from sarjana.preamble import ExecutionOptions
-from sarjana.workflows.merging import merge, plot
 
-from sarjana.workflows.replications import bo_han_chen_2021
-from sarjana.workflows.experiments import (
-    UMAP_HDBSCAN_FRBSTATS,
-    HDBSCAN_important_features,
-)
-from sarjana.data.collections import load_catalog
+def merge_embedding_in_profile(
+    profiles: pd.DataFrame, embedding: pd.DataFrame
+) -> pd.DataFrame:
+    """Injects the embedding data from machine learning into a dataframe of flux profiles.
 
-ExecutionOptions.Mode = "debug"
+    Args:
+        profiles (pd.DataFrame): A `.parquet` file containing a list of flux profiles.
+        embedding (pd.DataFrame): A `.csv` file containing groups, classification, and embedding coordinates.
+
+    Returns:
+        pd.DataFrame: A merge of the two.
+    """
+    return profiles.merge(embedding, left_on="eventname", right_on="tns_name")
+
+
+def boxcar_kernel(width):
+    width = int(round(width, 0))
+    return np.ones(width, dtype="float32") / np.sqrt(width)
+
+
+def find_burst(ts, min_width=1, max_width=128):
+    min_width = int(min_width)
+    max_width = int(max_width)
+    # do not search widths bigger than timeseries
+    widths = list(range(min_width, min(max_width + 1, len(ts) - 2)))
+    # envelope finding
+    snrs = np.empty_like(widths, dtype=float)
+    peaks = np.empty_like(widths, dtype=int)
+    for i in range(len(widths)):
+        convolved = scipy.signal.convolve(ts, boxcar_kernel(widths[i]), mode="same")
+        peaks[i] = np.nanargmax(convolved)
+        snrs[i] = convolved[peaks[i]]
+    best_idx = np.nanargmax(snrs)
+    return peaks[best_idx], widths[best_idx], snrs[best_idx]
+
+
+def plot_flux_profile(
+    flux: np.ndarray,
+    model_flux: np.ndarray,
+    time: np.ndarray,
+    timedelta: float,
+    eventname: str,
+) -> Any:
+    peak, width, _ = find_burst(flux)
+    time = time - time[np.argmax(flux)]
+    time = time - timedelta / 2
+    time = np.append(time, time[-1] + timedelta)
+    flux = np.append(flux, flux[-1])
+    model_flux = np.append(model_flux, model_flux[-1])
+    g = sns.lineplot(x=time, y=flux, drawstyle="steps-post")
+    sns.lineplot(x=time, y=model_flux, drawstyle="steps-post", ax=g)
+    g.set_title(eventname)
+    g.axvspan(
+        max(
+            time.min(),
+            time[peak] + 0.5 * timedelta - (0.5 * width) * timedelta,
+        ),
+        min(
+            time.max(),
+            time[peak] + 0.5 * timedelta + (0.5 * width) * timedelta,
+        ),
+        facecolor="tab:blue",
+        edgecolor=None,
+        alpha=0.1,
+    )
+    return g
+
 
 app = typer.Typer()
 
-learning_func = (
-    bo_han_chen_2021,
-    UMAP_HDBSCAN_FRBSTATS,
-    HDBSCAN_important_features,
-)
-
 
 @app.command()
-def learn(
-    func: int = typer.Argument(
-        ...,
-        help="The learning function to run on. ({})".format(
-            ", ".join(
-                [f"[{i}] {func.__name__}" for i, func in enumerate(learning_func)]
-            )
-        ),
+def plot(
+    profile: str = typer.Argument(
+        ..., help="Path to flux profile data (in `.parquet`)"
     ),
-    size: int = typer.Argument(19, help="Minimum size of cluster."),
-    seed: Optional[int] = typer.Option(
-        42, help="Seed to set on stochastic algorithms."
-    ),
-    debug: bool = typer.Option(False, help="Print debug log."),
+    embedding: str = typer.Argument(..., help="Path to embedding data (in `.csv`)"),
+    savefile: str = typer.Argument(..., help="The name of the saved plot file."),
 ):
-    """An unsupervised machine learning workflow based on dimensional reduction and clustering algorithms."""
-    data, result = learning_func[func](min_cluster_size=size, seed=seed, debug=debug)
-    print("score: {}".format(result))
-
-
-@app.command()
-def info(
-    func: int = typer.Argument(
-        ...,
-        help="Function id. ({})".format(
-            ", ".join(
-                [f"[{i}] {func.__name__}" for i, func in enumerate(learning_func)]
-            )
-        ),
+    prof = pd.read_parquet(profile)
+    emb = pd.read_csv(embedding)
+    data = merge_embedding_in_profile(prof, emb)
+    item = data.loc[0, :]
+    g = plot_flux_profile(
+        item["ts"], item["model_ts"], item["plot_time"], item["dt"], item["eventname"]
     )
-):
-    """Get docstrings of specified function."""
-    rich.print(learning_func[func].__doc__)
-
-
-# 2. Read and display data
-@app.command()
-def inspect(
-    # filename: str = typer.Argument(..., help="Data file to inspect")
-):
-    data = merge()
-    rich.print(plot(data))
-
-
-# 3. Get Data
-@app.command()
-def get():
-    ...
-
-
-if __name__ == "__main__":
-    app()
+    g.get_figure().savefig(savefile)
