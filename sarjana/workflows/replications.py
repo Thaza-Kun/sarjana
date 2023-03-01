@@ -71,6 +71,7 @@ def bo_han_chen_2021(
     filename_prefix: str = "replicate_chen2021",
     **kwargs,
 ) -> WorkflowResult:
+    """A workflow passing data through UMAP--HDBSCAN based on the work of Chen et. al. (2021) "Uncloaking hidden repeating fast radio bursts with unsupervised machine learning" doi:10.1093/mnras/stab2994"""
     params: List[str] = [
         # Observational
         "bc_width",

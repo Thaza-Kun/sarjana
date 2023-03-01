@@ -8,6 +8,174 @@ from astropy.time import Time
 from sarjana.utils.paths import collected_datapath, external_datapath
 from sarjana.loggers.logger import logdata
 
+# TYPES OF DATA TO LOAD
+# 1.    Catalogue data
+# 2.    Embedding data
+# 3.    Profile data
+# 4.    Candidates data
+
+
+# TODO Standardize catalog
+def load_catalog(filename: str, columns: Optional[List[str]] = None) -> pd.DataFrame:
+    """Load a FRB catalog from a filename.
+
+    Args:
+        filename (str): Name of data file (in csv).
+        columns (Optional[List[str]]): Columns to load. Defaults to None.
+
+    Returns:
+        pd.DataFrame: Available columns
+            - tns_name      / frb
+            -               / utc
+            - mjd_400       / mjd
+            - mjd_400_err
+            - mjd_inf       / mjd
+            - mjd_inf_err
+            -               / telescope
+            - repeater_name
+            - ra            / ra
+            - ra_err        / ra_error
+            - ra_notes
+            - dec           / dec
+            - dec_err       / dec_error
+            - dec_notes
+            - gl            / l
+            - gb            / b
+            - high_freq
+            - low_freq
+            - peak_freq     / frequency
+            -               / reference
+            - exp_up
+            - exp_up_err
+            - exp_up_notes
+            - exp_low
+            - exp_low_err
+            - exp_low_notes
+            - bonsai_snr
+            - bonsai_dm
+            - low_ft_68
+            - up_ft_68
+            - low_ft_95
+            - up_ft_95
+            - snr_fitb      / snr
+            - dm_fitb       / dm
+            - dm_fitb_err   / dm_error
+            - dm_exc_ne2001
+            - dm_exc_ymw16
+            - bc_width
+            - scat_time
+            - scat_time_err
+            - flux          / flux
+            - flux_err
+            - flux_notes
+            - fluence       / fluence
+            - fluence_err
+            - fluence_notes
+            - sub_num
+            - width_fitb    / width
+            - width_fitb_err
+            - sp_idx
+            - sp_idx_err
+            - sp_run
+            - sp_run_err
+            - chi_sq
+            - dof
+            - flag_frac
+            - excluded_flag
+            - subw_upper_flag
+            - scat_upper_flag
+            - spec_z
+            - spec_z_flag
+            - E_obs
+            - E_obs_error
+            - subb_flag
+            - subb_p_flag
+            - common_p_flag
+            - delta_nuo_FRB
+            - z_DM          / redshift
+            - z_DM_error_p
+            - z_DM_error_m
+            - E_obs_400
+            - E_obs_400_error_p
+            - E_obs_400_error_m
+            - logsubw_int_rest
+            - logsubw_int_rest_error_p
+            - logsubw_int_rest_error_m
+            - z             / redshift_measured
+            - z_error_p
+            - z_error_m
+            - logE_rest_400
+            - logE_rest_400_error_p
+            - logE_rest_400_error_m
+            - logrhoA
+            - logrhoA_error_p
+            - logrhoA_error_m
+            - logrhoB
+            - logrhoB_error_p
+            - logrhoB_error_m
+            - weight_DM
+            - weight_DM_error_p
+            - weight_DM_error_m
+            - weight_scat
+            - weight_scat_error_p
+            - weight_scat_error_m
+            - weight_w_int
+            - weight_w_int_error_p
+            - weight_w_int_error_m
+            - weight_fluence
+            - weight_fluence_error_p
+            - weight_fluence_error_m
+            - weight
+            - weight_error_p
+            - weight_error_m
+            - weighted_logrhoA
+            - weighted_logrhoA_error_p
+            - weighted_logrhoA_error_m
+            - weighted_logrhoB
+            - weighted_logrhoB_error_p
+            - weighted_logrhoB_error_m
+
+    """
+    return pd.read_csv(filename, usecols=columns)
+
+
+def load_2d_embedding(
+    filename: str, columns: Optional[List[str]] = None
+) -> pd.DataFrame:
+    """Load data from 2d embedding result of a dimensional reduction algorithm.
+
+    Args:
+        filename (str): Name of data file.
+        columns (Optional[List[str]]): Columns to load. Defaults to None.
+
+    Returns:
+        pd.DataFrame: Available columns
+            - tns_name (Name of FRB)
+            - classification (FRB classification of the model. 1 = repeater, 0 = repeater candidate, -1 = non-repeater)
+            - {algo}_group (The classification of an clustering algorithm {algo})
+            - {algo}_x (The x coordinate of an embedding space by the dimensional reduction algorithm {algo})
+            - {algo}_y (The y coordinate of an embedding space by the dimensional reduction algorithm {algo})
+    """
+    return pd.read_csv(filename, usecols=columns)
+
+
+def load_profiles(
+    filename: str,
+    columns: Optional[List[str]] = None,
+    sources: Optional[List[str]] = None,
+) -> pd.DataFrame:
+    """Load the time series data of the selected source in a dataframe.
+
+    Args:
+        filename (str): Name of data file (in `.parquet`)
+        columns (Optional[List[str]], optional): Columns to load. Defaults to None.
+        sources (Optional[List[str]], optional): Source to load. Defaults to None.
+
+    Returns:
+        pd.DataFrame: Available columns
+    """
+    return pd.read_parquet(filename, columns=columns)
+
 
 def load_repeater_candidates() -> pd.DataFrame:
     """Returns a list of repeater candidates scraped from various sources.

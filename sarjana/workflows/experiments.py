@@ -48,6 +48,7 @@ def HDBSCAN_important_features(
     filename_prefix: str = "HDBSCAN_important_features",
     **kwargs,
 ) -> WorkflowResult:
+    """A workflow to pass data through UMAP--HDBSCAN on selected parameters"""
     params: List[str] = [
         # Observational
         "bc_width",
@@ -128,6 +129,7 @@ def UMAP_HDBSCAN_FRBSTATS(
     filename_prefix: str = "FRBSTATS",
     **kwargs,
 ) -> WorkflowResult:
+    """A workflow to run FRBSTATS data through UMAP--HDBSCAN"""
     if params is None:
         params = ["frequency", "dm", "flux", "width", "fluence", "redshift"]
     postfix: str = f"(mcs={min_cluster_size}_seed={seed})"

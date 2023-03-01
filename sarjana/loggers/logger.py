@@ -3,6 +3,7 @@ import logging
 from dataclasses import asdict
 from pathlib import Path
 from typing import List, Optional
+from functools import wraps
 
 import pandas as pd
 from pandas import DataFrame
@@ -54,6 +55,7 @@ def logresult(result: WorkflowMetadata) -> None:
 
 def logflow(name: str, description: Optional[str] = None) -> FlowFunc:
     def decorator(func: FlowFunc) -> FlowFunc:
+        @wraps(func)
         def wrapper(*args, **kwargs) -> WorkflowResult:
             pd.options.mode.chained_assignment = None
             flowlogger.info("Running {}:: {}".format(name, description))
