@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any, Optional, Union
 
 # Data manipulation
@@ -14,6 +15,22 @@ import scipy
 # TUI
 import typer
 import rich
+from rich.progress import (
+    BarColumn,
+    DownloadColumn,
+    Progress,
+    TaskID,
+    TextColumn,
+    TimeRemainingColumn,
+    TimeElapsedColumn,
+    TransferSpeedColumn,
+)
+
+from sarjana.download import (
+    FRBDataHandler,
+    manage_download_waterfall_data_task,
+    run_download_and_collect_task,
+)
 
 
 def merge_embedding_into_profile(
@@ -138,27 +155,105 @@ def plot(
         ..., help="Path to flux profile data (in `.parquet`)"
     ),
     embedding: str = typer.Argument(..., help="Path to embedding data (in `.csv`)"),
-    savefile: str = typer.Argument(..., help="The name of the saved plot file."),
+    savefile: str = typer.Argument(
+        ..., help="The name of the saved plot file. No extension in name."
+    ),
+    size: int = typer.Option(30, help="The number of FRB in each plot."),
 ):
     """Plots a FacetGrid of flux profiles of each FRB based on categories defined in embedding file."""
     prof = pd.read_parquet(profile)
     emb = pd.read_csv(embedding)
     data = merge_embedding_into_profile(prof, emb)
-    g = sns.FacetGrid(data.loc[:14, :], col="eventname", col_wrap=5, sharex=False)
-    g.map(
-        plot_flux_profile,
-        "ts",
-        "model_ts",
-        "plot_time",
-        "dt",
-        "eventname",
+    categories = data["hdbscan_group"].unique()
+    for cat in categories:
+        to_plot = data[data["hdbscan_group"] == cat].drop_duplicates(subset="eventname")
+        for pos in range(0, len(to_plot), size):
+            loop_num = (pos / size) + 1
+            g = sns.FacetGrid(
+                to_plot[pos : pos + size],
+                col="eventname",
+                col_wrap=5,
+                sharex=False,
+                sharey=False,
+            )
+            g.map(
+                plot_flux_profile,
+                "ts",
+                "model_ts",
+                "plot_time",
+                "dt",
+                "eventname",
+            )
+            g.fig.suptitle(cat + " " + str(loop_num))
+            g.set_ylabels("flux (Jy)")
+            g.set_xlabels("time (ms)")
+            g.savefig(f"{savefile}-{cat}-{loop_num}.png")
+
+
+class MockDataHandler(FRBDataHandler):
+    ...
+
+
+@app.command()
+def download(
+    eventnames: typer.FileText = typer.Argument(
+        ..., help="A newline delimited `.txt` file listing eventnames."
+    ),
+    collect_to: str = typer.Argument(
+        ..., help="Filename in `.parquet` to collect downloaded data into."
+    ),
+    path: str = typer.Argument(".", help="Download file to this path"),
+):
+    basepath = Path(path)
+    baseurl = "https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/files/vault/AstroDataCitationDOI/CISTI.CANFAR/21.0007/data/waterfalls/data"
+    try:
+        currently_available_names = pd.read_parquet(collect_to, columns=["eventname"])[
+            "eventname"
+        ].tolist()
+    except FileNotFoundError:
+        currently_available_names = []
+
+    names_to_download = [
+        *{i.strip("\n") for i in eventnames if i not in currently_available_names}
+    ]
+    progress = Progress(
+        TextColumn("{task.id:>3d}/"),
+        TextColumn(f"{len(names_to_download)-1:>3d} "),
+        TextColumn(
+            "[bold blue]{task.fields[filename]}",
+            justify="right",
+        ),
+        BarColumn(bar_width=None),
+        "[progress.percentage]{task.percentage:>3.1f}%",
+        "•",
+        DownloadColumn(),
+        "•",
+        TransferSpeedColumn(),
+        "•",
+        TimeElapsedColumn(),
+        "/",
+        TimeRemainingColumn(),
+        transient=True,
     )
-    g.set_ylabels("flux (Jy)")
-    g.set_xlabels("time (ms)")
-    g.savefig(savefile)
+    manage_download_waterfall_data_task(
+        names_to_download,
+        progress_manager=progress,
+        basepath=basepath,
+        baseurl=baseurl,
+        collect_to=collect_to,
+        data_handler=MockDataHandler,
+    )
 
 
 @app.command()
 def debug():
-    """Use this space to input any operation for debugging purposes"""
-    rich.print(np.append(np.array([1, 2, 3, 4, 5]), 1))
+    def try_func(arg1: str, arg2: str) -> None:
+        ...
+
+    expected_kwargs = try_func.__annotations__
+    kwargs = ["arg1"]
+    for keyword in expected_kwargs:
+        if keyword not in [*kwargs, "return"]:
+            raise AttributeError(
+                f"Expected {keyword} in function arguments but only {[*kwargs]} was given."
+            )
