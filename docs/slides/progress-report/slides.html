@@ -6,11 +6,11 @@
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="index_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.269">
 
-  <meta name="author" content="Bo Han Chen et. al.&nbsp;(2021)">
-  <title>Uncloaking Hidden Repeating Fast Radio Bursts With Unsupervised Machine Learning</title>
+  <meta name="author" content="Murthadza bin Aznam">
+  <title>Masters Study Progress Report</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -52,8 +52,6 @@
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="index_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
@@ -339,382 +337,190 @@
       margin-right: 0; 
     }
   </style>
-  <script src="index_files/libs/quarto-diagram/mermaid.min.js"></script>
-  <script src="index_files/libs/quarto-diagram/mermaid-init.js"></script>
-  <link href="index_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
 </head>
-<body class="quarto-light">
+<body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Uncloaking Hidden Repeating Fast Radio Bursts With Unsupervised Machine Learning</h1>
+  <h1 class="title">Masters Study Progress Report</h1>
+  <p class="subtitle">Supervisor: Zamri Zainal &amp; Norsiah Hashim</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Bo Han Chen et. al.&nbsp;(2021) 
+Murthadza bin Aznam 
 </div>
 </div>
 </div>
 
 </section>
 <section>
-<section id="introduction" class="title-slide slide level1 center">
-<h1>Introduction</h1>
+<section id="research" class="title-slide slide level1 center">
+<h1>Research</h1>
 
 </section>
-<section id="meaning" class="slide level2">
-<h2>Meaning</h2>
-<h3 id="hidden-repeating-fast-radio-bursts">‘Hidden Repeating Fast Radio Bursts’</h3>
-<ul>
-<li>Fast Radio Bursts (FRB) are known to have two types: repeating and non-repeating</li>
-<li>A repeating FRB are observed to repeat</li>
-<li>However, a non-repeating FRB <strong>could potentially be an actual repeater</strong> but its repetition is not yet observed.</li>
-</ul>
+<section id="objectives" class="slide level2">
+<h2>Objectives</h2>
+<ol type="1">
+<li>To employ machine learning methods to differentiate known FRBs via their collective properties.</li>
+<li>To study the statistical differences between properties of FRBs which will thus define characteristics of the respective subclasses.</li>
+</ol>
 </section>
-<section id="meaning-1" class="slide level2">
-<h2>Meaning</h2>
-<h3 id="unsupervised-machine-learning">‘Unsupervised Machine Learning’</h3>
-<ul>
-<li>Unsupervised machine learning is a type of machine learning algorithm that does not rely on labels (<code>True</code>/<code>False</code> or ‘repeating’/‘non-repeating’).</li>
-</ul>
-<div class="callout callout-important callout-captioned callout-style-default">
-<div class="callout-body">
-<div class="callout-caption">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Important</strong></p>
-</div>
-<div class="callout-content">
-<p>The machine learning algorithms presented in this paper only processes the FRB features’ values (such as dispersion measure and redshift) and not the labels (repeating vs non-repeating).</p>
-</div>
-</div>
-</div>
-</section>
-<section id="meaning-2" class="slide level2">
-<h2>Meaning</h2>
-<h3 id="unsupervised-machine-learning-1">‘Unsupervised Machine Learning’</h3>
-<h4 id="examples">Examples</h4>
-<ul>
-<li>Dimension Reduction: A task that aims to reduce high dimensions of data into lower dimensions for better understanding of their relationships.</li>
-<li>Clustering: A task that aims to categorizes data points into clusters based on their distance.</li>
-</ul>
-</section>
-<section id="objective" class="slide level2">
-<h2>Objective</h2>
-<ul>
-<li>Use dimensional reduction algorithm and clustering on the reduced dimension <mark>to identify possibly misclassified non-repeating FRBs</mark>. These ‘possibly misclassified non-repeating FRBs’ are referred to as ‘repeater candidates’.</li>
-</ul>
-<!-- > Our goal is to <mark>map several observational and model-dependent parameters of each FRB to a 2D embedding plane</mark> by training the UMAP algorithm on the features of the training samples in CHIME/FRB dataset **and finally identify possibly misclassified non-repeating FRBs which in fact have latent features of repeating FRBs**. We define these possibly misclassified non-repeating FRBs as FRB _repeater candidates_ in our paper. -->
+<section id="phases" class="slide level2">
+<h2>Phases</h2>
+<ol type="1">
+<li>Data Exploration
+<ul class="task-list">
+<li><input type="checkbox" disabled="" checked="">To explore available data and methods.</li>
+</ul></li>
+<li>Statistical Study
+<ul class="task-list">
+<li><input type="checkbox" disabled="">To add new analysis for available data.</li>
+</ul></li>
+<li>Extrapolation
+<ul class="task-list">
+<li><input type="checkbox" disabled="">To add new data for known methods.</li>
+</ul></li>
+<li>Thesis Writing
+<ul class="task-list">
+<li><input type="checkbox" disabled="">To summarize research.</li>
+</ul></li>
+</ol>
 </section></section>
 <section>
-<section id="method" class="title-slide slide level1 center">
-<h1>Method</h1>
+<section id="report" class="title-slide slide level1 center">
+<h1>Report</h1>
 
 </section>
-<section id="data-composition" class="slide level2">
-<h2>Data Composition</h2>
-<h3 id="sample">Sample</h3>
+<section id="phase-1-data-exploration" class="slide level2">
+<h2>Phase 1: Data Exploration</h2>
+<h3 id="october-2022">📅 October 2022</h3>
 <ul>
-<li>This paper uses the CHIME/FRB First Data Release<sup>1</sup></li>
-<li>There are 594 FRB sub-bursts:
+<li>Read a general overview of the fast radio burst research.</li>
+<li>Read <span class="citation" data-cites="bohanchen_uncloaking_2021">Bo Han Chen et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>, <span class="citation" data-cites="luo_machinelearningfrb_2022">Luo, Zhu-Ge, and Zhang (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>, <span class="citation" data-cites="zhuge_machinelearningfrb_2022">Zhu-Ge, Luo, and Zhang (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></li>
+<li>Revise topics on machine learning.
 <ul>
-<li>501 non-repeating + 93 repeating</li>
-<li>at a frequency between 400 MHz and 800 MHz</li>
-<li>observed from 25th Jul 2018 to 1st Jul 2019</li>
+<li>Regression</li>
+<li>Classification</li>
+<li>Dimensional Reduction</li>
+<li>Clustering Algorithm</li>
 </ul></li>
 </ul>
-<aside><ol class="aside-footnotes"><li id="fn1"><p><span class="citation" data-cites="thechimefrbcollaborationFirstCHIMEFRB2021">The CHIME/FRB Collaboration et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></p></li></ol></aside></section>
-<section id="data-features" class="slide level2 smaller">
-<h2>Data Composition</h2>
-<h3 id="features">Features<sup>1</sup></h3>
-<div class="columns">
-<div class="column" style="width:60%;">
-<h4 id="observational-features">Observational Features</h4>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ol type="1">
-<li>Boxcar Width</li>
-<li>Width of Sub-Burst</li>
-<li>Flux</li>
-<li>Fluence</li>
-<li>Scattering Time</li>
-</ol>
-</div><div class="column" style="width:50%;">
-<ol start="6" type="1">
-<li>Spectral Index</li>
-<li>Spectral Running</li>
-<li>Highest Frequency</li>
-<li>Lowest Frequency</li>
-<li>Peak Frequency</li>
-</ol>
-</div>
-</div>
-</div><div class="column" style="width:40%;">
-<h4 id="model-dependent-features">Model Dependent Features<sup>2</sup></h4>
-<ol start="11" type="1">
-<li>Redshift</li>
-<li>Radio energy</li>
-<li>Rest-frame intrinsic duration</li>
-</ol>
-</div>
-</div>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>Machine learning uses the term ‘features’ but the paper uses the word ‘parameters’ here.</p></li><li id="fn3"><p>Calculated in <span class="citation" data-cites="hashimotoEnergyFunctionsFast2022">Hashimoto et al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span></p></li></ol></aside></section>
-<section id="procedure" class="slide level2">
-<h2>Procedure</h2>
-<div class="cell" data-reveal="true">
-<div class="cell-output-display">
-<div>
-<p>
-</p><pre class="mermaid mermaid-js" data-tooltip-selector="#mermaid-tooltip-1">flowchart LR
-    A[Preprocessing] --&gt; B[Reduce Dimension]
-    B --&gt; C[Cluster Data]
-    C --&gt; D[Postprocessing]
-
-    style A stroke:#f66,stroke-width:2px
-</pre>
-<div id="mermaid-tooltip-1" class="mermaidTooltip">
-
-</div>
-<p></p>
-</div>
-</div>
-</div>
-<h3 id="preprocessing">1. Preprocessing</h3>
+</section>
+<section id="phase-1-data-exploration-1" class="slide level2">
+<h2>Phase 1: Data Exploration</h2>
+<h3 id="november-2022">📅 November 2022</h3>
 <ul>
-<li><p>Select features and calculate if necessary.</p>
-<p>👈 Refer the <a href="#/data-features">previous slide</a></p></li>
-<li><p>Split training (90%) and testing (10%) dataset.</p>
-<p>Only the repeaters are split</p></li>
-<li><p>Remove <code>null</code> values.</p></li>
+<li>Fully replicated <span class="citation" data-cites="bohanchen_uncloaking_2021">Bo Han Chen et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>. <img data-src="https://thaza-kun.github.io/sarjana/notebooks/02-UMAP-HDBSCAN_files/figure-html/cell-13-output-2.png"></li>
 </ul>
 </section>
-<section id="procedure-1" class="slide level2">
-<h2>Procedure</h2>
-<div class="cell" data-reveal="true">
-<div class="cell-output-display">
-<div>
-<p>
-</p><pre class="mermaid mermaid-js" data-tooltip-selector="#mermaid-tooltip-2">flowchart LR
-    A[Preprocessing] --&gt; B[Reduce Dimension]
-    B --&gt; C[Cluster Data]
-    C --&gt; D[Postprocessing]
-
-    style B stroke:#f66,stroke-width:2px
-</pre>
-<div id="mermaid-tooltip-2" class="mermaidTooltip">
-
-</div>
-<p></p>
-</div>
-</div>
-</div>
-<h3 id="reduce-dimension">2. Reduce Dimension</h3>
-<p>Map the selected features into a 2 dimension embedding space using the UMAP<sup>1</sup> algorithm.</p>
-<aside><ol class="aside-footnotes"><li id="fn4"><p>‘Uniform Manifold Approximation and Projection’ described in <span class="citation" data-cites="mcinnesUMAPUniformManifold2018">McInnes, Healy, and Melville (<a href="#/references" role="doc-biblioref" onclick="">2018</a>)</span> and implemented in <a href="https://github.com/lmcinnes/umap">https://github.com/lmcinnes/umap</a></p></li></ol></aside></section>
-<section id="procedure-2" class="slide level2">
-<h2>Procedure</h2>
-<div class="cell" data-reveal="true">
-<div class="cell-output-display">
-<div>
-<p>
-</p><pre class="mermaid mermaid-js" data-tooltip-selector="#mermaid-tooltip-3">flowchart LR
-    A[Preprocessing] --&gt; B[Reduce Dimension]
-    B --&gt; C[Cluster Data]
-    C --&gt; D[Postprocessing]
-
-    style C stroke:#f66,stroke-width:2px
-</pre>
-<div id="mermaid-tooltip-3" class="mermaidTooltip">
-
-</div>
-<p></p>
-</div>
-</div>
-</div>
-<h3 id="cluster-data">3. Cluster Data</h3>
-<p>Cluster the data points on the UMAP space using the HDBSCAN<sup>1</sup> algorithm.</p>
-<aside><ol class="aside-footnotes"><li id="fn5"><p>‘Hierarchical Density-Based Spatial Clustering of Applications with Noise’ described in <span class="citation" data-cites="campelloDensityBasedClusteringBased2013">Campello, Moulavi, and Sander (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span> and implemented in <a href="https://github.com/scikit-learn-contrib/hdbscan">https://github.com/scikit-learn-contrib/hdbscan</a></p></li></ol></aside></section>
-<section id="procedure-3" class="slide level2">
-<h2>Procedure</h2>
-<div class="cell" data-reveal="true">
-<div class="cell-output-display">
-<div>
-<p>
-</p><pre class="mermaid mermaid-js" data-tooltip-selector="#mermaid-tooltip-4">flowchart LR
-    A[Preprocessing] --&gt; B[Reduce Dimension]
-    B --&gt; C[Cluster Data]
-    C --&gt; D[Postprocessing]
-
-    style D stroke:#f66,stroke-width:2px
-</pre>
-<div id="mermaid-tooltip-4" class="mermaidTooltip">
-
-</div>
-<p></p>
-</div>
-</div>
-</div>
-<h3 id="postprocessing">4. Postprocessing</h3>
+<section id="phase-1-data-exploration-2" class="slide level2">
+<h2>Phase 1: Data Exploration</h2>
+<h3 id="november-2022-1">📅 November 2022</h3>
 <ul>
-<li>Cluster identification</li>
-<li>Cluster implication</li>
+<li>Collected data relating to repeaters.</li>
+<li>Added a method to score machine learning outcomes.</li>
+<li>Tried to apply <span class="citation" data-cites="bohanchen_uncloaking_2021">Bo Han Chen et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>’s method using FRBSTATS catalog and later found that FRBSTATS catalog does not have enough parameters to bring about significant score.</li>
 </ul>
 </section>
-<section id="results" class="slide level2 smaller">
-<h2>Results</h2>
-<h3 id="dimension-reduction-umap">Dimension Reduction (UMAP)</h3>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img data-src="./figures/umap.png"></p>
-</div><div class="column" style="width:55%;">
-<h4 id="highlights">Highlights</h4>
-<ol type="1">
-<li class="fragment">The distribution of repeating and non-repeating FRBs are similar (no sign of over-fitting).</li>
-<li class="fragment">Repeaters and non-repeaters are concentrated within their respective clusters.</li>
-<li class="fragment">There are non-repeaters mixed in repeaters–concentrated clusters.</li>
-</ol>
-</div>
-</div>
+<section id="phase-1-data-exploration-3" class="slide level2">
+<h2>Phase 1: Data Exploration</h2>
+<h3 id="december-2022">📅 December 2022</h3>
+<ul>
+<li>Fix bugs in code.</li>
+<li>Begin finding source files of raw data to be used in Phase 3: Extrapolation</li>
+</ul>
 </section>
-<section id="results-1" class="slide level2 smaller">
-<h2>Results</h2>
-<h3 id="clustering-hdbscan">Clustering (HDBSCAN)</h3>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img data-src="./figures/umap-hdbscan.png"></p>
-</div><div class="column" style="width:55%;">
-<h4 id="highlights-1">Highlights</h4>
-<ol type="1">
-<li class="fragment">The HDBSCAN found 9 clusters of FRB samples.</li>
-<li class="fragment">3 of them are assigned as repeater clusters. A cluster is assigned as a repeater cluster if it is populated with &gt;10% repeater FRB.</li>
-<li class="fragment"><strong>Non-repeaters inside a repeater cluster are identified as repeater candidate</strong>. A total of 118/474 (39.7%) are identified as a repeater candidates.</li>
-<li class="fragment">Total repeater percentages might be higher (41.9%) than previously thought (~5%).</li>
-</ol>
-</div>
-</div>
+<section id="phase-2-statistical-study" class="slide level2">
+<h2>Phase 2: Statistical Study</h2>
+<h3 id="january-2023">📅 January 2023</h3>
+<ul>
+<li>Read papers relating to using statistical methods to find difference between known fast radio bursts.<sup>1</sup></li>
+<li>Revised topics in statistics.
+<ul>
+<li>likelihood function and posterior probability</li>
+<li>point estimation and statistical inference</li>
+<li>hypothesis testing and distribution comparison</li>
+</ul></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn1"><p><span class="citation" data-cites="cui_FastRadioBursts_2021">Cui, Zhang, Wang, Zhang, Li, Peng, Zhu, Wang, et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>, <span class="citation" data-cites="guo_PossibleSubclassificationFast_2022">Guo and Wei (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span>, <span class="citation" data-cites="cui_StatisticalPropertiesFast_2021">Cui, Zhang, Wang, Zhang, Li, Peng, Zhu, Strom, et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>, <span class="citation" data-cites="arcus_FastRadioBurst_2021">Arcus et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span></p></li></ol></aside></section>
+<section id="phase-2-statistical-study-1" class="slide level2">
+<h2>Phase 2: Statistical Study</h2>
+<h3 id="january-2023-1">📅 January 2023</h3>
+<ul>
+<li>Writing literature review and proposal
+<ul>
+<li>Helped narrow down research objectives</li>
+<li>Helped increase literature</li>
+</ul></li>
+</ul>
 </section>
-<section id="implications" class="slide level2 smaller">
-<h2>Implications</h2>
-<h3 id="highest-frequency-vs-peak-frequency">Highest Frequency vs Peak Frequency</h3>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img data-src="./figures/high-vs-peak.png"></p>
-</div><div class="column" style="width:55%;">
-<h4 id="highlights-2">Highlights</h4>
-<ol type="1">
-<li class="fragment">Repeaters (❌) are already aligned along the diagonal.</li>
-<li class="fragment">Repeater candidates (♦️) also align along the diagonal.</li>
-<li class="fragment">Non-repeaters (🟦) concentrate below the diagonal.</li>
-</ol>
-</div>
-</div>
-</section>
-<section id="implications-1" class="slide level2 smaller">
-<h2>Implications</h2>
-<h3 id="highestpeak-frequency-vs-fluence">Highest/Peak Frequency vs Fluence</h3>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img data-src="./figures/freq-ratio-vs-fluence.png"></p>
-</div><div class="column" style="width:55%;">
-<h4 id="highlights-3">Highlights</h4>
-<ol type="1">
-<li class="fragment">The line <span class="math inline">\(x = 1.4\)</span> neatly separate repeater clusters and non-repeater clusters.</li>
-<li class="fragment">All repeaters (❌) and repeater candidates (♦️) are located at the ratio <span class="math inline">\(x&lt;1.4\)</span>.</li>
-<li class="fragment">Most non-repeaters (🟦) are located at the ratio <span class="math inline">\(x&gt;=1.4\)</span> while some of them bleed through <span class="math inline">\(x&lt;1.4\)</span>.</li>
-<li class="fragment">Some FRBs form a straight line at <span class="math inline">\(\text{Fluence}=50\,\text{Jy}\cdot\text{ms}\)</span> but the cause is unknown.</li>
-</ol>
-</div>
-</div>
+<section id="phase-2-statistical-study-2" class="slide level2">
+<h2>Phase 2: Statistical Study</h2>
+<h3 id="february-2023">📅 February 2023</h3>
+<ul>
+<li>Downloaded and compressed waterfall data from the CHIME/FRB catalog using a download script.</li>
+<li>Used multi-threading processes to download multiple files simultaneaously
+<ul>
+<li>Data can be corrupted if multiple processes write to the same file. Learned how to use thread-locking to avoid data corruption</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="future-plans" class="title-slide slide level1 center">
+<h1>Future Plans</h1>
 
-<aside><div>
-<p>The ratio between the highest and peak frequencies is used because the redshift effect on these two measurements is cancelled out.</p>
-</div></aside></section>
-<section id="implications-2" class="slide level2 smaller">
-<h2>Implications</h2>
-<h3 id="width-vs-spectral-running">Width vs Spectral Running</h3>
-<div class="columns">
-<div class="column" style="width:45%;">
-<p><img data-src="./figures/width-vs-spectral-running.png"></p>
-</div><div class="column" style="width:55%;">
-<h4 id="highlights-4">Highlights</h4>
-<ol type="1">
-<li class="fragment">The distribution of spectral running appears to have two main peaks: an upper peak around 0 ~ -10 and a lower peak between 0 and -150.</li>
-<li class="fragment">A simple cut at ‘-25’, as shown by the dashed line, can divide them effectively into two major peaks.</li>
-<li class="fragment">Repeaters (❌) and repeater candidates (♦️) make up the lower distribution.</li>
-<li class="fragment">Non-repeaters (🟦) make up the upper distribution.</li>
-</ol>
-</div>
-</div>
 </section>
-<section id="conclusion" class="slide level2">
-<h2>Conclusion</h2>
-<ol type="1">
-<li>Unsupervised machine learning can tell the difference between repeaters and non-repeaters even though it has no knowledge of the labels. Therefore, <strong>repeaters and non-repeaters may have an underlying difference; including a difference in origin</strong>.</li>
-<li>Some non-repeating FRBs have latent repeater features which is revealed using UMAP–HDBSCAN. Different plots have revealed that the <strong>repeater candidates shows similar behaviour with known repeaters</strong>.</li>
-</ol>
+<section id="future" class="slide level2">
+<h2>Future</h2>
+<ul>
+<li>By the end of March, we should have a result on how FRB’s time series data distribution are affected by machine learning classifications.</li>
+<li>By April, we should be able to submit to a publication.</li>
+<li>While waiting for publication, we can work on extending previous method using new data from CHIME/FRB and/or old data from other telescopes for Phase 3: Extrapolation</li>
+</ul>
 </section>
-<section id="reproducibility" class="slide level2 smaller">
-<h2>Reproducibility</h2>
-<ol type="1">
-<li>The data is available in <span class="citation" data-cites="hashimotoEnergyFunctionsFast2022">Hashimoto et al. (<a href="#/references" role="doc-biblioref" onclick="">2022</a>)</span> and the clustering result is appended as supplimentary material.</li>
-<li>The procedure is detailed enough for me to be able to reproduce similar result except for HDBSCAN’s <code>minimum cluster size</code> parameter which was unspecified.</li>
-</ol>
+<section id="gantt-chart" class="slide level2">
+<h2>Gantt Chart</h2>
+<div>
 
-<img data-src="https://thaza-kun.github.io/sarjana/notebooks/02-UMAP-HDBSCAN_files/figure-html/cell-13-output-2.png" class="r-stretch"></section>
+</div>
+<div class="cell" data-execution_count="4">
+<div class="cell-output cell-output-display">
+<p><img data-src="index_files/figure-revealjs/cell-5-output-1.png" width="1418" height="560"></p>
+</div>
+</div>
+</section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
+
+<img src="../_assets/radio-cosmology-lab-logo.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<p>Masters Study Progress Report</p>
+</div>
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-campelloDensityBasedClusteringBased2013" class="csl-entry" role="doc-biblioentry">
-Campello, Ricardo J. G. B., Davoud Moulavi, and Joerg Sander. 2013. <span>“Density-<span>Based Clustering Based</span> on <span>Hierarchical Density Estimates</span>.”</span> In <em>Advances in <span>Knowledge Discovery</span> and <span>Data Mining</span></em>, edited by Jian Pei, Vincent S. Tseng, Longbing Cao, Hiroshi Motoda, and Guandong Xu, 160–72. Lecture <span>Notes</span> in <span>Computer Science</span>. <span>Berlin, Heidelberg</span>: <span>Springer</span>. <a href="https://doi.org/10.1007/978-3-642-37456-2_14">https://doi.org/10.1007/978-3-642-37456-2_14</a>.
+<div id="ref-arcus_FastRadioBurst_2021" class="csl-entry" role="doc-biblioentry">
+Arcus, W R, J-P Macquart, M W Sammons, C W James, and R D Ekers. 2021. <span>“The Fast Radio Burst Dispersion Measure Distribution.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 501 (4): 5319–29. <a href="https://doi.org/10.1093/mnras/staa3948">https://doi.org/10.1093/mnras/staa3948</a>.
 </div>
-<div id="ref-hashimotoEnergyFunctionsFast2022" class="csl-entry" role="doc-biblioentry">
-Hashimoto, Tetsuya, Tomotsugu Goto, Bo Han Chen, Simon C-C Ho, Tiger Y-Y Hsiao, Yi Hang Valerie Wong, Alvina Y L On, et al. 2022. <span>“Energy Functions of Fast Radio Bursts Derived from the First <span>CHIME</span>/<span>FRB</span> Catalogue.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 511 (2): 1961–76. <a href="https://doi.org/10.1093/mnras/stac065">https://doi.org/10.1093/mnras/stac065</a>.
+<div id="ref-bohanchen_uncloaking_2021" class="csl-entry" role="doc-biblioentry">
+Bo Han Chen, Tetsuya Hashimoto, Tomotsugu Goto, Seong Jin Kim, Daryl Joe D. Santos, Alvina Y. L. On, Ting-Yi Lu, and Tiger Y. -Y. Hsiao. 2021. <span>“Uncloaking Hidden Repeating Fast Radio Bursts with Unsupervised Machine Learning.”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 509 (1): 1227–36. <a href="https://doi.org/10.1093/mnras/stab2994">https://doi.org/10.1093/mnras/stab2994</a>.
 </div>
-<div id="ref-mcinnesUMAPUniformManifold2018" class="csl-entry" role="doc-biblioentry">
-McInnes, Leland, John Healy, and James Melville. 2018. <span>“<span>UMAP</span>: <span>Uniform Manifold Approximation</span> and <span>Projection</span> for <span>Dimension Reduction</span>.”</span> <em>arXiv e-Prints</em>.
+<div id="ref-cui_FastRadioBursts_2021" class="csl-entry" role="doc-biblioentry">
+Cui, Xiang-Han, Cheng-Min Zhang, Shuang-Qiang Wang, Jian-Wei Zhang, Di Li, Bo Peng, Wei-Wei Zhu, Na Wang, et al. 2021. <span>“Fast Radio Bursts: Do Repeaters and Non-Repeaters Originate in Statistically Similar Ensembles?”</span> <em>Monthly Notices of the Royal Astronomical Society</em> 500 (January): 3275–80. <a href="https://doi.org/10.1093/mnras/staa3351">https://doi.org/10.1093/mnras/staa3351</a>.
 </div>
-<div id="ref-thechimefrbcollaborationFirstCHIMEFRB2021" class="csl-entry" role="doc-biblioentry">
-The CHIME/FRB Collaboration, Mandana Amiri, Bridget C. Andersen, Kevin Bandura, Sabrina Berger, Mohit Bhardwaj, Michelle M. Boyce, et al. 2021. <span>“The <span>First CHIME</span>/<span>FRB Fast Radio Burst Catalog</span>.”</span> <em>The Astrophysical Journal Supplement Series</em> 257 (2): 59. <a href="https://doi.org/10.3847/1538-4365/ac33ab">https://doi.org/10.3847/1538-4365/ac33ab</a>.
+<div id="ref-cui_StatisticalPropertiesFast_2021" class="csl-entry" role="doc-biblioentry">
+Cui, Xiang-Han, Cheng-Min Zhang, Shuang-Qiang Wang, Jian-Wei Zhang, Di Li, Bo Peng, Wei-Wei Zhu, Richard Strom, et al. 2021. <span>“Statistical Properties of Fast Radio Bursts Elucidate Their Origins: Magnetars Are Favored over Gamma-Ray Bursts.”</span> <em>Research in Astronomy and Astrophysics</em> 21 (8): 211. <a href="https://doi.org/10.1088/1674-4527/21/8/211">https://doi.org/10.1088/1674-4527/21/8/211</a>.
+</div>
+<div id="ref-guo_PossibleSubclassificationFast_2022" class="csl-entry" role="doc-biblioentry">
+Guo, Han-Yue, and Hao Wei. 2022. <span>“A Possible Subclassification of Fast Radio Bursts.”</span> <em>Journal of Cosmology and Astroparticle Physics</em> 2022 (July): 010. <a href="https://doi.org/10.1088/1475-7516/2022/07/010">https://doi.org/10.1088/1475-7516/2022/07/010</a>.
+</div>
+<div id="ref-luo_machinelearningfrb_2022" class="csl-entry" role="doc-biblioentry">
+Luo, Jia-Wei, Jia-Ming Zhu-Ge, and Bing Zhang. 2022. <span>“Machine Learning Classification of <span>CHIME</span> Fast Radio Bursts: <span>I</span>. <span>Supervised Methods</span>.”</span> <em>Monthly Notices of the Royal Astronomical Society</em>, November, stac3206. <a href="https://doi.org/10.1093/mnras/stac3206">https://doi.org/10.1093/mnras/stac3206</a>.
+</div>
+<div id="ref-zhuge_machinelearningfrb_2022" class="csl-entry" role="doc-biblioentry">
+Zhu-Ge, Jia-Ming, Jia-Wei Luo, and Bing Zhang. 2022. <span>“Machine <span>Learning Classification</span> of <span>Fast Radio Bursts</span>: <span>II</span>. <span>Unsupervised Methods</span>.”</span> <span>arXiv</span>. <a href="https://doi.org/10.48550/arXiv.2210.02471">https://doi.org/10.48550/arXiv.2210.02471</a>.
 </div>
 </div>
 </section></section>
-<section>
-<section id="thank-you" class="title-slide slide level1 center">
-<h1>Thank You</h1>
-
-</section>
-<section id="progress-report" class="slide level2">
-<h2>Progress Report</h2>
-<div width="100%">
-<div class="cell" data-execution_count="1">
-<div class="cell-output cell-output-display">
-<p><img data-src="index_files/figure-revealjs/cell-2-output-1.png" width="1367" height="485"></p>
-</div>
-</div>
-</div>
-</section>
-<section id="publication-report" class="slide level2 smaller">
-<h2>Publication Report</h2>
-<ol type="1">
-<li>Is It Possible That Different Clusters Of Repeaters And Repeater Candidates Correspond To Different Mechanism Of Emission?
-<ul>
-<li>Status: Ideation</li>
-<li>Methodology: M-W-W test can be used to test whether two samples might come from the same distribution (origin) as was done in <a href="https://ui.adsabs.harvard.edu/abs/2021MNRAS.500.3275C/abstract">Cui, Xiang-Han et. al.&nbsp;(2021)</a><sup>1</sup></li>
-</ul></li>
-<li>Is It Possible To Predict The Repeater Candidates’ Feature Within Cluster Population?
-<ul>
-<li>Status: Ideation</li>
-<li>Methodology: Using a prediction algorithm combined with a leave-out-out k</li>
-</ul></li>
-</ol>
-<p><img src="./assets/radio-cosmology-lab-logo.png" class="slide-logo"></p>
-<div class="footer footer-default">
-<p>Murthadza bin Aznam</p>
-</div>
-<aside><ol class="aside-footnotes"><li id="fn6"><p>‘Fast radio bursts: do repeaters and non-repeaters originate in statistically similar ensembles?’</p></li></ol></aside></section></section>
 
     </div>
   </div>
@@ -726,7 +532,6 @@ The CHIME/FRB Collaboration, Mandana Amiri, Bridget C. Andersen, Kevin Bandura, 
   <script src="index_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="index_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="index_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="index_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -748,8 +553,7 @@ The CHIME/FRB Collaboration, Mandana Amiri, Bridget C. Andersen, Kevin Bandura, 
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -920,7 +724,7 @@ The CHIME/FRB Collaboration, Mandana Amiri, Bridget C. Andersen, Kevin Bandura, 
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
           RevealMath,
           RevealNotes,

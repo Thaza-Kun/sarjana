@@ -28,4 +28,4 @@ book:
 
 bibliography: references.bib
 filters: 
-  - include-subchapters.lua
+  - include-subchapters

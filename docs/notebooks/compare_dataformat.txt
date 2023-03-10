@@ -1,0 +1,6 @@
+[waterfall -> multiparquet] 0.9898905513142054
+[waterfall -> nowaterfall] 0.9561364087270899
+[nowaterfall -> multiparquet] 0.7695252852668696
+[nowaterfall -> singleparquet] 0.8075859085831928
+[multiparquet -> singleparquet] 0.16514012550311238
+[waterfall -> singleparquet] 0.9915600269389448
