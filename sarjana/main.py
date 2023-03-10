@@ -26,10 +26,10 @@ from rich.progress import (
     TransferSpeedColumn,
 )
 
+from sarjana.datahandlers import WaterfallData
 from sarjana.download import (
-    FRBDataHandler,
+    compress_to_parquet,
     manage_download_waterfall_data_task,
-    run_download_and_collect_task,
 )
 
 
@@ -80,7 +80,6 @@ def plot_flux_profile(
     model_flux: pd.Series,
     time: pd.Series,
     timedelta: pd.Series,
-    eventname: pd.Series,
     axes: Optional[plt.Axes] = None,
     **kwargs,
 ) -> Any:
@@ -190,32 +189,34 @@ def plot(
             g.savefig(f"{savefile}-{cat}-{loop_num}.png")
 
 
-class MockDataHandler(FRBDataHandler):
-    ...
-
-
 @app.command()
 def download(
     eventnames: typer.FileText = typer.Argument(
         ..., help="A newline delimited `.txt` file listing eventnames."
     ),
-    collect_to: str = typer.Argument(
-        ..., help="Filename in `.parquet` to collect downloaded data into."
+    tofile: str = typer.Option(
+        None, help="Filename in `.parquet` to collect downloaded data into."
     ),
     path: str = typer.Argument(".", help="Download file to this path"),
+    limit: int = typer.Option(None, help="How many to download"),
 ):
+    """Download waterfall data from CHIME/FRB database"""
     basepath = Path(path)
     baseurl = "https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/files/vault/AstroDataCitationDOI/CISTI.CANFAR/21.0007/data/waterfalls/data"
     try:
-        currently_available_names = pd.read_parquet(collect_to, columns=["eventname"])[
-            "eventname"
-        ].tolist()
+        if tofile is None:
+            raise FileNotFoundError
+        currently_available_names = pd.read_parquet(
+            tofile, engine="pyarrow", columns=["eventname"]
+        )["eventname"].tolist()
     except FileNotFoundError:
         currently_available_names = []
 
     names_to_download = [
         *{i.strip("\n") for i in eventnames if i not in currently_available_names}
     ]
+    if limit:
+        names_to_download = names_to_download[:limit]
     progress = Progress(
         TextColumn("{task.id:>3d}/"),
         TextColumn(f"{len(names_to_download)-1:>3d} "),
@@ -240,20 +241,12 @@ def download(
         progress_manager=progress,
         basepath=basepath,
         baseurl=baseurl,
-        collect_to=collect_to,
-        data_handler=MockDataHandler,
+        collect_to=tofile,
+        data_handler=WaterfallData,
     )
 
 
 @app.command()
-def debug():
-    def try_func(arg1: str, arg2: str) -> None:
-        ...
-
-    expected_kwargs = try_func.__annotations__
-    kwargs = ["arg1"]
-    for keyword in expected_kwargs:
-        if keyword not in [*kwargs, "return"]:
-            raise AttributeError(
-                f"Expected {keyword} in function arguments but only {[*kwargs]} was given."
-            )
+def debug(frb: str = typer.Argument(..., help="FRB file")):
+    rich.print(WaterfallData(frb))
+    # compress_to_parquet(fromfile=frb, tofile=None, data_handler=WaterfallData)

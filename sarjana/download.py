@@ -8,17 +8,15 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 import signal
 import threading
-from typing import Iterable, Protocol
+from typing import Iterable, Optional, Protocol
 import requests
 
 import pandas as pd
 
-# from cfod.routines.waterfaller import Waterfaller
-# import cfod
-# import numpy as np
-
 # Typing
 from rich.progress import Progress, TaskID
+import rich
+import pyarrow as pa
 
 done_event = threading.Event()
 
@@ -28,37 +26,6 @@ def handle_sigint(signum, frame):
 
 
 signal.signal(signal.SIGINT, handle_sigint)
-
-
-# class WaterfallData(Waterfaller):
-#     def _unpack(self):
-#         unnecessary_metadata = ["filename", "datafile"]
-#         self.datafile = self.datafile["frb"]
-#         self.eventname = self.datafile.attrs["tns_name"].decode()
-#         self.wfall = self.datafile["wfall"][:]
-#         self.model_wfall = self.datafile["model_wfall"][:]
-#         self.plot_time = self.datafile["plot_time"][:]
-#         self.plot_freq = self.datafile["plot_freq"][:]
-#         self.ts = self.datafile["ts"][:]
-#         self.model_ts = self.datafile["model_ts"][:]
-#         self.spec = self.datafile["spec"][:]
-#         self.model_spec = self.datafile["model_spec"][:]
-#         self.extent = self.datafile["extent"][:]
-#         self.dm = self.datafile.attrs["dm"][()]
-#         self.scatterfit = self.datafile.attrs["scatterfit"][()]
-#         self.dt = np.median(np.diff(self.plot_time))
-#         for metadata in unnecessary_metadata:
-#             self.__dict__.pop(metadata, None)
-
-#         self.wfall_shape = self.wfall.shape
-#         self.wfall = self.wfall.reshape((-1,))
-#         self.model_wfall = self.model_wfall.reshape((-1,))
-#         self.cal_wfall_shape = (
-#             self.cal_wfall.shape if getattr(self, "cal_wfall", None) else None
-#         )
-#         self.cal_wfall = (
-#             self.cal_wfall.reshape((-1,)) if getattr(self, "cal_wfall", None) else None
-#         )
 
 
 class FRBDataHandler(Protocol):
@@ -81,16 +48,16 @@ def read_frb_to_dataframe(filename: str, data_handler: FRBDataHandler) -> pd.Dat
     return pd.DataFrame([frb.__dict__])
 
 
-def collect_data_into_single_file(
-    collect_from: str, collect_to: str, data_handler: FRBDataHandler
+def compress_to_parquet(
+    fromfile: str, tofile: str, data_handler: FRBDataHandler
 ) -> None:
-    df = read_frb_to_dataframe(collect_from, data_handler=data_handler)
+    df = read_frb_to_dataframe(fromfile, data_handler=data_handler)
     try:
-        pqdf = pd.read_parquet(collect_to)
-        pqdf = pd.concat([pqdf, df])
-        pqdf.to_parquet(collect_to)
+        data = pd.read_parquet(tofile, columns=["eventname"])
+        del data
+        df.to_parquet(tofile, engine="pyarrow")
     except FileNotFoundError:
-        df.to_parquet(collect_to)
+        df.to_parquet(tofile, engine="pyarrow")
 
 
 def run_download_from_url_task(
@@ -124,6 +91,8 @@ def run_download_and_collect_task(
 ) -> None:
     url = "{}/{}".format(baseurl, collect_from)
     dest_file = Path(basepath, collect_from)
+    if collect_to is None:
+        collect_to = Path(basepath, f"{collect_from}.parquet")
     run_download_from_url_task(task_id, url, dest_file, progress_manager)
     progress_manager.console.log(f":inbox_tray: {dest_file} downloaded.")
     thread_lock = threading.Lock()
@@ -132,11 +101,12 @@ def run_download_and_collect_task(
         f":locked_with_key:{dest_file} acquired lock on ./{collect_to}"
     )
     try:
-        collect_data_into_single_file(collect_from, collect_to, data_handler)
+        compress_to_parquet(dest_file, collect_to, data_handler)
         progress_manager.console.log(f":pencil: {dest_file} copied to ./{collect_to}.")
-        subprocess.run(["rm", collect_from])
+        subprocess.run(["rm", dest_file])
         progress_manager.console.log(f":heavy_large_circle: {dest_file} deleted.")
-    except Exception:
+    except Exception as e:
+        rich.print(Exception.__name__, e)
         progress_manager.console.log(
             f":exclamation_mark: Error with {collect_from}. Saving for debugging..."
         )
