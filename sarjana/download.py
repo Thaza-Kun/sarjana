@@ -8,7 +8,7 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 import signal
 import threading
-from typing import Iterable, Optional, Protocol
+from typing import Iterable, Protocol
 import requests
 
 import pandas as pd
@@ -16,7 +16,6 @@ import pandas as pd
 # Typing
 from rich.progress import Progress, TaskID
 import rich
-import pyarrow as pa
 
 done_event = threading.Event()
 
@@ -28,30 +27,30 @@ def handle_sigint(signum, frame):
 signal.signal(signal.SIGINT, handle_sigint)
 
 
-class FRBDataHandler(Protocol):
+class WaterfallDataHandler(Protocol):
     def _unpack(self) -> None:
         ...
 
     @property
-    def __dict__(self) -> dict:
+    def dataframe(self) -> pd.DataFrame:
         ...
 
 
-def read_frb_to_dataframe(filename: str, data_handler: FRBDataHandler) -> pd.DataFrame:
+def read_frb_to_dataframe(filename: str, DataHandler: WaterfallDataHandler) -> pd.DataFrame:
     """Reads the necessary metadata from a given filename
 
     Args:
         filename (str): filename
         data_handler (FRBDataHandler): a class to unpack data
     """
-    frb = data_handler(filename)
-    return pd.DataFrame([frb.__dict__])
+    frb = DataHandler(filename)
+    return frb.dataframe
 
 
 def compress_to_parquet(
-    fromfile: str, tofile: str, data_handler: FRBDataHandler
+    fromfile: str, tofile: str, DataHandler: WaterfallDataHandler
 ) -> None:
-    df = read_frb_to_dataframe(fromfile, data_handler=data_handler)
+    df = read_frb_to_dataframe(fromfile, DataHandler=DataHandler)
     try:
         data = pd.read_parquet(tofile, columns=["eventname"])
         del data
@@ -85,7 +84,7 @@ def run_download_and_collect_task(
     basepath: Path,
     baseurl: str,
     collect_from: str,
-    data_handler: FRBDataHandler,
+    DataHandler: WaterfallDataHandler,
     progress_manager: Progress,
     task_id: int,
 ) -> None:
@@ -101,7 +100,7 @@ def run_download_and_collect_task(
         f":locked_with_key:{dest_file} acquired lock on ./{collect_to}"
     )
     try:
-        compress_to_parquet(dest_file, collect_to, data_handler)
+        compress_to_parquet(dest_file, collect_to, DataHandler)
         progress_manager.console.log(f":pencil: {dest_file} copied to ./{collect_to}.")
         subprocess.run(["rm", dest_file])
         progress_manager.console.log(f":heavy_large_circle: {dest_file} deleted.")

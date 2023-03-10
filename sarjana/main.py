@@ -26,7 +26,7 @@ from rich.progress import (
     TransferSpeedColumn,
 )
 
-from sarjana.datahandlers import WaterfallData
+from sarjana.handlers import H5Waterfall, ParquetWaterfall
 from sarjana.download import (
     compress_to_parquet,
     manage_download_waterfall_data_task,
@@ -242,11 +242,11 @@ def download(
         basepath=basepath,
         baseurl=baseurl,
         collect_to=tofile,
-        data_handler=WaterfallData,
+        DataHandler=H5Waterfall,
     )
 
 
 @app.command()
 def debug(frb: str = typer.Argument(..., help="FRB file")):
-    rich.print(WaterfallData(frb))
-    # compress_to_parquet(fromfile=frb, tofile=None, data_handler=WaterfallData)
+    rich.print(ParquetWaterfall(frb).plot_freq)
+    # compress_to_parquet(fromfile=frb, tofile=None, data_handler=H5Waterfall)
