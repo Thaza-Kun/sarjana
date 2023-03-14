@@ -111,8 +111,5 @@ def find_burst(
         convolved = scipy.signal.convolve(ts, boxcar_kernel(widths[i]), mode="same")
         peaks[i] = np.nanargmax(convolved)
         snrs[i] = convolved[peaks[i]]
-    try:
-        best_idx = np.nanargmax(snrs)
-    except ValueError:
-        return peaks, widths, snrs
+    best_idx = np.nanargmax(snrs)
     return peaks[best_idx], widths[best_idx], snrs[best_idx]

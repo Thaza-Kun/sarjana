@@ -2,6 +2,7 @@ from typing import Optional
 from pathlib import Path
 
 import pandas as pd
+import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sarjana.tui import LinearProgress, DownloadProgress
@@ -13,7 +14,7 @@ from sarjana.download import manage_download_waterfall_data_task, compress_to_pa
 
 
 def plot_many_flux_profile_by_clustering_groups(
-    profile: str, embedding: str, savefile: str, size: int
+    profile: str, embedding: str, savefile: str, size: int, *, find_peaks: bool = False
 ) -> None:
     """
     TODO: DOCS
@@ -23,7 +24,7 @@ def plot_many_flux_profile_by_clustering_groups(
     data = merge_embedding_into_profile(prof, emb)
     data = data.sort_values(by=["hdbscan_group", "eventname"])
     categories = data["hdbscan_group"].unique()
-    with LinearProgress as prg:
+    with LinearProgress() as prg:
         for cat in categories:
             to_plot = data[data["hdbscan_group"] == cat].drop_duplicates(
                 subset="eventname"
@@ -32,7 +33,7 @@ def plot_many_flux_profile_by_clustering_groups(
             for pos in range(0, len(to_plot), size):
                 loop_num = int((pos / size) + 1)
                 g = sns.FacetGrid(
-                    to_plot[pos : pos + size],
+                    current:=to_plot[pos : pos + size],
                     col="eventname",
                     col_wrap=5,
                     sharex=False,
@@ -44,12 +45,13 @@ def plot_many_flux_profile_by_clustering_groups(
                     "model_ts",
                     "plot_time",
                     "dt",
+                    find_peaks=find_peaks
                 )
                 g.fig.suptitle(cat + " " + str(loop_num))
                 g.set_ylabels("flux (Jy)")
                 g.set_xlabels("time (ms)")
                 g.savefig(f"{savefile}-{cat}-{loop_num}.png")
-                prg.update(task, advance=size)
+                prg.update(task, advance=len(current['eventname']))
 
 
 def download_waterfall_data_from_chimefrb_database(
@@ -95,15 +97,13 @@ def combine_multifile_into_single_parquet_file(
         currently_available_names = []
     names = [i.strip("\n") for i in eventnames if i not in currently_available_names]
     with LinearProgress() as prg:
-        # TODO Exclude cols
-        # TODO Progress bar
         task = prg.add_task(
             "Removing RFI",
             filename=collectionfile,
             start=True,
             visible=True,
             total=len(names),
-        )
+        ) 
         for name in names:
             compress_to_parquet(
                 filepattern.format(name),

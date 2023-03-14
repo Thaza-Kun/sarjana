@@ -12,7 +12,7 @@ from rich.progress import (
 
 class DownloadProgress(Progress):
     def __init__(self, total: int) -> None:
-        Progress.__init__(
+        super().__init__(
             TextColumn("{task.id:>3d}/"),
             TextColumn(f"{total:>3d} "),
             TextColumn(
@@ -42,7 +42,7 @@ class DownloadProgress(Progress):
 
 class LinearProgress(Progress):
     def __init__(self) -> None:
-        Progress.__init__(
+        super().__init__(
             TextColumn(
                 "[bold blue]{task.fields[filename]}",
                 justify="right",
