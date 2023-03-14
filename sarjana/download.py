@@ -8,7 +8,7 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 import signal
 import threading
-from typing import Iterable, Protocol
+from typing import Iterable, Optional, Protocol
 import requests
 
 import pandas as pd
@@ -31,32 +31,29 @@ class WaterfallDataHandler(Protocol):
     def _unpack(self) -> None:
         ...
 
-    @property
-    def dataframe(self) -> pd.DataFrame:
+    def pack(self, *args, **kwargs) -> pd.DataFrame:
         ...
 
 
-def read_frb_to_dataframe(filename: str, DataHandler: WaterfallDataHandler) -> pd.DataFrame:
-    """Reads the necessary metadata from a given filename
-
-    Args:
-        filename (str): filename
-        data_handler (FRBDataHandler): a class to unpack data
-    """
-    frb = DataHandler(filename)
-    return frb.dataframe
-
-
 def compress_to_parquet(
-    fromfile: str, tofile: str, DataHandler: WaterfallDataHandler
+    fromfile: str,
+    tofile: str,
+    DataHandler: WaterfallDataHandler,
+    handler_kwargs: Optional[dict] = {},
+    packing_kwargs: Optional[dict] = {},
 ) -> None:
-    df = read_frb_to_dataframe(fromfile, DataHandler=DataHandler)
+    """
+    TODO: DOCS
+    """
+    data: WaterfallDataHandler = DataHandler(fromfile, **handler_kwargs)
+    df = data.pack(**packing_kwargs)
     try:
-        data = pd.read_parquet(tofile, columns=["eventname"])
-        del data
-        df.to_parquet(tofile, engine="pyarrow")
+        data = pd.read_parquet(tofile)
+        pqdf = pd.concat([data, df])
     except FileNotFoundError:
-        df.to_parquet(tofile, engine="pyarrow")
+        pqdf = df
+    finally:
+        pqdf.to_parquet(tofile, engine="pyarrow")
 
 
 def run_download_from_url_task(

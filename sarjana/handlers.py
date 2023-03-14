@@ -4,48 +4,99 @@ import numpy as np
 import h5py
 import pandas as pd
 
+from sarjana import signal
+
+
 class ParquetWaterfall:
-    def __init__(self, filename: str, columns: Optional[List[str]] = None) -> None:
+    def __init__(
+        self,
+        filename: str,
+        columns: Optional[List[str]] = None,
+    ) -> None:
         """
         Read Waterfall data from parquet.
         """
         self.filename = filename
-        self.dataframe = pd.read_parquet(filename, columns=None, engine='pyarrow')
+        self.dataframe = pd.read_parquet(filename, columns=columns, engine="pyarrow")
         self._unpack()
 
     def __getitem__(self, column: str):
         if (series := self.dataframe.get(column)) is None:
             return None
         return series.item()
-        
+
+    def pack(
+        self, wfall: Optional[str] = None, remove_interference: bool = False
+    ) -> pd.DataFrame:
+        if remove_interference:
+            if self.no_rfi is False:
+                (
+                    self.spec,
+                    self.wfall,
+                    self.model_wfall,
+                ) = signal.remove_radio_frequency_interference(
+                    self.spec, self.wfall, self.model_wfall
+                )
+                self.ts = np.nansum(self.wfall, axis=0)
+                self.model_ts = np.nansum(self.model_wfall, axis=0)
+                self.no_rfi = True
+        if wfall == "remove":
+            wfall_cols = [
+                "wfall",
+                "model_wfall",
+                "cal_wfall",
+                "_wfall_shape",
+                "_cal_wfall_shape",
+            ]
+            for col in wfall_cols:
+                self.__dict__.pop(col, None)
+        elif wfall == "flatten":
+            self.wfall_shape = self.wfall.shape
+            self.wfall = self.wfall.reshape((-1,))
+            self.model_wfall = self.model_wfall.reshape((-1,))
+            self.cal_wfall_shape = (
+                self.cal_wfall.shape if getattr(self, "cal_wfall", None) else None
+            )
+            self.cal_wfall = (
+                self.cal_wfall.reshape((-1,))
+                if getattr(self, "cal_wfall", None)
+                else None
+            )
+        elif wfall is None:
+            pass
+        else:
+            raise KeyError("wfall strategy not recognized")
+        self.__dict__.pop("dataframe", None)
+        return pd.DataFrame([self.__dict__])
 
     def _unpack(self) -> None:
-        # for key in self.dataframe.keys():
-        #     setattr(self, key, self.dataframe[key].item())
-        self.eventname = self['eventname']
-        self.wfall = self['wfall']
-        self.model_wfall = self['model_wfall']
-        self.plot_time = self['plot_time']
-        self.plot_freq = self['plot_freq']
-        self.ts = self['ts']
-        self.model_ts = self['model_ts']
-        self.spec = self['spec']
-        self.model_spec = self['model_spec']
-        self.extent = self['extent']
-        self.dm = self['dm']
-        self.scatterfit = self['scatterfit']
-        self.dt = self['dt']
-        self.wfall_shape = self['wfall_shape']
-        self.wfall = self['wfall']
-        self.model_wfall = self['model_wfall']
-        self.cal_wfall_shape = self['cal_wfall_shape']
-        self.cal_wfall = self['cal_wfall']
+        self._wfall_shape = self["wfall_shape"]
+        self._cal_wfall_shape = self["cal_wfall_shape"]
+
+        self.eventname = self["eventname"]
+        self.wfall = self["wfall"]
+        self.model_wfall = self["model_wfall"]
+        self.plot_time = self["plot_time"]
+        self.plot_freq = self["plot_freq"]
+        self.ts = self["ts"]
+        self.model_ts = self["model_ts"]
+        self.spec = self["spec"]
+        self.model_spec = self["model_spec"]
+        self.extent = self["extent"]
+        self.dm = self["dm"]
+        self.scatterfit = self["scatterfit"]
+        self.dt = self["dt"]
+        self.wfall = np.reshape(self["wfall"], self._wfall_shape)
+        self.model_wfall = np.reshape(self["model_wfall"], self._wfall_shape)
+        self.cal_wfall = np.reshape(self["cal_wfall"], self._cal_wfall_shape)
 
 
 class H5Waterfall:
     def __init__(self, filename: str) -> None:
         """
         Initialize the Waterfaller.
+
+        TODO: DOCS FROM CFOD
 
         Parameters
         ----------
@@ -56,6 +107,43 @@ class H5Waterfall:
         self.datafile = h5py.File(filename, "r")
         self._unpack()
         self.dataframe = pd.DataFrame([self.__dict__])
+
+    def pack(
+        self, wfall: Optional[str] = None, remove_interference: bool = False
+    ) -> pd.DataFrame:
+        if remove_interference:
+            if self.no_rfi is False:
+                (
+                    self.spec,
+                    self.wfall,
+                    self.model_wfall,
+                ) = signal.remove_radio_frequency_interference(
+                    self.spec, self.wfall, self.model_wfall
+                )
+                self.ts = np.nansum(self.wfall, axis=0)
+                self.model_ts = np.nansum(self.model_wfall, axis=0)
+                self.no_rfi = True
+        if wfall == "remove":
+            wfall_cols = ["wfall", "model_wfall", "cal_wfall"]
+            for col in wfall_cols:
+                self.__dict__.pop(col, None)
+        elif wfall == "flatten":
+            self.wfall_shape = self.wfall.shape
+            self.wfall = self.wfall.reshape((-1,))
+            self.model_wfall = self.model_wfall.reshape((-1,))
+            self.cal_wfall_shape = (
+                self.cal_wfall.shape if getattr(self, "cal_wfall", None) else None
+            )
+            self.cal_wfall = (
+                self.cal_wfall.reshape((-1,))
+                if getattr(self, "cal_wfall", None)
+                else None
+            )
+        elif wfall is None:
+            pass
+        else:
+            raise KeyError("wfall strategy not recognized")
+        return pd.DataFrame([self.__dict__])
 
     def _unpack(self) -> None:
         unnecessary_metadata = ["filename", "datafile"]
@@ -75,13 +163,3 @@ class H5Waterfall:
         self.dt = np.median(np.diff(self.plot_time))
         for metadata in unnecessary_metadata:
             self.__dict__.pop(metadata, None)
-
-        self.wfall_shape = self.wfall.shape
-        self.wfall = self.wfall.reshape((-1,))
-        self.model_wfall = self.model_wfall.reshape((-1,))
-        self.cal_wfall_shape = (
-            self.cal_wfall.shape if getattr(self, "cal_wfall", None) else None
-        )
-        self.cal_wfall = (
-            self.cal_wfall.reshape((-1,)) if getattr(self, "cal_wfall", None) else None
-        )
