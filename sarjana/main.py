@@ -1,4 +1,5 @@
 # TUI
+import rich
 import typer
 
 from sarjana import commands
@@ -7,9 +8,16 @@ app = typer.Typer()
 
 
 @app.command()
-def debug():
+def debug(frb: str = typer.Argument(...)):
     """Misc functions to be debug"""
-    ...
+
+# if __name__ == "__main__":
+#     from sarjana.handlers import ParquetWaterfall
+#     from sarjana.signal import find_burst
+#     frb = r"D:\home\datasets\sarjana\raw\wfall\FRB20180725A_waterfall.h5.parquet"
+#     rich.print(frb)
+#     data = ParquetWaterfall(frb)
+#     find_burst(data.ts)
 
 
 @app.command()
@@ -22,10 +30,11 @@ def plot(
         ..., help="The name of the saved plot file. No extension in name."
     ),
     size: int = typer.Option(30, help="The number of FRB in each plot."),
+    peaks: bool = typer.Option(False, help='Whether to show peaks')
 ):
     """Plots a FacetGrid of flux profiles of each FRB based on categories defined in embedding file."""
     commands.plot_many_flux_profile_by_clustering_groups(
-        profile, embedding, savefile, size
+        profile, embedding, savefile, size, find_peaks=peaks
     )
 
 

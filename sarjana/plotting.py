@@ -3,6 +3,7 @@ from typing import Optional, Any
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy
 import seaborn as sns
 
 from sarjana.signal import find_burst
@@ -13,7 +14,9 @@ def plot_flux_profile(
     model_flux: pd.Series,
     time: pd.Series,
     timedelta: pd.Series,
+    *,
     axes: Optional[plt.Axes] = None,
+    find_peaks: bool = False,
     **kwargs,
 ) -> Any:
     """A single flux plot.
@@ -25,6 +28,7 @@ def plot_flux_profile(
         timedelta (pd.Series): Differences between two units of time
         eventname (pd.Series): The name of the FRB
         axes (Optional[plt.Axes], optional): The axes to draw to. If None, it queries `plt.gca()`. Defaults to None.
+        find_peaks (bool): Whether or not to find peaks
 
     Returns:
         Any: A Seaborn plot.
@@ -72,4 +76,10 @@ def plot_flux_profile(
         edgecolor=None,
         alpha=0.1,
     )
+    var = np.nanstd(np.diff(_model_flux))
+    if find_peaks:
+        peaks, _ = scipy.signal.find_peaks(_model_flux, prominence=var)
+        for spike in peaks:
+            g.axvline(_time[spike] + 0.5*_timedelta, color='red', linestyle=':')
+
     return g
