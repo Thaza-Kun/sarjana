@@ -2,8 +2,10 @@ from typing import Optional
 from pathlib import Path
 
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sarjana.signal import is_multipeak
 
 from sarjana.tui import LinearProgress, DownloadProgress
 from sarjana.collections import merge_embedding_into_profile
@@ -12,9 +14,11 @@ from sarjana.handlers import H5Waterfall, ParquetWaterfall
 from sarjana.plotting import plot_flux_profile
 from sarjana.download import manage_download_waterfall_data_task, compress_to_parquet
 
+matplotlib.use("Agg")
+
 
 def plot_many_flux_profile_by_clustering_groups(
-    profile: str, embedding: str, savefile: str, size: int, *, find_peaks: bool = False
+    profile: str, embedding: str, savefile: str, size: int, *, draw_peaks: bool = False
 ) -> None:
     """
     TODO: DOCS
@@ -22,8 +26,13 @@ def plot_many_flux_profile_by_clustering_groups(
     prof = pd.read_parquet(profile)
     emb = pd.read_csv(embedding)
     data = merge_embedding_into_profile(prof, emb)
-    data = data.sort_values(by=["hdbscan_group", "eventname"])
+    data["is_multipeak"] = [is_multipeak(x.copy()) for x in data["model_ts"].values]
+    data = data.sort_values(by=["hdbscan_group", "is_multipeak", "eventname"])
     categories = data["hdbscan_group"].unique()
+    data["fitting"] = [
+        "cfod" if multipeak is True else "scattered_gaussian"
+        for multipeak in data["is_multipeak"].values
+    ]
     with LinearProgress() as prg:
         for cat in categories:
             to_plot = data[data["hdbscan_group"] == cat].drop_duplicates(
@@ -31,27 +40,34 @@ def plot_many_flux_profile_by_clustering_groups(
             )
             task = prg.add_task(cat, start=True, total=len(to_plot), filename=cat)
             for pos in range(0, len(to_plot), size):
-                loop_num = int((pos / size) + 1)
-                g = sns.FacetGrid(
-                    current:=to_plot[pos : pos + size],
-                    col="eventname",
-                    col_wrap=5,
-                    sharex=False,
-                    sharey=False,
-                )
-                g.map(
-                    plot_flux_profile,
-                    "ts",
-                    "model_ts",
-                    "plot_time",
-                    "dt",
-                    find_peaks=find_peaks
-                )
-                g.fig.suptitle(cat + " " + str(loop_num))
-                g.set_ylabels("flux (Jy)")
-                g.set_xlabels("time (ms)")
-                g.savefig(f"{savefile}-{cat}-{loop_num}.png")
-                prg.update(task, advance=len(current['eventname']))
+                try:
+                    loop_num = int((pos / size) + 1)
+                    g = sns.FacetGrid(
+                        current := to_plot[pos : pos + size],
+                        col="eventname",
+                        col_wrap=5,
+                        sharex=False,
+                        sharey=False,
+                    )
+                    g.map(
+                        plot_flux_profile,
+                        "ts",
+                        "model_ts",
+                        "plot_time",
+                        "dt",
+                        "is_multipeak",
+                        draw_peaks=draw_peaks,
+                    )
+                    g.fig.suptitle(cat + " " + str(loop_num))
+                    g.set_ylabels("flux (Jy)")
+                    g.set_xlabels("time (ms)")
+                    g.add_legend()
+                    g.savefig(f"{savefile}-{cat}-{loop_num}.png")
+                except RuntimeError:
+                    raise RuntimeError(current["eventname"].values)
+                finally:
+                    prg.update(task, advance=len(current["eventname"]))
+                    plt.close(plt.gcf())  # Prevent keeping many figure open
 
 
 def download_waterfall_data_from_chimefrb_database(
@@ -103,7 +119,7 @@ def combine_multifile_into_single_parquet_file(
             start=True,
             visible=True,
             total=len(names),
-        ) 
+        )
         for name in names:
             compress_to_parquet(
                 filepattern.format(name),

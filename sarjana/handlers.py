@@ -7,6 +7,11 @@ import pandas as pd
 from sarjana import signal
 
 
+class CSVCatalog:
+    def __init__(self, filename: str) -> None:
+        self.dataframe = pd.read_csv(filename)
+
+
 class ParquetWaterfall:
     def __init__(
         self,
@@ -25,21 +30,25 @@ class ParquetWaterfall:
             return None
         return series.item()
 
+    def remove_rfi(self) -> "ParquetWaterfall":
+        (
+            self.spec,
+            self.wfall,
+            self.model_wfall,
+        ) = signal.remove_radio_frequency_interference(
+            self.spec, self.wfall, self.model_wfall
+        )
+        self.ts = np.nansum(self.wfall, axis=0)
+        self.model_ts = np.nansum(self.model_wfall, axis=0)
+        self.no_rfi = True
+        return self
+
     def pack(
         self, wfall: Optional[str] = None, remove_interference: bool = False
     ) -> pd.DataFrame:
         if remove_interference:
             if self.no_rfi is False:
-                (
-                    self.spec,
-                    self.wfall,
-                    self.model_wfall,
-                ) = signal.remove_radio_frequency_interference(
-                    self.spec, self.wfall, self.model_wfall
-                )
-                self.ts = np.nansum(self.wfall, axis=0)
-                self.model_ts = np.nansum(self.model_wfall, axis=0)
-                self.no_rfi = True
+                self.remove_rfi()
         if wfall == "remove":
             wfall_cols = [
                 "wfall",
