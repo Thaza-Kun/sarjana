@@ -6,8 +6,8 @@ project:
       - 'index.qmd'
       - notebooks/*
       - 'about.qmd'
-  pre-render: 
-    - python ./scripts/gantt.py
+  # pre-render: 
+  #   - python ./scripts/gantt.py
 
 website:
   title: "Masters Project"

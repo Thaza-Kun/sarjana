@@ -6,9 +6,8 @@ format:
         footer: 'Murthadza Aznam'
         logo: '../_assets/UM-logo.jpg'
         chalkboard: true
-        theme: ['dark','../_assets/styles.scss']
+        theme: dark
         slide-number: true
-        center: true
 bibliography: references.bib
 output-file: 'slides'
 ---

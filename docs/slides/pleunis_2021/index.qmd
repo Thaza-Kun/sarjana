@@ -1,0 +1,89 @@
+---
+title: 'Fast Radio Burst Morphology in the First CHIME/FRB Catalog'
+author: '[Pleunis, Z. et. al. (2021)](https://dx.doi.org/10.3847/1538-4357/ac33ac)'
+format: 
+    revealjs:
+        footer: 'Murthadza bin Aznam'
+        logo: '../_assets/radio-cosmology-lab-logo.png'
+        chalkboard: true
+        theme: [dark, ../_assets/styles.scss]
+        slide-number: true
+        center: true
+bibliography: references.bib
+output-file: 'slides'
+---
+
+# Introduction
+
+## Meaning {background-image="./figures/FRB20180916B-waterfall_hires.png" background-position='93% 70%' background-size=30%}
+Burst morphology
+: the change in flux as a function of time and frequency
+
+## Motivation
+> FRBs show a variety of morphologies, and there are <mark>apparent differences between the appearance of oneoff events and repeater bursts</mark>.
+
+Many papers^[See, for example: @gajjar_HighestFrequencyDetection_2018a, @hessels_FRB121102Bursts_2019, @farah_FRBMicrostructureRevealed_2018] have studied FRB morphology of singular or small sample; with different telescope sources.
+
+The creation of the CHIME/FRB catalog allows for the systematic study of a wide array of morphology with consistent telescope dependent factors.
+
+## Results {background-image="./figures/pleunis-archetype.jpg" background-size="50%" background-opacity="0.1"}
+### The Four Archetypes
+1. Broadband simple bursts (30%)^[the percentages are estimated by eye]
+2. Narrowband simple bursts (60%)
+3. Complex bursts with similar frequency extent (5%)
+4. Complex bursts with subbursts that drift downward in frequency (5%)
+
+## 
+![A single example of each archetype numbered accordingly.](./figures/pleunis-archetype.jpg){#fig-archetype width=77% height=77% padding-top=50px}
+
+## Implications
+### Repeaters vs Non-Repeaters
+1. A broadband and single-peaked morphology has so far never been clearly observed in a repeater burst
+2. There is a lot of downward-drifting subbursts among repeater bursts 
+    
+    (19/58 bursts among 13/19 sources)
+
+## Implications
+### Repeaters vs Non-Repeaters
+![Bandwidths and durations of the FRBs in Catalog 1 with normalized histograms on the sides.](./figures/pleunis-bandwidth.jpg){#fig-bandwidth}
+
+## Implications
+### Subburst Separation
+
+![Subburst separations in time and frequency in Catalog 1 with bursts from apparent nonrepeaters (green diamonds) and repeater bursts (orange and yellow open circles). Note that only FRBs that have two or more subbursts are included. Of the 18 repeater bursts, 8 are from FRB 20180916B. Those 8 have been colored yellow in the central panel to avoid biasing the interpretation.](./figures/pleunis-separation.jpg){#fig-separation}
+
+:::{.notes}
+For comparison, we have also added the CHIME/FRBdetected burst from SGR 1935+2154 to @fig-separation. The two observed components for this burst clearly have different spectra, with the first peaking at the bottom of the CHIME band and the second at the top. This results in an upward drift of the frequency centers. The two components are separated by ∼29 ms and could be independent bursts rather than subbursts of the same envelope (CHIME/FRB Collaboration et al. 2020b). This burst thus seems to be an outlier among the FRBs in Catalog 1, and its morphology is not standard for repeating FRBs. It should be noted, however, that this magnetar burst had exceptionally large observed flux density owing to its proximity and that for a lot of more distant FRBs a second (or nth) component might be buried in the noise.
+:::
+
+## Prediction
+![Subburst pair separation in frequency and source exposure (in the CHIME/FRB upper transit). Pairs of subbursts from one-off events (green/gray filled diamonds) and repeater bursts (orange/gray open circles) are shown. Multiple pairs of subbursts associated with the same event are linked with vertical lines. Nongray markers indicate narrowband pairs (bandwidth < 300 MHz). A source with a Poisson burst rate of 0.05 hr−1 (gray dotted line)—roughly the lowest observed rate for a CHIME/FRB repeater [@fonseca_NineNewRepeating_2020]—is expected to burst at least twice (i.e., is observed to repeat) in 40 hr. A one-off event with >40 hr of exposure would thus have been detected as a repeater if the source were as prolific as the known repeaters. Repeater candidates are identified with open purple diamonds.](./figures/pleunis-separation-prediction.jpg){#fig-separation-prediction}
+
+## Prediction
+
+![](./figures/pleunis-table-prediction.png)
+
+## Conclusion
+> Our results show that FRBs can be probabilistically classified as either a one-off event or a repeater burst, based on only their burst morphologies.
+
+## References
+:::{#refs}
+:::
+
+# Thank You
+
+## Progress Report
+```{python}
+import pandas as pd
+
+from sarjana.gantt import generate_gantt
+
+progresses = pd.read_csv('./_metadata/gantt/progress-got.csv')
+milestones = pd.read_csv('./_metadata/gantt/milestones.csv')
+
+generate_gantt(progresses, milestones, show=True)
+```
+
+## Publication Report
+1. Fast Radio Burst Morphology Consideration of Unsupervised Machine Learning Result
+    - Status: Data Analysis (Expect to finish by the end of March and write report by April)
