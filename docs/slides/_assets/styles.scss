@@ -1,0 +1,66 @@
+/**
+
+  [ robot-lung ]
+
+  A hot pink theme for Reveal.js with Roboto fonts and a colorful border.
+  By Josh Dzielak, https://dzello.com/, License MIT
+
+  The bold border is optional and requires some HTML. To use it:
+
+  1. Add 4 divs to your HTML page:
+    <div class="line top"></div>
+    <div class="line bottom"></div>
+    <div class="line left"></div>
+    <div class="line right"></div>
+
+  2. Set { margin: 0.2 } in the Reveal.js initializer to make sure
+  your presentation content doesn't collide with the frame.
+
+  Like the theme but don't like the colors? Don't fret. Just change
+  $borderColor and/or $linkColor below to something else and rebuild.
+
+  Or if you don't want to rebuild the theme just override the .line background
+  property with some CSS:
+
+  .line {
+    background: <new-color>;
+  }
+
+*/
+/*-- scss:defaults --*/
+// fonts
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab:300,700);
+@import url(https://fonts.googleapis.com/css?family=Fira+Code:300,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto:700);
+
+$font-family-sans-serif: "Roboto Slab", sans-serif !default;
+$font-family-monospace: "Fira Code", monospace !default;
+$presentation-font-size-root: 25px;
+
+/*-- scss:rules --*/
+.reveal .slide {
+  h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  figure {
+    figcaption {
+      font-size: 0.6*$presentation-font-size-root;
+      text-align: center;
+    }
+    figure figcaption {
+      font-size: 0.7*$presentation-font-size-root;
+    }
+  }
+  mark {
+    background-color: $link-color;
+    border-radius: 10px;
+  }
+
+  aside {
+    position: fixed;
+    border-top: 1px solid;
+    width: inherit;
+  }
+}

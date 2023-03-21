@@ -1,0 +1,31 @@
+project:
+  type: book
+  output-dir: ../_book
+  preview: 
+      port: 4000
+  # pre-render: 
+  #   - pip install sarjana
+jupyter: python3
+execute: 
+  echo: false
+
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreport
+    pdf-engine: pdflatex
+    # template: ../_templates/template.tex
+  docx:
+    reference-doc: ../_templates/template.docx
+
+book:
+  title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients"
+  author: "Murthadza Aznam (S2163122)"
+  date: '27 Jan 2023'
+  date-format: 'DD MMM YYYY'
+
+bibliography: references.bib
+filters: 
+  - include-subchapters
