@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Masters Project – average_f2</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Masters Project</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> frb_ml_utils <span class="im">import</span> <span class="op">*</span> </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> frb_ml_utils</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn <span class="im">import</span> svm</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier,AdaBoostClassifier</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> NearestCentroid</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> fbeta_score</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> imblearn.over_sampling <span class="im">import</span> SMOTE</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> xgboost <span class="im">import</span> XGBClassifier</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> lightgbm <span class="im">import</span> LGBMClassifier</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> joblib <span class="im">import</span> Parallel, delayed</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>CHIME <span class="op">=</span> load_chime()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>columns_to_use <span class="op">=</span> [<span class="st">'bc_width'</span>,<span class="st">'flux'</span>,<span class="st">'fluence'</span>,<span class="st">'dm_exc_ne2001'</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'peak_freq'</span>,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'bright_temp'</span>,<span class="st">'rest_width'</span>,<span class="st">'freq_width'</span>,<span class="st">'energy'</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'bright_temp'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'bright_temp'</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'energy'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'energy'</span>])</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'rest_width'</span>] <span class="op">=</span> CHIME[<span class="st">'rest_width'</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'bc_width'</span>] <span class="op">=</span> CHIME[<span class="st">'bc_width'</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'freq_width'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'freq_width'</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>bagging_times <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_f2(i):</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    chime_data <span class="op">=</span> CHIME[columns_to_use]</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    chime_target <span class="op">=</span> (CHIME[<span class="st">'repeater_name'</span>] <span class="op">!=</span> <span class="st">'-9999'</span>).to_numpy().astype(<span class="st">'int'</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    temp_f2 <span class="op">=</span> np.zeros(<span class="dv">6</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    X,test_X,y,test_y <span class="op">=</span> train_test_split(chime_data,chime_target,test_size<span class="op">=</span><span class="fl">0.3</span>,stratify<span class="op">=</span>chime_target)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    scaler.fit(X)  </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> scaler.transform(X)  </span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    test_X <span class="op">=</span> scaler.transform(test_X)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    chime_data <span class="op">=</span> scaler.transform(chime_data)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    X, y <span class="op">=</span> SMOTE().fit_resample(X, y)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> RandomForestClassifier()</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    temp_f2[<span class="dv">0</span>] <span class="op">=</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> AdaBoostClassifier()</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    temp_f2[<span class="dv">1</span>] <span class="op">=</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> LGBMClassifier()</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    temp_f2[<span class="dv">2</span>] <span class="op">=</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> XGBClassifier(use_label_encoder<span class="op">=</span><span class="va">False</span>,eval_metric<span class="op">=</span><span class="st">'logloss'</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    temp_f2[<span class="dv">3</span>] <span class="op">=</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> svm.SVC()</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    temp_f2[<span class="dv">4</span>] <span class="op">=</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> NearestCentroid()</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>    temp_f2[<span class="dv">5</span>] <span class="op">=</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> temp_f2</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>f2_list <span class="op">=</span> np.array(Parallel(n_jobs<span class="op">=</span><span class="dv">6</span>,verbose<span class="op">=</span><span class="dv">10</span>)(delayed(calculate_f2)(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(bagging_times)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2 78.8 0.00225301 FRB20180729A
+12 101.5 0.00225301 FRB20180814A
+38 101.0 0.00225301 FRB20180919A
+49 94.7 0.00225301 FRB20180928A
+75 101.3 0.00225301 FRB20181028A
+76 101.3 0.00225301 FRB20181028A
+77 101.3 0.00225301 FRB20181028A
+78 101.3 0.00225301 FRB20181028A
+79 101.3 0.00225301 FRB20181028A
+81 62.3 0.00225301 FRB20181030A
+82 62.5 0.00225301 FRB20181030B
+158 83.6 0.00225301 FRB20181220A
+174 92.6 0.00225301 FRB20181223C
+221 96.1 0.00225301 FRB20190107B
+399 100.8 0.00225301 FRB20190329A
+459 79.4 0.00225301 FRB20190425A
+571 100.7 0.00225301 FRB20190625E
+572 100.7 0.00225301 FRB20190625E
+573 100.7 0.00225301 FRB20190625E
+576 101.5 0.00225301 FRB20190626A</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[Parallel(n_jobs=6)]: Using backend LokyBackend with 6 concurrent workers.
+[Parallel(n_jobs=6)]: Done   1 tasks      | elapsed:    1.9s
+[Parallel(n_jobs=6)]: Done   6 tasks      | elapsed:    1.9s
+[Parallel(n_jobs=6)]: Done  13 tasks      | elapsed:    2.8s
+[Parallel(n_jobs=6)]: Done  20 tasks      | elapsed:    3.4s
+[Parallel(n_jobs=6)]: Done  29 tasks      | elapsed:    3.9s
+[Parallel(n_jobs=6)]: Done  38 tasks      | elapsed:    4.9s
+[Parallel(n_jobs=6)]: Done  49 tasks      | elapsed:    5.7s
+[Parallel(n_jobs=6)]: Done  60 tasks      | elapsed:    6.4s
+[Parallel(n_jobs=6)]: Done  73 tasks      | elapsed:    7.6s
+[Parallel(n_jobs=6)]: Done  86 tasks      | elapsed:    8.7s
+[Parallel(n_jobs=6)]: Done 101 tasks      | elapsed:    9.8s
+[Parallel(n_jobs=6)]: Done 116 tasks      | elapsed:   11.2s
+[Parallel(n_jobs=6)]: Done 133 tasks      | elapsed:   12.8s
+[Parallel(n_jobs=6)]: Done 150 tasks      | elapsed:   14.0s
+[Parallel(n_jobs=6)]: Done 169 tasks      | elapsed:   15.6s
+[Parallel(n_jobs=6)]: Done 188 tasks      | elapsed:   17.1s
+[Parallel(n_jobs=6)]: Done 209 tasks      | elapsed:   19.4s
+[Parallel(n_jobs=6)]: Done 230 tasks      | elapsed:   21.5s
+[Parallel(n_jobs=6)]: Done 253 tasks      | elapsed:   23.9s
+[Parallel(n_jobs=6)]: Done 276 tasks      | elapsed:   26.7s
+[Parallel(n_jobs=6)]: Done 301 tasks      | elapsed:   30.9s
+[Parallel(n_jobs=6)]: Done 326 tasks      | elapsed:   35.0s
+[Parallel(n_jobs=6)]: Done 353 tasks      | elapsed:   38.9s
+[Parallel(n_jobs=6)]: Done 380 tasks      | elapsed:   41.8s
+[Parallel(n_jobs=6)]: Done 409 tasks      | elapsed:   44.9s
+[Parallel(n_jobs=6)]: Done 438 tasks      | elapsed:   47.7s
+[Parallel(n_jobs=6)]: Done 469 tasks      | elapsed:   50.8s
+[Parallel(n_jobs=6)]: Done 500 tasks      | elapsed:   53.7s
+[Parallel(n_jobs=6)]: Done 533 tasks      | elapsed:   57.1s
+[Parallel(n_jobs=6)]: Done 566 tasks      | elapsed:  1.0min
+[Parallel(n_jobs=6)]: Done 601 tasks      | elapsed:  1.1min
+[Parallel(n_jobs=6)]: Done 636 tasks      | elapsed:  1.2min
+[Parallel(n_jobs=6)]: Done 673 tasks      | elapsed:  1.3min
+[Parallel(n_jobs=6)]: Done 710 tasks      | elapsed:  1.4min
+[Parallel(n_jobs=6)]: Done 749 tasks      | elapsed:  1.5min
+[Parallel(n_jobs=6)]: Done 788 tasks      | elapsed:  1.6min
+[Parallel(n_jobs=6)]: Done 829 tasks      | elapsed:  1.6min
+[Parallel(n_jobs=6)]: Done 870 tasks      | elapsed:  1.7min
+[Parallel(n_jobs=6)]: Done 913 tasks      | elapsed:  1.8min
+[Parallel(n_jobs=6)]: Done 956 tasks      | elapsed:  1.9min
+[Parallel(n_jobs=6)]: Done 1000 out of 1000 | elapsed:  1.9min finished</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>np.average(f2_list,axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>array([0.78207573, 0.76660985, 0.7831917 , 0.78434569, 0.8179593 ,
+       0.71472412])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>np.std(f2_list,axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="23">
+<pre><code>array([0.06426469, 0.06167393, 0.06466454, 0.0630597 , 0.04827037,
+       0.06143691])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># decision tree (all features)</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>CHIME <span class="op">=</span> load_chime()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>columns_to_use <span class="op">=</span> [<span class="st">'bc_width'</span>,<span class="st">'flux'</span>,<span class="st">'fluence'</span>,<span class="st">'dm_exc_ne2001'</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'peak_freq'</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'bright_temp'</span>,<span class="st">'rest_width'</span>,<span class="st">'freq_width'</span>,<span class="st">'energy'</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'bright_temp'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'bright_temp'</span>])</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'energy'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'energy'</span>])</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'rest_width'</span>] <span class="op">=</span> CHIME[<span class="st">'rest_width'</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'bc_width'</span>] <span class="op">=</span> CHIME[<span class="st">'bc_width'</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'freq_width'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'freq_width'</span>])</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>bagging_times <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_f2_tree(i):</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    chime_data <span class="op">=</span> CHIME[columns_to_use]</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    chime_target <span class="op">=</span> (CHIME[<span class="st">'repeater_name'</span>] <span class="op">!=</span> <span class="st">'-9999'</span>).to_numpy().astype(<span class="st">'int'</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    X,test_X,y,test_y <span class="op">=</span> train_test_split(chime_data,chime_target,test_size<span class="op">=</span><span class="fl">0.3</span>,stratify<span class="op">=</span>chime_target)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    X, y <span class="op">=</span> SMOTE().fit_resample(X, y)</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">5</span>)  </span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    clf.fit(X, y)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X)</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fbeta_score(test_y,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>f2_tree_list <span class="op">=</span> np.array(Parallel(n_jobs<span class="op">=</span><span class="dv">6</span>,verbose<span class="op">=</span><span class="dv">10</span>)(delayed(calculate_f2_tree)(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(bagging_times)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2 78.8 0.00225301 FRB20180729A
+12 101.5 0.00225301 FRB20180814A
+38 101.0 0.00225301 FRB20180919A
+49 94.7 0.00225301 FRB20180928A
+75 101.3 0.00225301 FRB20181028A
+76 101.3 0.00225301 FRB20181028A
+77 101.3 0.00225301 FRB20181028A
+78 101.3 0.00225301 FRB20181028A
+79 101.3 0.00225301 FRB20181028A
+81 62.3 0.00225301 FRB20181030A
+82 62.5 0.00225301 FRB20181030B
+158 83.6 0.00225301 FRB20181220A
+174 92.6 0.00225301 FRB20181223C
+221 96.1 0.00225301 FRB20190107B
+399 100.8 0.00225301 FRB20190329A
+459 79.4 0.00225301 FRB20190425A
+571 100.7 0.00225301 FRB20190625E
+572 100.7 0.00225301 FRB20190625E
+573 100.7 0.00225301 FRB20190625E
+576 101.5 0.00225301 FRB20190626A</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[Parallel(n_jobs=6)]: Using backend LokyBackend with 6 concurrent workers.
+[Parallel(n_jobs=6)]: Done   1 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.0132s.) Setting batch_size=2.
+[Parallel(n_jobs=6)]: Done   6 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=6)]: Done  14 tasks      | elapsed:    0.0s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.0326s.) Setting batch_size=4.
+[Parallel(n_jobs=6)]: Done  28 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.0642s.) Setting batch_size=8.
+[Parallel(n_jobs=6)]: Done  56 tasks      | elapsed:    0.1s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.1048s.) Setting batch_size=16.
+[Parallel(n_jobs=6)]: Done 100 tasks      | elapsed:    0.2s
+[Parallel(n_jobs=6)]: Done 196 tasks      | elapsed:    0.4s
+[Parallel(n_jobs=6)]: Done 372 tasks      | elapsed:    0.7s
+[Parallel(n_jobs=6)]: Done 580 tasks      | elapsed:    1.1s
+[Parallel(n_jobs=6)]: Done 788 tasks      | elapsed:    1.4s
+[Parallel(n_jobs=6)]: Done 923 tasks      | elapsed:    1.6s
+[Parallel(n_jobs=6)]: Done 953 tasks      | elapsed:    1.7s
+[Parallel(n_jobs=6)]: Done 985 tasks      | elapsed:    1.7s
+[Parallel(n_jobs=6)]: Done 1000 out of 1000 | elapsed:    1.7s finished</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>np.average(f2_tree_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="7">
+<pre><code>0.7351075923859341</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>np.std(f2_tree_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>0.0631730026032148</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># decision tree (T_B and delta nu)</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>CHIME <span class="op">=</span> load_chime()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>columns_to_use <span class="op">=</span> [<span class="st">'bc_width'</span>,<span class="st">'flux'</span>,<span class="st">'fluence'</span>,<span class="st">'dm_exc_ne2001'</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'peak_freq'</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                  <span class="st">'bright_temp'</span>,<span class="st">'rest_width'</span>,<span class="st">'freq_width'</span>,<span class="st">'energy'</span>]</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'bright_temp'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'bright_temp'</span>])</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'energy'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'energy'</span>])</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'rest_width'</span>] <span class="op">=</span> CHIME[<span class="st">'rest_width'</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'bc_width'</span>] <span class="op">=</span> CHIME[<span class="st">'bc_width'</span>] <span class="op">*</span> <span class="dv">1000</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>CHIME[<span class="st">'freq_width'</span>] <span class="op">=</span> np.log10(CHIME[<span class="st">'freq_width'</span>])</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>d2_columns <span class="op">=</span> [<span class="st">'bright_temp'</span>,<span class="st">'freq_width'</span>]</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>chime_data_2d <span class="op">=</span> CHIME[d2_columns]</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>bagging_times <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_f2_2d(i):</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    chime_data <span class="op">=</span> CHIME[columns_to_use]</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    chime_target <span class="op">=</span> (CHIME[<span class="st">'repeater_name'</span>] <span class="op">!=</span> <span class="st">'-9999'</span>).to_numpy().astype(<span class="st">'int'</span>)</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    X_2d,test_X_2d,y_2d,test_y_2d <span class="op">=</span> train_test_split(chime_data_2d,chime_target,test_size<span class="op">=</span><span class="fl">0.3</span>,stratify<span class="op">=</span>chime_target)</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    clf <span class="op">=</span> imbpipeline(steps <span class="op">=</span> [[<span class="st">'scaler'</span>, StandardScaler()],</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>                               [<span class="st">'smote'</span>, SMOTE()],</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>                               [<span class="st">'classifier'</span>, DecisionTreeClassifier(max_depth<span class="op">=</span><span class="dv">3</span>)]])</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    clf.fit(X_2d, y_2d)</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    predictions <span class="op">=</span> clf.predict(test_X_2d)</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> fbeta_score(test_y_2d,predictions,beta<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>f2_2d_list <span class="op">=</span> np.array(Parallel(n_jobs<span class="op">=</span><span class="dv">6</span>,verbose<span class="op">=</span><span class="dv">10</span>)(delayed(calculate_f2_2d)(i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(bagging_times)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2 78.8 0.00225301 FRB20180729A
+12 101.5 0.00225301 FRB20180814A
+38 101.0 0.00225301 FRB20180919A
+49 94.7 0.00225301 FRB20180928A
+75 101.3 0.00225301 FRB20181028A
+76 101.3 0.00225301 FRB20181028A
+77 101.3 0.00225301 FRB20181028A
+78 101.3 0.00225301 FRB20181028A
+79 101.3 0.00225301 FRB20181028A
+81 62.3 0.00225301 FRB20181030A
+82 62.5 0.00225301 FRB20181030B
+158 83.6 0.00225301 FRB20181220A
+174 92.6 0.00225301 FRB20181223C
+221 96.1 0.00225301 FRB20190107B
+399 100.8 0.00225301 FRB20190329A
+459 79.4 0.00225301 FRB20190425A
+571 100.7 0.00225301 FRB20190625E
+572 100.7 0.00225301 FRB20190625E
+573 100.7 0.00225301 FRB20190625E
+576 101.5 0.00225301 FRB20190626A</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>[Parallel(n_jobs=6)]: Using backend LokyBackend with 6 concurrent workers.
+[Parallel(n_jobs=6)]: Done   1 tasks      | elapsed:    1.1s
+[Parallel(n_jobs=6)]: Done   6 tasks      | elapsed:    1.1s
+[Parallel(n_jobs=6)]: Done  13 tasks      | elapsed:    1.1s
+[Parallel(n_jobs=6)]: Done  20 tasks      | elapsed:    1.2s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.1727s.) Setting batch_size=2.
+[Parallel(n_jobs=6)]: Done  29 tasks      | elapsed:    1.2s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.0336s.) Setting batch_size=4.
+[Parallel(n_jobs=6)]: Done  40 tasks      | elapsed:    1.2s
+[Parallel(n_jobs=6)]: Done  64 tasks      | elapsed:    1.2s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.0444s.) Setting batch_size=8.
+[Parallel(n_jobs=6)]: Done 108 tasks      | elapsed:    1.3s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.0899s.) Setting batch_size=16.
+[Parallel(n_jobs=6)]: Done 220 tasks      | elapsed:    1.5s
+[Parallel(n_jobs=6)]: Batch computation too fast (0.1745s.) Setting batch_size=32.
+[Parallel(n_jobs=6)]: Done 460 tasks      | elapsed:    1.9s
+[Parallel(n_jobs=6)]: Done 878 tasks      | elapsed:    2.3s
+[Parallel(n_jobs=6)]: Done 893 tasks      | elapsed:    2.3s
+[Parallel(n_jobs=6)]: Done 1000 out of 1000 | elapsed:    2.3s finished</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>np.average(f2_2d_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>0.7368846509966182</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>np.std(f2_2d_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="26">
+<pre><code>0.049852263048514395</code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

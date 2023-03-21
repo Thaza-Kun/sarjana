@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Murthadza Aznam">
+<meta name="dcterms.date" content="2023-03-20">
+
+<title>Masters Project - Identifying type I and type II FRB</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<meta property="og:title" content="Masters Project - Identifying type I and type II FRB">
+<meta property="og:description" content="Extending the work of [@pleunis_FastRadioBurst_2021]">
+<meta property="og:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/imgs/jupyter-python.jpg">
+<meta property="og:site-name" content="Masters Project">
+<meta name="twitter:title" content="Masters Project - Identifying type I and type II FRB">
+<meta name="twitter:description" content="Extending the work of [@pleunis_FastRadioBurst_2021]">
+<meta name="twitter:image" content="https://github.com/Thaza-Kun/sarjana/notebooks/imgs/jupyter-python.jpg">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Masters Project</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html">
+ <span class="menu-text">About</span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Identifying type I and type II FRB</h1>
+            <p class="subtitle lead">Extending the work of <span class="citation" data-cites="pleunis_FastRadioBurst_2021">(<a href="#ref-pleunis_FastRadioBurst_2021" role="doc-biblioref">Pleunis et al. 2021</a>)</span></p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Murthadza Aznam </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">March 20, 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>📌 Goal: This notebook tries to differentiate between broadband and shortband single peak fast radio burst, as described in <span class="citation" data-cites="pleunis_FastRadioBurst_2021">(<a href="#ref-pleunis_FastRadioBurst_2021" role="doc-biblioref">Pleunis et al. 2021</a>)</span>.</p>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.signal <span class="im">import</span> is_multipeak</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>catalog_file <span class="op">=</span> Path(<span class="st">'D://'</span>, <span class="st">'home'</span>, <span class="st">'datasets'</span>, <span class="st">'sarjana'</span>, <span class="st">'raw'</span>, <span class="st">'cfod'</span>, <span class="st">'chimefrb_profile_norfi.parquet'</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> pd.read_parquet(catalog_file)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Resize time</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'plot_time'</span>] <span class="op">=</span> catalog[<span class="st">'plot_time'</span>] <span class="op">-</span> (catalog[<span class="st">'dt'</span>] <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">"multipeak"</span>] <span class="op">=</span> [is_multipeak(x.copy()) <span class="cf">for</span> x <span class="kw">in</span> catalog[<span class="st">"ts"</span>].values]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>single_peaks <span class="op">=</span> catalog[catalog[<span class="st">"multipeak"</span>] <span class="op">==</span> <span class="va">False</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>single_file <span class="op">=</span> Path(<span class="st">'D://'</span>, <span class="st">'home'</span>, <span class="st">'datasets'</span>, <span class="st">'sarjana'</span>, <span class="st">'raw'</span>, <span class="st">'wfall'</span>, <span class="st">'FRB20190701E_waterfall.h5.parquet'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pd.read_parquet(single_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>eventname</th>
+      <th>wfall</th>
+      <th>model_wfall</th>
+      <th>plot_time</th>
+      <th>plot_freq</th>
+      <th>ts</th>
+      <th>model_ts</th>
+      <th>spec</th>
+      <th>model_spec</th>
+      <th>extent</th>
+      <th>dm</th>
+      <th>scatterfit</th>
+      <th>dt</th>
+      <th>wfall_shape</th>
+      <th>cal_wfall_shape</th>
+      <th>cal_wfall</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>FRB20190701E</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.4915200115647167, 1.47456003469415, 2.45760...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[1.0231140851974487, 3.072990357875824, -16.58...</td>
+      <td>[0.00011334415066438012, 0.0001133441506643801...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.002127421250213523, 0.002127393305711726, 0...</td>
+      <td>[0.0, 37.35552087891847, 400.20751953125, 800....</td>
+      <td>890.477065</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>[16384, 38]</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>single_peaks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+
+<div>
+
+<table class="dataframe table table-sm table-striped">
+  <thead>
+    <tr>
+      <th></th>
+      <th>filename</th>
+      <th>eventname</th>
+      <th>plot_time</th>
+      <th>plot_freq</th>
+      <th>ts</th>
+      <th>model_ts</th>
+      <th>spec</th>
+      <th>model_spec</th>
+      <th>extent</th>
+      <th>dm</th>
+      <th>scatterfit</th>
+      <th>dt</th>
+      <th>multipeak</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td>FRB20180729A_waterfall.h5.parquet</td>
+      <td>FRB20180729A</td>
+      <td>[0.0, 0.9830399649217725, 1.966079929843545, 2...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[-0.5716363191604614, -17.364217936992645, 5.2...</td>
+      <td>[0.0030962208788418173, 0.0030962208788418173,...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.00416778773145504, 0.0041719751674474635, 0...</td>
+      <td>[0.0, 18.677759333513677, 400.20751953125, 800...</td>
+      <td>109.594181</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>FRB20180729B_waterfall.h5.parquet</td>
+      <td>FRB20180729B</td>
+      <td>[0.0, 0.9830400231294334, 1.9660800462588668, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[7.178313672542572, 16.028381049633026, -12.85...</td>
+      <td>[0.00022216660293127358, 0.0002221666029312735...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[4.113813866711855e-05, 4.117462640763476e-05,...</td>
+      <td>[0.0, 37.35552087891847, 400.20751953125, 800....</td>
+      <td>317.223506</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>FRB20180730A_waterfall.h5.parquet</td>
+      <td>FRB20180730A</td>
+      <td>[0.0, 0.9830399649217725, 1.966079929843545, 2...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[28.190669357776642, -3.8035714626312256, 1.37...</td>
+      <td>[0.0003526762730453472, 0.0003526762730453472,...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.009713658938378366, 0.009784989753700499, 0...</td>
+      <td>[0.0, 37.355518667027354, 400.20751953125, 800...</td>
+      <td>848.904087</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>FRB20180810B_waterfall.h5.parquet</td>
+      <td>FRB20180810B</td>
+      <td>[0.0, 0.9830400813370943, 1.9660801626741886, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[11.590367555618286, -0.7796801924705505, 3.87...</td>
+      <td>[0.000770837060045753, 0.000770837060045753, 0...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.012395891508303704, 0.01239529586531048, 0....</td>
+      <td>[0.0, 18.677761545404792, 400.20751953125, 800...</td>
+      <td>169.138526</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>FRB20180814B_waterfall.h5.parquet</td>
+      <td>FRB20180814B</td>
+      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[13.435711920261383, -34.95270961523056, 8.021...</td>
+      <td>[5.823073060752974e-49, 7.408350751003518e-41,...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.0016093394878410432, 0.001609342656825253, ...</td>
+      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
+      <td>238.347359</td>
+      <td>False</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>571</th>
+      <td>FRB20190623B_waterfall.h5.parquet</td>
+      <td>FRB20190623B</td>
+      <td>[0.0, 0.9830399976635817, 1.9660799953271635, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[-7.816261172294617, 6.107970714569092, 9.2511...</td>
+      <td>[0.00034190650261076047, 0.0003419065026107604...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[1.0068020284278203e-08, 1.0101373999610491e-0...</td>
+      <td>[0.0, 37.355519911216106, 400.20751953125, 800...</td>
+      <td>1556.765041</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>574</th>
+      <td>FRB20190624B_waterfall.h5.parquet</td>
+      <td>FRB20190624B</td>
+      <td>[0.0, 0.9830399976635817, 1.9660799953271635, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[-5.652332425117493, 23.393622279167175, 7.056...</td>
+      <td>[6.59608089425059e-43, 4.5865270761136985e-28,...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[1.1669434356811494e-05, 1.1517735828296239e-0...</td>
+      <td>[0.0, 18.677759955608053, 400.20751953125, 800...</td>
+      <td>213.922189</td>
+      <td>False</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>580</th>
+      <td>FRB20190625D_waterfall.h5.parquet</td>
+      <td>FRB20190625D</td>
+      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[-16.88565695285797, 33.844458281993866, -9.81...</td>
+      <td>[1.601867475081894e-60, 1.6198470221664263e-50...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.003710013880471254, 0.003714563006853791, 0...</td>
+      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
+      <td>717.883116</td>
+      <td>False</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>583</th>
+      <td>FRB20190627B_waterfall.h5.parquet</td>
+      <td>FRB20190627B</td>
+      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[2.3288493752479553, 18.383675038814545, -2.34...</td>
+      <td>[0.0006036649558608276, 0.0006036649558608276,...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.004643797495785171, 0.004644052207172645, 0...</td>
+      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
+      <td>430.322387</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>584</th>
+      <td>FRB20190627C_waterfall.h5.parquet</td>
+      <td>FRB20190627C</td>
+      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
+      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
+      <td>[12.723131775856018, 14.152254581451416, 7.791...</td>
+      <td>[0.0009507172194947506, 0.0009507172194947506,...</td>
+      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
+      <td>[0.007019124317181997, 0.007019041301162199, 0...</td>
+      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
+      <td>968.612733</td>
+      <td>True</td>
+      <td>0.98304</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+<p>134 rows × 13 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gauss(time: np.ndarray, sigma: <span class="bu">float</span>, amplitude: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>, peak_time: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span>):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amplitude <span class="op">*</span> np.exp(<span class="op">-</span>((time <span class="op">-</span> peak_time) <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> sigma<span class="op">**</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scattered_gaussian_signal(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    time: np.ndarray,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    sigma: <span class="bu">float</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    tau: <span class="bu">float</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    amplitude: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    peak_time: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    _time <span class="op">=</span> time <span class="op">-</span> peak_time</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    first_term: np.ndarray <span class="op">=</span> <span class="op">-</span>(_time <span class="op">/</span> tau) <span class="op">+</span> (sigma<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> (tau<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    second_term: np.ndarray <span class="op">=</span> (_time <span class="op">/</span> (np.sqrt(<span class="dv">2</span>) <span class="op">*</span> sigma)) <span class="op">-</span> (</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        sigma <span class="op">/</span> (np.sqrt(<span class="dv">2</span>) <span class="op">*</span> tau)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amplitude <span class="op">*</span> <span class="fl">0.5</span> <span class="op">*</span> np.exp(first_term) <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> scipy.special.erf(second_term))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Callable</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.optimize <span class="im">import</span> fit_time_series</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_single_peak_model(data: pd.DataFrame, func: Callable) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> try_fit(func, data) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fit_time_series(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                func,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"plot_time"</span>],</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"ts"</span>],</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"amplitude"</span>: data[<span class="st">"ts"</span>].<span class="bu">max</span>(),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"peak_time"</span>: data[<span class="st">"plot_time"</span>][data[<span class="st">"ts"</span>].argmax()],</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">RuntimeError</span>:</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fit_time_series(</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                func,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"plot_time"</span>],</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"model_ts"</span>],</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"amplitude"</span>: data[<span class="st">"model_ts"</span>].<span class="bu">max</span>(),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"peak_time"</span>: data[<span class="st">"plot_time"</span>][data[<span class="st">"model_ts"</span>].argmax()],</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    data[func.<span class="va">__name__</span>] <span class="op">=</span> data.<span class="bu">apply</span>(</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: try_fit(func, x), axis<span class="op">=</span><span class="st">"columns"</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> generate_single_peak_model(single_peaks, scattered_gaussian_signal)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> generate_single_peak_model(df1, gauss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>d:\home\lab\sarjana\.venv\lib\site-packages\scipy\optimize\_minpack_py.py:881: OptimizeWarning: Covariance of the parameters could not be estimated
+  warnings.warn('Covariance of the parameters could not be estimated',
+D:\home\lab\sarjana\sarjana\optimize.py:27: RuntimeWarning: invalid value encountered in sqrt
+  _stdevs = np.sqrt(np.diag(_pcov))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\3695975889.py:27: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data[func.__name__] = data.apply(
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\3695975889.py:27: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data[func.__name__] = data.apply(</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> df1[[<span class="st">'eventname'</span>, <span class="st">'dm'</span>, <span class="st">'scattered_gaussian_signal'</span>, <span class="st">'gauss'</span>]]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_sigma'</span>]     <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">0</span>]))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_sigma_err'</span>] <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">1</span>]))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_tau'</span>]       <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'tau'</span>, <span class="dv">0</span>)[<span class="dv">0</span>]))</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_tau_err'</span>]   <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'tau'</span>, <span class="dv">0</span>)[<span class="dv">1</span>]))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_gauss_sigma'</span>]         <span class="op">=</span> data[<span class="st">'gauss'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">0</span>]))</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_gauss_sigma_err'</span>]     <span class="op">=</span> data[<span class="st">'gauss'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">1</span>]))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_sigma_ratio'</span>]         <span class="op">=</span> data[<span class="st">'log_gauss_sigma'</span>]<span class="op">/</span>data[<span class="st">'log_scattered_sigma'</span>]</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_sigma_per_tau'</span>]       <span class="op">=</span> data[<span class="st">'log_scattered_sigma'</span>]<span class="op">/</span>data[<span class="st">'log_scattered_tau'</span>]</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_sigma_err_ratio'</span>]       <span class="op">=</span> (data[<span class="st">'log_scattered_sigma_err'</span>]<span class="op">-</span>data[<span class="st">'log_gauss_sigma_err'</span>])<span class="op">/</span>data[<span class="st">'log_scattered_sigma_err'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:2: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_scattered_sigma']     = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('sigma', 0)[0]))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:3: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_scattered_sigma_err'] = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('sigma', 0)[1]))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:4: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_scattered_tau']       = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('tau', 0)[0]))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:5: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_scattered_tau_err']   = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('tau', 0)[1]))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:6: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_gauss_sigma']         = data['gauss'].apply(lambda x: np.log(x.get('sigma', 0)[0]))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:7: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_gauss_sigma_err']     = data['gauss'].apply(lambda x: np.log(x.get('sigma', 0)[1]))
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:8: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_sigma_ratio']         = data['log_gauss_sigma']/data['log_scattered_sigma']
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:9: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_sigma_per_tau']       = data['log_scattered_sigma']/data['log_scattered_tau']
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:10: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['log_sigma_err_ratio']       = (data['log_scattered_sigma_err']-data['log_gauss_sigma_err'])/data['log_scattered_sigma_err']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.pairplot(data, <span class="bu">vars</span><span class="op">=</span>[<span class="st">'log_scattered_sigma'</span>, <span class="st">'log_scattered_tau'</span>, <span class="st">'log_sigma_per_tau'</span>, <span class="st">'dm'</span>], corner<span class="op">=</span><span class="va">True</span>, diag_kind<span class="op">=</span><span class="st">'kde'</span>, kind<span class="op">=</span><span class="st">'hist'</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># g.set(xscale="log", yscale="log")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data, x<span class="op">=</span><span class="st">'scattered_sigma'</span>, y<span class="op">=</span><span class="st">'scattered_tau'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>ValueError: Could not interpret value `scattered_sigma` for parameter `x`</code></pre>
+</div>
+</div>
+
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-pleunis_FastRadioBurst_2021" class="csl-entry" role="doc-biblioentry">
+Pleunis, Ziggy, Deborah C. Good, Victoria M. Kaspi, Ryan Mckinven, Scott M. Ransom, Paul Scholz, Kevin Bandura, et al. 2021. <span>“Fast <span>Radio Burst Morphology</span> in the <span>First CHIME</span>/<span>FRB Catalog</span>.”</span> <em>The Astrophysical Journal</em> 923 (1): 1. <a href="https://doi.org/10.3847/1538-4357/ac33ac">https://doi.org/10.3847/1538-4357/ac33ac</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
