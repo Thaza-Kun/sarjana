@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: ../_book
+  output-dir: _book
   preview: 
       port: 4000
   # pre-render: 
@@ -11,14 +11,12 @@ execute:
 
 
 format:
-  html:
-    theme: cosmo
   pdf:
     documentclass: scrreport
     pdf-engine: pdflatex
-    # template: ../_templates/template.tex
+    # template: ./_common/_templates/template.tex
   docx:
-    reference-doc: ../_templates/template.docx
+    reference-doc: ./_common/templates/template.docx
 
 book:
   title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients"
@@ -26,6 +24,6 @@ book:
   date: '27 Jan 2023'
   date-format: 'DD MMM YYYY'
 
-bibliography: references.bib
+bibliography: ./_common/references.bib
 filters: 
   - include-subchapters
