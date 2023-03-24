@@ -73,6 +73,10 @@ def boxcar_kernel(width: int):
     return np.ones(width, dtype="float32") / np.sqrt(width)
 
 
+def find_full_width_nth_maximum(y: np.ndarray, peaks: np.ndarray, n: float):
+    return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))
+
+
 def find_burst(
     timeseries: np.ndarray, min_width: int = 1, max_width: int = 128
 ) -> Tuple[int, int, float]:

@@ -6,7 +6,7 @@ import scipy
 
 
 def fit_time_series(
-    func: Callable, time: np.ndarray, data: np.ndarray, params: Optional[list] = None
+    func: Callable, time: np.ndarray, data: np.ndarray, params: Optional[dict] = None
 ) -> Dict[str, Tuple[float, float]]:
     """Fit the timeseries data to a given function.
 
@@ -14,13 +14,16 @@ def fit_time_series(
         func (Callable): the function to be used for fitting
         time (np.ndarray): the observation time
         data (np.ndarray): data to fit
-        params (Optional[list], optional): initial guess for the function parameters. Defaults to None.
+        params (Optional[dict], optional): initial guess for the function parameters. Defaults to None.
 
     Returns:
         Dict[str, Tuple[float, float]]: {'param': (value, stdev)}
     """
     params_keys: List[str] = [*deepcopy(func.__annotations__).keys()][:-1]
-    _params, _pcov = scipy.optimize.curve_fit(func, time, data, p0=params)
+    guesses = {key: 1 for key in params_keys[1:]}
+    for key in params.keys():
+        guesses[key] = params[key]
+    _params, _pcov = scipy.optimize.curve_fit(func, time, data, p0=[*guesses.values()])
     _stdevs = np.sqrt(np.diag(_pcov))
     return {
         key: (optimal, stdev)

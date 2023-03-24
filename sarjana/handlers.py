@@ -6,6 +6,12 @@ import pandas as pd
 
 from sarjana import signal
 
+def bin_freq_channels(data: np.ndarray, fbin_factor=4) -> np.ndarray:
+    num_chan = data.shape[0]
+    if num_chan % fbin_factor != 0:
+        raise ValueError("frequency binning factor `fbin_factor` should be even")
+    data = np.nanmean(data.reshape((num_chan // fbin_factor, fbin_factor) + data.shape[1:]), axis=1)
+    return data
 
 class CSVCatalog:
     def __init__(self, filename: str) -> None:
@@ -24,11 +30,19 @@ class ParquetWaterfall:
         self.filename = filename
         self.dataframe = pd.read_parquet(filename, columns=columns, engine="pyarrow")
         self._unpack()
+        self.wfall_dimension = "freq", "time"
+
+    def transpose(self) -> "ParquetWaterfall":
+        self.wfall = np.transpose(self.wfall)
+        self.cal_wfall = np.transpose(self.cal_wfall)
+        self.wfall_dimension = self.wfall_dimension[::-1]
+        return self
 
     def __getitem__(self, column: str):
         if (series := self.dataframe.get(column)) is None:
             return None
         return series.item()
+    
 
     def remove_rfi(self) -> "ParquetWaterfall":
         (
@@ -40,6 +54,9 @@ class ParquetWaterfall:
         )
         self.ts = np.nansum(self.wfall, axis=0)
         self.model_ts = np.nansum(self.model_wfall, axis=0)
+        self.wfall = bin_freq_channels(self.wfall, 32)
+        self.wfall[np.isnan(self.wfall)] = np.nanmedian(self.wfall)
+        self.model_wfall[np.isnan(self.model_wfall)] = np.nanmedian(self.model_wfall)
         self.no_rfi = True
         return self
 

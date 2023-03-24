@@ -44,7 +44,7 @@ Report number `#7` - `#18`
 - Read [Jake VanderPlas 2022, Python Data Science Handbook](https://www.oreilly.com/library/view/python-data-science/9781491912126/)
 
 ## 0.1.2 2022-10-25
-Report number `#7` - `#18`
+Report number `#1` - `#6`
 
 ### Added
 - Reproduction of Chen et. al.'s (2021) UMAP dimension reduction in [#3](https://github.com/Thaza-Kun/sarjana/issues/3). Have not yet implemented HDBSCAN.
