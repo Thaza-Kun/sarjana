@@ -14,8 +14,6 @@ from sarjana.handlers import H5Waterfall, ParquetWaterfall
 from sarjana.plotting import plot_time_flux
 from sarjana.download import manage_download_waterfall_data_task, compress_to_parquet
 
-matplotlib.use("Agg")
-
 
 def plot_many_flux_profile_by_clustering_groups(
     profile: str,
@@ -28,6 +26,7 @@ def plot_many_flux_profile_by_clustering_groups(
     """
     TODO: DOCS
     """
+    matplotlib.use("Agg")
     prof = pd.read_parquet(profile)
     emb = pd.read_csv(embedding)
     data = merge_embedding_into_profile(prof, emb)

@@ -6,53 +6,6 @@ import scipy
 from scipy.signal import find_peaks
 
 
-def remove_radio_frequency_interference(
-    spec: np.ndarray, wfall: np.ndarray, model_wfall: np.ndarray
-) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """
-    Set any frequency channel that has a higher variance than
-    the mean variance (averaged across all frequency channels)
-    to a np.nan.
-
-    TODO DOCS FROM CFOD
-
-    Parameters
-    ----------
-    spec : np.ndarray
-    wfall : np.ndarray (2D array)
-    model_wfall : np.ndarray (2D array)
-
-    Returns
-    -------
-    Tuple[
-        spec : np.ndarray
-        wfall : np.ndarray (2D array)
-        model_wfall : np.ndarray (2D array)
-    ]
-    """
-    q1 = np.nanquantile(spec, 0.25)
-    q3 = np.nanquantile(spec, 0.75)
-    iqr = q3 - q1
-
-    # additional masking of channels with RFI
-    rfi_masking_var_factor = 3
-
-    channel_variance = np.nanvar(wfall, axis=1)
-    mean_channel_variance = np.nanmean(channel_variance)
-
-    with np.errstate(invalid="ignore"):
-        rfi_mask = (
-            (channel_variance > rfi_masking_var_factor * mean_channel_variance)
-            | (spec[::-1] < q1 - 1.5 * iqr)
-            | (spec[::-1] > q3 + 1.5 * iqr)
-        )
-    wfall[rfi_mask, ...] = np.nan
-    model_wfall[rfi_mask, ...] = np.nan
-    spec[rfi_mask[::-1]] = np.nan
-
-    return spec, wfall, model_wfall
-
-
 def boxcar_kernel(width: int):
     """
     Returns the boxcar kernel of given width normalized by
@@ -78,7 +31,7 @@ def find_full_width_nth_maximum(y: np.ndarray, peaks: np.ndarray, n: float):
 
 
 def find_burst(
-    timeseries: np.ndarray, min_width: int = 1, max_width: int = 128
+    timeseries: np.ndarray, min_width: int = 1, max_width: int = 128, *args, **kwargs
 ) -> Tuple[int, int, float]:
     """
     Find burst peak and width using boxcar convolution.

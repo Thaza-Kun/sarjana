@@ -4,14 +4,18 @@ import numpy as np
 import h5py
 import pandas as pd
 
-from sarjana import signal
+from sarjana.signal import transform
+
 
 def bin_freq_channels(data: np.ndarray, fbin_factor=4) -> np.ndarray:
     num_chan = data.shape[0]
     if num_chan % fbin_factor != 0:
         raise ValueError("frequency binning factor `fbin_factor` should be even")
-    data = np.nanmean(data.reshape((num_chan // fbin_factor, fbin_factor) + data.shape[1:]), axis=1)
+    data = np.nanmean(
+        data.reshape((num_chan // fbin_factor, fbin_factor) + data.shape[1:]), axis=1
+    )
     return data
+
 
 class CSVCatalog:
     def __init__(self, filename: str) -> None:
@@ -42,14 +46,13 @@ class ParquetWaterfall:
         if (series := self.dataframe.get(column)) is None:
             return None
         return series.item()
-    
 
     def remove_rfi(self) -> "ParquetWaterfall":
         (
             self.spec,
             self.wfall,
             self.model_wfall,
-        ) = signal.remove_radio_frequency_interference(
+        ) = transform.remove_radio_frequency_interference(
             self.spec, self.wfall, self.model_wfall
         )
         self.ts = np.nansum(self.wfall, axis=0)
@@ -143,7 +146,7 @@ class H5Waterfall:
                     self.spec,
                     self.wfall,
                     self.model_wfall,
-                ) = signal.remove_radio_frequency_interference(
+                ) = transform.remove_radio_frequency_interference(
                     self.spec, self.wfall, self.model_wfall
                 )
                 self.ts = np.nansum(self.wfall, axis=0)

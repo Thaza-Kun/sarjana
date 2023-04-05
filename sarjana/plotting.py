@@ -18,12 +18,15 @@ def get_value_at_non_integer_index(index: float, initial: float, delta: float) -
     return initial + (index * delta) - ((index * delta) % delta) + delta
 
 
-def plot_frequency_flux(flux: pd.Series, model_flux: pd.Series, frequencies: pd.Series,
+def plot_frequency_flux(
+    flux: pd.Series,
+    model_flux: pd.Series,
+    frequencies: pd.Series,
     *,
     axes: Optional[plt.Axes] = None,
     highlight_burst: bool = False,
     **kwargs,
-                        ):
+):
     axes = plt.gca() if axes is None else axes
     _freq: np.ndarray = frequencies.to_numpy()[0]
     _model_flux: np.ndarray = model_flux.to_numpy()[0]
@@ -33,11 +36,12 @@ def plot_frequency_flux(flux: pd.Series, model_flux: pd.Series, frequencies: pd.
         x=_freq,
         y=_flux,
         ax=axes,
-        color='tab:grey',
+        color="tab:grey",
     )
-    sns.lineplot(x=_freq, y=_model_flux, ax=g, color='black')
+    sns.lineplot(x=_freq, y=_model_flux, ax=g, color="black")
     g.set(xlim=[_freq.min(), _freq.max()])
     return g
+
 
 def plot_time_flux(
     flux: pd.Series,

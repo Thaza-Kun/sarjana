@@ -12,8 +12,9 @@ from sarjana import commands
 from sarjana.collections import generate_scattered_gaussian_model
 from sarjana.optimize import fit_time_series
 from sarjana.signal import (
+    find_full_width_nth_maximum,
     scattered_gaussian_signal,
-    find_peaks
+    find_peaks,
 )
 from sarjana.handlers import ParquetWaterfall
 
@@ -62,18 +63,70 @@ def debug(
     frb: str = typer.Argument(...),
 ):
     """Misc functions to be debug"""
-    # rich.print([*deepcopy(scattered_gaussian_signal.__annotations__).keys()])
-    matplotlib.use("TkAgg")
-    burst = ParquetWaterfall(frb).remove_rfi()
-    peaks, _ = find_peaks(burst.ts)
-    rich.print(peaks)
-    rich.print(burst.wfall[peaks])
-    rich.print(burst.wfall_dimension)
-    rich.print(burst.plot_time.shape)
-    rich.print(burst.plot_freq.shape)
-    for peak in peaks:
-        plt.plot(burst.plot_time,burst.wfall[peak])
-    plt.show()
+    import dfdt
+    from pathlib import Path
+    import os
+    from sarjana.signal.transform import autocorrelate_waterfall
+
+    burstpath = Path(os.getenv("DATAPATH"), "23891929_DM348.8_waterfall.npy")
+    burst_ = np.load(burstpath)
+    burst = ParquetWaterfall(Path(os.getenv("DATAPATH"), "raw", "wfall", frb))
+
+    # burst parameters
+    dm_uncertainty = 0.2  # pc cm-3
+    source = "R3"
+    eventid = "23891929"
+
+    # instrument parameters
+    dt_s = 0.00098304
+    df_mhz = 0.0244140625
+    nchan = 16384
+    freq_bottom_mhz = 400.1953125
+    freq_top_mhz = 800.1953125
+
+    timeseries = np.nansum(burst.wfall, axis=0)
+    timeseries_var = np.nanstd(np.diff(timeseries))
+    peaks, _ = find_peaks(timeseries, prominence=timeseries_var)
+    widths = find_full_width_nth_maximum(timeseries, peaks, n=10)
+    width = np.array([*widths]).max()
+
+    peak = peaks[0]
+
+    ds = dfdt.DynamicSpectrum(dt_s, df_mhz, nchan, freq_bottom_mhz, freq_top_mhz)
+    DS = dfdt.DynamicSpectrum(
+        burst.dt,
+        np.diff(burst.plot_freq)[0],
+        burst.wfall.shape[1],
+        burst.plot_freq.min(),
+        burst.plot_freq.max(),
+    )
+    data = dfdt.ac_mc_drift(
+        burst.wfall,
+        dm_uncertainty,
+        burst.eventname,
+        burst.eventname,
+        DS,
+        dm_trials=100,
+        mc_trials=100,
+        peak=peak,
+        width=width,
+    )
+
+    plt.imshow(data, aspect="auto")
+    plt.title(burst.eventname)
+    plt.savefig(f"dfdt_{burst.eventname}_autocorrelate2d.png")
+    data = autocorrelate_waterfall(
+        burst.wfall,
+        burst.dt,
+        np.diff(burst.plot_freq).min(),
+        nchannels=len(burst.plot_freq),
+        bottom_freq=burst.plot_freq.min(),
+        top_freq=burst.plot_freq.max(),
+    )
+    plt.imshow(data, aspect="auto")
+    plt.title(burst.eventname)
+    plt.savefig(f"custom_{burst.eventname}_autocorrelate2d.png")
+    # plt.show()
 
 
 @app.command()
