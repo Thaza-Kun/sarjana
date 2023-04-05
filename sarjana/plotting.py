@@ -6,25 +6,50 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sarjana.signal import (
-    find_burst,
+    find_full_width_nth_maximum,
     find_peaks,
+    is_multipeak,
     scattered_gaussian_signal,
 )
 from sarjana.optimize import fit_time_series
 
 
-def plot_flux_profile(
+def get_value_at_non_integer_index(index: float, initial: float, delta: float) -> float:
+    return initial + (index * delta) - ((index * delta) % delta) + delta
+
+
+def plot_frequency_flux(flux: pd.Series, model_flux: pd.Series, frequencies: pd.Series,
+    *,
+    axes: Optional[plt.Axes] = None,
+    highlight_burst: bool = False,
+    **kwargs,
+                        ):
+    axes = plt.gca() if axes is None else axes
+    _freq: np.ndarray = frequencies.to_numpy()[0]
+    _model_flux: np.ndarray = model_flux.to_numpy()[0]
+    _flux: np.ndarray = flux.to_numpy()[0]
+    _multipeak: bool = is_multipeak(_flux)
+    g = sns.lineplot(
+        x=_freq,
+        y=_flux,
+        ax=axes,
+        color='tab:grey',
+    )
+    sns.lineplot(x=_freq, y=_model_flux, ax=g, color='black')
+    g.set(xlim=[_freq.min(), _freq.max()])
+    return g
+
+def plot_time_flux(
     flux: pd.Series,
     model_flux: pd.Series,
     time: pd.Series,
     timedelta: pd.Series,
-    multipeak: pd.Series,
     *,
     axes: Optional[plt.Axes] = None,
-    draw_peaks: bool = False,
+    highlight_burst: bool = False,
     **kwargs,
 ) -> Any:
-    """A single flux plot.
+    """A single timeseries flux plot.
 
     Args:
         flux (pd.Series): Flux data as a time series
@@ -40,18 +65,20 @@ def plot_flux_profile(
     """
     axes = plt.gca() if axes is None else axes
     # Reshape data
-    _time: np.ndarray = time.to_numpy()[0]
-    _model_flux: np.ndarray = model_flux.to_numpy()[0]
-    _flux: np.ndarray = flux.to_numpy()[0]
-    _timedelta: float = timedelta.to_numpy()[0]
-    _multipeak: str = multipeak.item()
-
-    # Find burst
-    peak, width, _ = find_burst(_flux)
+    if isinstance(time, pd.Series):
+        _time: np.ndarray = time.to_numpy()[0]
+        _model_flux: np.ndarray = model_flux.to_numpy()[0]
+        _flux: np.ndarray = flux.to_numpy()[0]
+        _timedelta: float = timedelta.to_numpy()[0]
+    else:
+        _time = time
+        _model_flux = model_flux
+        _flux = flux
+        _timedelta = timedelta
+    _multipeak: bool = is_multipeak(_flux)
 
     # Resize time
-    _time = _time - _time[np.argmax(_flux)]
-    _time = _time - (_timedelta / 2)
+    _time = _time - _time[np.argmax(_flux)] - (_timedelta / 2)
 
     # Add one more step after final point
     _time = np.append(_time, _time[-1] + timedelta)
@@ -63,7 +90,7 @@ def plot_flux_profile(
         y=_flux,
         drawstyle="steps-post",
         ax=axes,
-        color="orange",
+        color="tab:grey",
     )
     if _multipeak is True:
         sns.lineplot(
@@ -75,15 +102,17 @@ def plot_flux_profile(
                 scattered_gaussian_signal,
                 _time,
                 _flux,
-                params=[1, 1, _flux.max(), _time[_flux.argmax()]],
+                params={"amplitude": _flux.max(), "peak_time": _time[_flux.argmax()]},
             )
         except RuntimeError:
             params = fit_time_series(
                 scattered_gaussian_signal,
                 _time,
                 _model_flux,
-                params=[1, 1, _flux.max(), _time[_flux.argmax()]],
+                params={"amplitude": _flux.max(), "peak_time": _time[_flux.argmax()]},
             )
+        except not RuntimeError as e:
+            raise e
         finally:
             _sigma = params.get("sigma", (1.0,))[0]
             _tau = params.get("tau", (1.0,))[0]
@@ -104,31 +133,34 @@ def plot_flux_profile(
                 r"$\frac{\sigma}{\tau}$=" + f"{_sigma/_tau:.1e}",
                 horizontalalignment="right",
             )
-    elif _multipeak is None:
-        ...
-    else:
-        raise KeyError(f"{_multipeak} is not an option.")
     g.set(xlim=[_time[0], _time[-1]])
 
-    # Color the burst event with a greyish box
-    halftick = 0.5 * _timedelta
-    g.axvspan(
-        max(
-            _time.min(),
-            _time[peak] + halftick - (0.5 * width) * _timedelta,
-        ),
-        min(
-            _time.max(),
-            _time[peak] + halftick + (0.5 * width) * _timedelta,
-        ),
-        facecolor="tab:blue",
-        edgecolor=None,
-        alpha=0.1,
-    )
-    var = np.nanstd(np.diff(_model_flux))
-    if draw_peaks:
+    if highlight_burst:
+        # Color the burst event with a greyish box
+        var = np.nanstd(np.diff(_model_flux))
         peaks, _ = find_peaks(_model_flux, prominence=var)
-        for spike in peaks:
+        # Find burst
+        widths, width_heights, lefts, rights = find_full_width_nth_maximum(
+            _model_flux, peaks, n=10
+        )
+        for i, spike in enumerate(peaks):
             g.axvline(_time[spike] + 0.5 * _timedelta, color="red", linestyle=":")
+            g.axvspan(
+                max(
+                    _time.min(),
+                    get_value_at_non_integer_index(
+                        index=lefts[i], initial=_time.min(), delta=_timedelta
+                    ),
+                ),
+                min(
+                    _time.max(),
+                    get_value_at_non_integer_index(
+                        index=rights[i], initial=_time.min(), delta=_timedelta
+                    ),
+                ),
+                facecolor="tab:blue",
+                edgecolor=None,
+                alpha=0.1,
+            )
 
     return g

@@ -11,14 +11,19 @@ from sarjana.tui import LinearProgress, DownloadProgress
 from sarjana.collections import merge_embedding_into_profile
 from sarjana.handlers import H5Waterfall, ParquetWaterfall
 
-from sarjana.plotting import plot_flux_profile
+from sarjana.plotting import plot_time_flux
 from sarjana.download import manage_download_waterfall_data_task, compress_to_parquet
 
 matplotlib.use("Agg")
 
 
 def plot_many_flux_profile_by_clustering_groups(
-    profile: str, embedding: str, savefile: str, size: int, *, draw_peaks: bool = False
+    profile: str,
+    embedding: str,
+    savefile: str,
+    size: int,
+    *,
+    highlight_burst: bool = False,
 ) -> None:
     """
     TODO: DOCS
@@ -50,13 +55,12 @@ def plot_many_flux_profile_by_clustering_groups(
                         sharey=False,
                     )
                     g.map(
-                        plot_flux_profile,
+                        plot_time_flux,
                         "ts",
                         "model_ts",
                         "plot_time",
                         "dt",
-                        "is_multipeak",
-                        draw_peaks=draw_peaks,
+                        highlight_burst=highlight_burst,
                     )
                     g.fig.suptitle(cat + " " + str(loop_num))
                     g.set_ylabels("flux (Jy)")
