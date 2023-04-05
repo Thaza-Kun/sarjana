@@ -5,7 +5,7 @@ authors: Murthadza Aznam
 date: '2022-09-15'
 ---
 
-{{< include README.md >}}
+<!--{{< include README.md >}}-->
 
 ## Possible Research Trajectory
 - Phantom Data (Refer to Affan. It relates to how his `Polar BEAR` detects phantom data)
