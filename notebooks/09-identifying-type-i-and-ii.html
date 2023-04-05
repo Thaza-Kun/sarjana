@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.2.475">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -142,9 +142,6 @@ div.csl-indent {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <meta property="og:title" content="Masters Project - Identifying type I and type II FRB">
@@ -238,440 +235,317 @@ Note
 <p>📌 Goal: This notebook tries to differentiate between broadband and shortband single peak fast radio burst, as described in <span class="citation" data-cites="pleunis_FastRadioBurst_2021">(<a href="#ref-pleunis_FastRadioBurst_2021" role="doc-biblioref">Pleunis et al. 2021</a>)</span>.</p>
 </div>
 </div>
-<div class="cell" data-execution_count="19">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.signal <span class="im">import</span> is_multipeak</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>catalog_file <span class="op">=</span> Path(<span class="st">'D://'</span>, <span class="st">'home'</span>, <span class="st">'datasets'</span>, <span class="st">'sarjana'</span>, <span class="st">'raw'</span>, <span class="st">'cfod'</span>, <span class="st">'chimefrb_profile_norfi.parquet'</span>)</span>
+<div class="cell" data-execution_count="100">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.handlers <span class="im">import</span> ParquetWaterfall</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.signal <span class="im">import</span> find_peaks</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> pd.read_parquet(catalog_file)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>single_file <span class="op">=</span> Path(<span class="st">'D://'</span>, <span class="st">'home'</span>, <span class="st">'datasets'</span>, <span class="st">'sarjana'</span>, <span class="st">'raw'</span>, <span class="st">'wfall'</span>, <span class="st">'FRB20190117A_waterfall.h5.parquet'</span>)</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Resize time</span></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'plot_time'</span>] <span class="op">=</span> catalog[<span class="st">'plot_time'</span>] <span class="op">-</span> (catalog[<span class="st">'dt'</span>] <span class="op">/</span> <span class="dv">2</span>)</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">"multipeak"</span>] <span class="op">=</span> [is_multipeak(x.copy()) <span class="cf">for</span> x <span class="kw">in</span> catalog[<span class="st">"ts"</span>].values]</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>single_peaks <span class="op">=</span> catalog[catalog[<span class="st">"multipeak"</span>] <span class="op">==</span> <span class="va">False</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>burst <span class="op">=</span> ParquetWaterfall(single_file).remove_rfi()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>D:\home\lab\sarjana\sarjana\signal.py:40: RuntimeWarning: Degrees of freedom &lt;= 0 for slice.
+  channel_variance = np.nanvar(wfall, axis=1)
+D:\home\lab\sarjana\sarjana\handlers.py:13: RuntimeWarning: Mean of empty slice
+  data = np.nanmean(data.reshape((num_chan // fbin_factor, fbin_factor) + data.shape[1:]), axis=1)</code></pre>
 </div>
-<div class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>single_file <span class="op">=</span> Path(<span class="st">'D://'</span>, <span class="st">'home'</span>, <span class="st">'datasets'</span>, <span class="st">'sarjana'</span>, <span class="st">'raw'</span>, <span class="st">'wfall'</span>, <span class="st">'FRB20190701E_waterfall.h5.parquet'</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pd.read_parquet(single_file)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+</div>
+<div class="cell" data-execution_count="86">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>burst.wfall_dimension</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="86">
+<pre><code>('freq', 'time')</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="142">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> copy <span class="im">import</span> deepcopy</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dmdelay(dm,fx,fstart):</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="fl">4148.741601</span><span class="op">*</span>(<span class="fl">1.0</span><span class="op">/</span>(fstart<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                          <span class="op">-</span>(<span class="fl">1.0</span><span class="op">/</span>(fx<span class="op">**</span><span class="dv">2</span>)))<span class="op">*</span>dm</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> dedisperse(data,dm,f,fstart,tsamp,sep<span class="op">=</span><span class="va">False</span>):</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    temp <span class="op">=</span> np.zeros(data.shape)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    delay <span class="op">=</span> np.<span class="bu">round</span>(dmdelay(dm,f,fstart)<span class="op">/</span>tsamp)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(np.shape(temp)[<span class="dv">1</span>]):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        temp[:,i] <span class="op">=</span> np.roll(data[:,i],<span class="bu">int</span>(delay[i]))</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (temp <span class="cf">if</span> sep <span class="cf">else</span> np.<span class="bu">sum</span>(temp,axis<span class="op">=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="153">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plt.imshow(burst.wfall, aspect<span class="op">=</span><span class="st">"auto"</span>, interpolation<span class="op">=</span><span class="st">"none"</span>,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                extent<span class="op">=</span>burst.extent)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="153">
+<pre><code>&lt;matplotlib.image.AxesImage at 0x202a5e635e0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-6-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="74">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.signal <span class="im">import</span> find_full_width_nth_maximum</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>widths, width_heights, lefts, rights <span class="op">=</span> find_full_width_nth_maximum(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>            burst.ts, peaks,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>             n<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>widths, width_heights, lefts, rights</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="74">
+<pre><code>(array([ 3.27627544,  2.71223693, 10.60332632,  3.17391188,  1.00800037,
+         7.61754665,  2.58608908,  2.71536721,  1.51370134]),
+ array([ -4.12731844, -10.93771345,  -6.92809047,  29.81593574,
+        -10.64009475, -16.72144703,  -3.02464486, -14.01885681,
+          0.65579072]),
+ array([ 3.32861646,  7.10463553, 10.15708246, 15.19890055, 21.1       ,
+        23.25698313, 27.45495652, 32.18182623, 35.38629866]),
+ array([ 6.6048919 ,  9.81687246, 20.76040879, 18.37281243, 22.10800037,
+        30.87452978, 30.0410456 , 34.89719345, 36.9       ]))</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="75">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>np.nanmean(np.transpose(burst.model_wfall)[<span class="bu">int</span>(lefts[<span class="dv">0</span>]):<span class="bu">int</span>(rights[<span class="dv">0</span>])], axis<span class="op">=</span><span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="75">
+<pre><code>array([4.00648365e-11, 4.00648365e-11, 4.00648365e-11, ...,
+       4.00648365e-11, 4.00648365e-11, 4.00648365e-11])</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="76">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> Select around the peaks OR select around the burst?</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> Systematic FWTM</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># </span><span class="al">TODO</span><span class="co"> OR should we just use high_freq and low_freq from CHIME/FRB?</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># data = pd.DataFrame.from_dict({"peak": burst.plot_time[peaks[0]], "freq": burst.plot_freq, "wfall": np.transpose(burst.model_wfall)[peaks[0]]})</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame()</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> peak, left, right <span class="kw">in</span> <span class="bu">zip</span>(peaks, lefts, rights):</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    new <span class="op">=</span> pd.DataFrame({<span class="st">"peak"</span>: burst.plot_time[peak], <span class="st">"freq"</span>: burst.plot_freq, <span class="st">"wfall"</span>: np.nanmean(np.transpose(burst.model_wfall)[<span class="bu">int</span>(left):<span class="bu">int</span>(right)<span class="op">+</span><span class="dv">1</span>], axis<span class="op">=</span><span class="dv">0</span>)})</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    _,_, leftborder, rightborder <span class="op">=</span> find_full_width_nth_maximum(</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>            new[<span class="st">'wfall'</span>], [new[<span class="st">'wfall'</span>].to_numpy().argmax()], n<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> pd.concat([data, new])</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    data.loc[data[<span class="st">'peak'</span>] <span class="op">==</span> burst.plot_time[peak], <span class="st">"left"</span>] <span class="op">=</span> leftborder[<span class="dv">0</span>]</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    data.loc[data[<span class="st">'peak'</span>] <span class="op">==</span> burst.plot_time[peak], <span class="st">"right"</span>] <span class="op">=</span> rightborder[<span class="dv">0</span>]</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.FacetGrid(data, row<span class="op">=</span><span class="st">'peak'</span>, aspect<span class="op">=</span><span class="dv">15</span>, height<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>g.<span class="bu">map</span>(sns.lineplot, <span class="st">'freq'</span>, <span class="st">'wfall'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>D:\home\lab\sarjana\sarjana\signal.py:77: PeakPropertyWarning: some peaks have a prominence of 0
+  return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))
+D:\home\lab\sarjana\sarjana\signal.py:77: PeakPropertyWarning: some peaks have a width of 0
+  return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))
+D:\home\lab\sarjana\sarjana\signal.py:77: PeakPropertyWarning: some peaks have a prominence of 0
+  return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))
+D:\home\lab\sarjana\sarjana\signal.py:77: PeakPropertyWarning: some peaks have a width of 0
+  return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))
+D:\home\lab\sarjana\sarjana\signal.py:77: PeakPropertyWarning: some peaks have a prominence of 0
+  return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))
+D:\home\lab\sarjana\sarjana\signal.py:77: PeakPropertyWarning: some peaks have a width of 0
+  return scipy.signal.peak_widths(y, peaks, rel_height=1 - (1 / n))</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="76">
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x2021d623490&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-9-output-3.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.plotting <span class="im">import</span> plot_time_flux</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.signal <span class="im">import</span> is_multipeak</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>is_multipeak(burst.ts, prominence<span class="op">=</span><span class="st">'stdev'</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>plot_time_flux(burst.ts, burst.model_ts, burst.plot_time, burst.dt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>&lt;AxesSubplot: &gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-10-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="158">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.signal <span class="im">import</span> is_multipeak, find_full_width_nth_maximum</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>catalog_file <span class="op">=</span> Path(<span class="st">'D://'</span>, <span class="st">'home'</span>, <span class="st">'datasets'</span>, <span class="st">'sarjana'</span>, <span class="st">'raw'</span>, <span class="st">'cfod'</span>, <span class="st">'chimefrb_profile_norfi.parquet'</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>catalog <span class="op">=</span> pd.read_parquet(catalog_file)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Resize time</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">'plot_time'</span>] <span class="op">=</span> catalog[<span class="st">'plot_time'</span>] <span class="op">-</span> (catalog[<span class="st">'dt'</span>] <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>catalog[<span class="st">"multipeak"</span>] <span class="op">=</span> [is_multipeak(x.copy()) <span class="cf">for</span> x <span class="kw">in</span> catalog[<span class="st">"ts"</span>].values]</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>single_peaks <span class="op">=</span> catalog[catalog[<span class="st">"multipeak"</span>] <span class="op">==</span> <span class="va">False</span>]</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> time_width(flux, peaks, delta):</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    widths, width_heights, lefts, rights <span class="op">=</span> find_full_width_nth_maximum(</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>            flux, peaks, n<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> widths[<span class="dv">0</span>]<span class="op">*</span>delta</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>single_peaks[<span class="st">'time_width'</span>] <span class="op">=</span> single_peaks.<span class="bu">apply</span>(<span class="kw">lambda</span> x: time_width(x[<span class="st">'ts'</span>].copy(), [x[<span class="st">'ts'</span>].argmax()], x[<span class="st">'dt'</span>]), axis<span class="op">=</span><span class="st">'columns'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\2230365237.py:18: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
 
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>eventname</th>
-      <th>wfall</th>
-      <th>model_wfall</th>
-      <th>plot_time</th>
-      <th>plot_freq</th>
-      <th>ts</th>
-      <th>model_ts</th>
-      <th>spec</th>
-      <th>model_spec</th>
-      <th>extent</th>
-      <th>dm</th>
-      <th>scatterfit</th>
-      <th>dt</th>
-      <th>wfall_shape</th>
-      <th>cal_wfall_shape</th>
-      <th>cal_wfall</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>FRB20190701E</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.4915200115647167, 1.47456003469415, 2.45760...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[1.0231140851974487, 3.072990357875824, -16.58...</td>
-      <td>[0.00011334415066438012, 0.0001133441506643801...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.002127421250213523, 0.002127393305711726, 0...</td>
-      <td>[0.0, 37.35552087891847, 400.20751953125, 800....</td>
-      <td>890.477065</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>[16384, 38]</td>
-      <td>None</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  single_peaks['time_width'] = single_peaks.apply(lambda x: time_width(x['ts'].copy(), [x['ts'].argmax()], x['dt']), axis='columns')</code></pre>
 </div>
 </div>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gauss(time: np.ndarray, sigma: <span class="bu">float</span>, amplitude: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>, peak_time: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span>):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amplitude <span class="op">*</span> np.exp(<span class="op">-</span>((time <span class="op">-</span> peak_time) <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> sigma<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scattered_gaussian_signal(</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>    time: np.ndarray,</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    sigma: <span class="bu">float</span>,</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    tau: <span class="bu">float</span>,</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    amplitude: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>,</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    peak_time: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span>,</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> np.ndarray:</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    _time <span class="op">=</span> time <span class="op">-</span> peak_time</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    first_term: np.ndarray <span class="op">=</span> <span class="op">-</span>(_time <span class="op">/</span> tau) <span class="op">+</span> (sigma<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> (tau<span class="op">**</span><span class="dv">2</span>))</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    second_term: np.ndarray <span class="op">=</span> (_time <span class="op">/</span> (np.sqrt(<span class="dv">2</span>) <span class="op">*</span> sigma)) <span class="op">-</span> (</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>        sigma <span class="op">/</span> (np.sqrt(<span class="dv">2</span>) <span class="op">*</span> tau)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amplitude <span class="op">*</span> <span class="fl">0.5</span> <span class="op">*</span> np.exp(first_term) <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> scipy.special.erf(second_term))</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Callable</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.optimize <span class="im">import</span> fit_time_series</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_single_peak_model(data: pd.DataFrame, func: Callable) <span class="op">-&gt;</span> pd.DataFrame:</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> try_fit(func, data) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fit_time_series(</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>                func,</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"plot_time"</span>],</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"ts"</span>],</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"amplitude"</span>: data[<span class="st">"ts"</span>].<span class="bu">max</span>(),</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"peak_time"</span>: data[<span class="st">"plot_time"</span>][data[<span class="st">"ts"</span>].argmax()],</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">RuntimeError</span>:</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fit_time_series(</span>
+<span id="cb20-35"><a href="#cb20-35" aria-hidden="true" tabindex="-1"></a>                func,</span>
+<span id="cb20-36"><a href="#cb20-36" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"plot_time"</span>],</span>
+<span id="cb20-37"><a href="#cb20-37" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"model_ts"</span>],</span>
+<span id="cb20-38"><a href="#cb20-38" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{</span>
+<span id="cb20-39"><a href="#cb20-39" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"amplitude"</span>: data[<span class="st">"model_ts"</span>].<span class="bu">max</span>(),</span>
+<span id="cb20-40"><a href="#cb20-40" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"peak_time"</span>: data[<span class="st">"plot_time"</span>][data[<span class="st">"model_ts"</span>].argmax()],</span>
+<span id="cb20-41"><a href="#cb20-41" aria-hidden="true" tabindex="-1"></a>                },</span>
+<span id="cb20-42"><a href="#cb20-42" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb20-43"><a href="#cb20-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-44"><a href="#cb20-44" aria-hidden="true" tabindex="-1"></a>    data[func.<span class="va">__name__</span>] <span class="op">=</span> data.<span class="bu">apply</span>(</span>
+<span id="cb20-45"><a href="#cb20-45" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: try_fit(func, x), axis<span class="op">=</span><span class="st">"columns"</span></span>
+<span id="cb20-46"><a href="#cb20-46" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-47"><a href="#cb20-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>single_peaks</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="22">
-
-<div>
-
-<table class="dataframe table table-sm table-striped">
-  <thead>
-    <tr>
-      <th></th>
-      <th>filename</th>
-      <th>eventname</th>
-      <th>plot_time</th>
-      <th>plot_freq</th>
-      <th>ts</th>
-      <th>model_ts</th>
-      <th>spec</th>
-      <th>model_spec</th>
-      <th>extent</th>
-      <th>dm</th>
-      <th>scatterfit</th>
-      <th>dt</th>
-      <th>multipeak</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>2</th>
-      <td>FRB20180729A_waterfall.h5.parquet</td>
-      <td>FRB20180729A</td>
-      <td>[0.0, 0.9830399649217725, 1.966079929843545, 2...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[-0.5716363191604614, -17.364217936992645, 5.2...</td>
-      <td>[0.0030962208788418173, 0.0030962208788418173,...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.00416778773145504, 0.0041719751674474635, 0...</td>
-      <td>[0.0, 18.677759333513677, 400.20751953125, 800...</td>
-      <td>109.594181</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>FRB20180729B_waterfall.h5.parquet</td>
-      <td>FRB20180729B</td>
-      <td>[0.0, 0.9830400231294334, 1.9660800462588668, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[7.178313672542572, 16.028381049633026, -12.85...</td>
-      <td>[0.00022216660293127358, 0.0002221666029312735...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[4.113813866711855e-05, 4.117462640763476e-05,...</td>
-      <td>[0.0, 37.35552087891847, 400.20751953125, 800....</td>
-      <td>317.223506</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>FRB20180730A_waterfall.h5.parquet</td>
-      <td>FRB20180730A</td>
-      <td>[0.0, 0.9830399649217725, 1.966079929843545, 2...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[28.190669357776642, -3.8035714626312256, 1.37...</td>
-      <td>[0.0003526762730453472, 0.0003526762730453472,...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.009713658938378366, 0.009784989753700499, 0...</td>
-      <td>[0.0, 37.355518667027354, 400.20751953125, 800...</td>
-      <td>848.904087</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>FRB20180810B_waterfall.h5.parquet</td>
-      <td>FRB20180810B</td>
-      <td>[0.0, 0.9830400813370943, 1.9660801626741886, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[11.590367555618286, -0.7796801924705505, 3.87...</td>
-      <td>[0.000770837060045753, 0.000770837060045753, 0...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.012395891508303704, 0.01239529586531048, 0....</td>
-      <td>[0.0, 18.677761545404792, 400.20751953125, 800...</td>
-      <td>169.138526</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>FRB20180814B_waterfall.h5.parquet</td>
-      <td>FRB20180814B</td>
-      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[13.435711920261383, -34.95270961523056, 8.021...</td>
-      <td>[5.823073060752974e-49, 7.408350751003518e-41,...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.0016093394878410432, 0.001609342656825253, ...</td>
-      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
-      <td>238.347359</td>
-      <td>False</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-      <td>...</td>
-    </tr>
-    <tr>
-      <th>571</th>
-      <td>FRB20190623B_waterfall.h5.parquet</td>
-      <td>FRB20190623B</td>
-      <td>[0.0, 0.9830399976635817, 1.9660799953271635, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[-7.816261172294617, 6.107970714569092, 9.2511...</td>
-      <td>[0.00034190650261076047, 0.0003419065026107604...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[1.0068020284278203e-08, 1.0101373999610491e-0...</td>
-      <td>[0.0, 37.355519911216106, 400.20751953125, 800...</td>
-      <td>1556.765041</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>574</th>
-      <td>FRB20190624B_waterfall.h5.parquet</td>
-      <td>FRB20190624B</td>
-      <td>[0.0, 0.9830399976635817, 1.9660799953271635, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[-5.652332425117493, 23.393622279167175, 7.056...</td>
-      <td>[6.59608089425059e-43, 4.5865270761136985e-28,...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[1.1669434356811494e-05, 1.1517735828296239e-0...</td>
-      <td>[0.0, 18.677759955608053, 400.20751953125, 800...</td>
-      <td>213.922189</td>
-      <td>False</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>580</th>
-      <td>FRB20190625D_waterfall.h5.parquet</td>
-      <td>FRB20190625D</td>
-      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[-16.88565695285797, 33.844458281993866, -9.81...</td>
-      <td>[1.601867475081894e-60, 1.6198470221664263e-50...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.003710013880471254, 0.003714563006853791, 0...</td>
-      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
-      <td>717.883116</td>
-      <td>False</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>583</th>
-      <td>FRB20190627B_waterfall.h5.parquet</td>
-      <td>FRB20190627B</td>
-      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[2.3288493752479553, 18.383675038814545, -2.34...</td>
-      <td>[0.0006036649558608276, 0.0006036649558608276,...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.004643797495785171, 0.004644052207172645, 0...</td>
-      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
-      <td>430.322387</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-    <tr>
-      <th>584</th>
-      <td>FRB20190627C_waterfall.h5.parquet</td>
-      <td>FRB20190627C</td>
-      <td>[0.0, 0.9830399940256029, 1.9660799880512059, ...</td>
-      <td>[400.2197265625, 400.244140625, 400.2685546875...</td>
-      <td>[12.723131775856018, 14.152254581451416, 7.791...</td>
-      <td>[0.0009507172194947506, 0.0009507172194947506,...</td>
-      <td>[nan, nan, nan, nan, nan, nan, nan, nan, nan, ...</td>
-      <td>[0.007019124317181997, 0.007019041301162199, 0...</td>
-      <td>[0.0, 37.35551977297291, 400.20751953125, 800....</td>
-      <td>968.612733</td>
-      <td>True</td>
-      <td>0.98304</td>
-      <td>False</td>
-    </tr>
-  </tbody>
-</table>
-<p>134 rows × 13 columns</p>
-</div>
-</div>
-</div>
-<div class="cell" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> gauss(time: np.ndarray, sigma: <span class="bu">float</span>, amplitude: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>, peak_time: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span>):</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amplitude <span class="op">*</span> np.exp(<span class="op">-</span>((time <span class="op">-</span> peak_time) <span class="op">**</span> <span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> sigma<span class="op">**</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> scattered_gaussian_signal(</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    time: np.ndarray,</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    sigma: <span class="bu">float</span>,</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    tau: <span class="bu">float</span>,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    amplitude: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1.0</span>,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    peak_time: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.0</span>,</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>) <span class="op">-&gt;</span> np.ndarray:</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    _time <span class="op">=</span> time <span class="op">-</span> peak_time</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    first_term: np.ndarray <span class="op">=</span> <span class="op">-</span>(_time <span class="op">/</span> tau) <span class="op">+</span> (sigma<span class="op">**</span><span class="dv">2</span>) <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> (tau<span class="op">**</span><span class="dv">2</span>))</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    second_term: np.ndarray <span class="op">=</span> (_time <span class="op">/</span> (np.sqrt(<span class="dv">2</span>) <span class="op">*</span> sigma)) <span class="op">-</span> (</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>        sigma <span class="op">/</span> (np.sqrt(<span class="dv">2</span>) <span class="op">*</span> tau)</span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> amplitude <span class="op">*</span> <span class="fl">0.5</span> <span class="op">*</span> np.exp(first_term) <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> scipy.special.erf(second_term))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> typing <span class="im">import</span> Callable</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sarjana.optimize <span class="im">import</span> fit_time_series</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate_single_peak_model(data: pd.DataFrame, func: Callable) <span class="op">-&gt;</span> pd.DataFrame:</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> try_fit(func, data) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fit_time_series(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                func,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"plot_time"</span>],</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"ts"</span>],</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"amplitude"</span>: data[<span class="st">"ts"</span>].<span class="bu">max</span>(),</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"peak_time"</span>: data[<span class="st">"plot_time"</span>][data[<span class="st">"ts"</span>].argmax()],</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                },</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">RuntimeError</span>:</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> fit_time_series(</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>                func,</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"plot_time"</span>],</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>                data[<span class="st">"model_ts"</span>],</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                params<span class="op">=</span>{</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"amplitude"</span>: data[<span class="st">"model_ts"</span>].<span class="bu">max</span>(),</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                    <span class="st">"peak_time"</span>: data[<span class="st">"plot_time"</span>][data[<span class="st">"model_ts"</span>].argmax()],</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>                },</span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    data[func.<span class="va">__name__</span>] <span class="op">=</span> data.<span class="bu">apply</span>(</span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        <span class="kw">lambda</span> x: try_fit(func, x), axis<span class="op">=</span><span class="st">"columns"</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-execution_count="26">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> generate_single_peak_model(single_peaks, scattered_gaussian_signal)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> generate_single_peak_model(df1, gauss)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="159">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> generate_single_peak_model(single_peaks, scattered_gaussian_signal)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> df1[[<span class="st">'eventname'</span>, <span class="st">'dm'</span>, <span class="st">'scattered_gaussian_signal'</span>, <span class="st">'time_width'</span>]]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'sigma'</span>]     <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">0</span>])</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'sigma_err'</span>] <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">1</span>])</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'tau'</span>]       <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.get(<span class="st">'tau'</span>, <span class="dv">0</span>)[<span class="dv">0</span>])</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'tau_err'</span>]   <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: x.get(<span class="st">'tau'</span>, <span class="dv">0</span>)[<span class="dv">1</span>])</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'sigma_per_tau'</span>]       <span class="op">=</span> data[<span class="st">'sigma'</span>]<span class="op">/</span>data[<span class="st">'tau'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>d:\home\lab\sarjana\.venv\lib\site-packages\scipy\optimize\_minpack_py.py:881: OptimizeWarning: Covariance of the parameters could not be estimated
   warnings.warn('Covariance of the parameters could not be estimated',
 D:\home\lab\sarjana\sarjana\optimize.py:27: RuntimeWarning: invalid value encountered in sqrt
   _stdevs = np.sqrt(np.diag(_pcov))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\3695975889.py:27: SettingWithCopyWarning: 
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\2956812042.py:44: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
   data[func.__name__] = data.apply(
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\3695975889.py:27: SettingWithCopyWarning: 
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\215846776.py:4: SettingWithCopyWarning: 
 A value is trying to be set on a copy of a slice from a DataFrame.
 Try using .loc[row_indexer,col_indexer] = value instead
 
 See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data[func.__name__] = data.apply(</code></pre>
+  data['sigma']     = data['scattered_gaussian_signal'].apply(lambda x: x.get('sigma', 0)[0])
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\215846776.py:5: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['sigma_err'] = data['scattered_gaussian_signal'].apply(lambda x: x.get('sigma', 0)[1])
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\215846776.py:6: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['tau']       = data['scattered_gaussian_signal'].apply(lambda x: x.get('tau', 0)[0])
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\215846776.py:7: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['tau_err']   = data['scattered_gaussian_signal'].apply(lambda x: x.get('tau', 0)[1])
+C:\Users\LENOVO\AppData\Local\Temp\ipykernel_17280\215846776.py:8: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  data['sigma_per_tau']       = data['sigma']/data['tau']</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="27">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> df1[[<span class="st">'eventname'</span>, <span class="st">'dm'</span>, <span class="st">'scattered_gaussian_signal'</span>, <span class="st">'gauss'</span>]]</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_sigma'</span>]     <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">0</span>]))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_sigma_err'</span>] <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">1</span>]))</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_tau'</span>]       <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'tau'</span>, <span class="dv">0</span>)[<span class="dv">0</span>]))</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_scattered_tau_err'</span>]   <span class="op">=</span> data[<span class="st">'scattered_gaussian_signal'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'tau'</span>, <span class="dv">0</span>)[<span class="dv">1</span>]))</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_gauss_sigma'</span>]         <span class="op">=</span> data[<span class="st">'gauss'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">0</span>]))</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_gauss_sigma_err'</span>]     <span class="op">=</span> data[<span class="st">'gauss'</span>].<span class="bu">apply</span>(<span class="kw">lambda</span> x: np.log(x.get(<span class="st">'sigma'</span>, <span class="dv">0</span>)[<span class="dv">1</span>]))</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_sigma_ratio'</span>]         <span class="op">=</span> data[<span class="st">'log_gauss_sigma'</span>]<span class="op">/</span>data[<span class="st">'log_scattered_sigma'</span>]</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_sigma_per_tau'</span>]       <span class="op">=</span> data[<span class="st">'log_scattered_sigma'</span>]<span class="op">/</span>data[<span class="st">'log_scattered_tau'</span>]</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>data[<span class="st">'log_sigma_err_ratio'</span>]       <span class="op">=</span> (data[<span class="st">'log_scattered_sigma_err'</span>]<span class="op">-</span>data[<span class="st">'log_gauss_sigma_err'</span>])<span class="op">/</span>data[<span class="st">'log_scattered_sigma_err'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:2: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_scattered_sigma']     = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('sigma', 0)[0]))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:3: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_scattered_sigma_err'] = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('sigma', 0)[1]))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:4: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_scattered_tau']       = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('tau', 0)[0]))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:5: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_scattered_tau_err']   = data['scattered_gaussian_signal'].apply(lambda x: np.log(x.get('tau', 0)[1]))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:6: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_gauss_sigma']         = data['gauss'].apply(lambda x: np.log(x.get('sigma', 0)[0]))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:7: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_gauss_sigma_err']     = data['gauss'].apply(lambda x: np.log(x.get('sigma', 0)[1]))
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:8: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_sigma_ratio']         = data['log_gauss_sigma']/data['log_scattered_sigma']
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:9: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_sigma_per_tau']       = data['log_scattered_sigma']/data['log_scattered_tau']
-C:\Users\LENOVO\AppData\Local\Temp\ipykernel_13784\1968355826.py:10: SettingWithCopyWarning: 
-A value is trying to be set on a copy of a slice from a DataFrame.
-Try using .loc[row_indexer,col_indexer] = value instead
-
-See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
-  data['log_sigma_err_ratio']       = (data['log_scattered_sigma_err']-data['log_gauss_sigma_err'])/data['log_scattered_sigma_err']</code></pre>
+<div class="cell" data-execution_count="149">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>chime_catalog <span class="op">=</span> os.environ.get(<span class="st">'catalog'</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>cat <span class="op">=</span> pd.read_csv(chime_catalog)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="78">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>cat.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="78">
+<pre><code>Index(['tns_name', 'previous_name', 'repeater_name', 'ra', 'ra_err',
+       'ra_notes', 'dec', 'dec_err', 'dec_notes', 'gl',
+       ...
+       'weight_fluence_error_m', 'weight', 'weight_error_p', 'weight_error_m',
+       'weighted_logrhoA', 'weighted_logrhoA_error_p',
+       'weighted_logrhoA_error_m', 'weighted_logrhoB',
+       'weighted_logrhoB_error_p', 'weighted_logrhoB_error_m'],
+      dtype='object', length=107)</code></pre>
 </div>
 </div>
-<div class="cell" data-execution_count="28">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.pairplot(data, <span class="bu">vars</span><span class="op">=</span>[<span class="st">'log_scattered_sigma'</span>, <span class="st">'log_scattered_tau'</span>, <span class="st">'log_sigma_per_tau'</span>, <span class="st">'dm'</span>], corner<span class="op">=</span><span class="va">True</span>, diag_kind<span class="op">=</span><span class="st">'kde'</span>, kind<span class="op">=</span><span class="st">'hist'</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># g.set(xscale="log", yscale="log")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="160">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>stats <span class="op">=</span> pd.merge(data, cat[[<span class="st">'tns_name'</span>,<span class="st">'high_freq'</span>, <span class="st">'low_freq'</span>, <span class="st">'peak_freq'</span>, <span class="st">'dm_fitb'</span>, <span class="st">'scat_time'</span>]], left_on<span class="op">=</span><span class="st">'eventname'</span>, right_on<span class="op">=</span><span class="st">'tns_name'</span>).drop(columns<span class="op">=</span><span class="st">'tns_name'</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>stats[<span class="st">'bandwidth'</span>] <span class="op">=</span> stats[<span class="st">'high_freq'</span>] <span class="op">-</span> stats[<span class="st">'low_freq'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="161">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>sns.jointplot(stats, x<span class="op">=</span><span class="st">'time_width'</span>,y<span class="op">=</span><span class="st">'bandwidth'</span>, kind<span class="op">=</span><span class="st">'kde'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="161">
+<pre><code>&lt;seaborn.axisgrid.JointGrid at 0x26c71f3d2b0&gt;</code></pre>
+</div>
 <div class="cell-output cell-output-display">
-<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-17-output-2.png" class="img-fluid"></p>
 </div>
 </div>
-<div class="cell" data-execution_count="29">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(data, x<span class="op">=</span><span class="st">'scattered_sigma'</span>, y<span class="op">=</span><span class="st">'scattered_tau'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-error">
-<pre><code>ValueError: Could not interpret value `scattered_sigma` for parameter `x`</code></pre>
+<div class="cell" data-execution_count="201">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.cluster <span class="im">import</span> KMeans</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># DBSCAN is not helpful because many data are focused on the limit</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>clusterer <span class="op">=</span> KMeans(n_clusters<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>clusterer.fit(stats[[<span class="st">'bandwidth'</span>]])</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>stats[<span class="st">'label'</span>] <span class="op">=</span> clusterer.labels_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>d:\home\lab\sarjana\.venv\lib\site-packages\sklearn\cluster\_kmeans.py:870: FutureWarning: The default value of `n_init` will change from 10 to 'auto' in 1.4. Set the value of `n_init` explicitly to suppress the warning
+  warnings.warn(</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="202">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>sns.jointplot(stats, x<span class="op">=</span><span class="st">'bandwidth'</span>, y<span class="op">=</span><span class="st">'time_width'</span>, hue<span class="op">=</span><span class="st">'label'</span>, kind<span class="op">=</span><span class="st">'hist'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="202">
+<pre><code>&lt;seaborn.axisgrid.JointGrid at 0x26c7b788550&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="09-identifying-type-i-and-ii_files/figure-html/cell-19-output-2.png" class="img-fluid"></p>
 </div>
 </div>
 
