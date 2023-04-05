@@ -54,7 +54,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set_theme()
 
-frbstats_path = Path('..', 'data', 'raw', 'external', 'FRBSTATS2022-11-23_population.csv')
+frbstats_path = Path('.','external','catalog_FRBSTATS2022-11-23.csv')
 frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
 frbstats_data['telescope'].replace("CHIME", "CHIME/FRB", inplace=True)
 to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
@@ -68,6 +68,9 @@ for i in range(len(counts.index)):
         fontsize=8,
         verticalalignment='center',
     ))
+
+plt.tight_layout()
+
 plt.show()
 ```
 
