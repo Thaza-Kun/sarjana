@@ -3,6 +3,7 @@
     "listing": "/index.html",
     "items": [
       "/notebooks/08-chime-open-data.html",
+      "/notebooks/10-dataframe.html",
       "/notebooks/luojiawei2022/repeater_candidate.html",
       "/notebooks/luojiawei2022/frb-ml.html",
       "/notebooks/luojiawei2022/average_f2.html",
