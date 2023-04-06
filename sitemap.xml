@@ -2,50 +2,50 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/index.html</loc>
-    <lastmod>2023-04-05T03:06:51.713Z</lastmod>
+    <lastmod>2023-04-06T07:03:08.267Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/02-UMAP-HDBSCAN.html</loc>
-    <lastmod>2023-04-05T03:06:52.541Z</lastmod>
+    <lastmod>2023-04-06T07:03:09.119Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/04-UMAP-HDBSCAN-reduced-params.html</loc>
-    <lastmod>2023-04-05T03:06:52.977Z</lastmod>
+    <lastmod>2023-04-06T07:03:09.587Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/06-repeaters-and-non-repeaters-statisticaly-similar-ensembles.html</loc>
-    <lastmod>2023-04-05T03:06:53.541Z</lastmod>
+    <lastmod>2023-04-06T07:03:10.191Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/07-post-HDBSCAN-statistics.html</loc>
-    <lastmod>2023-04-05T03:06:53.949Z</lastmod>
+    <lastmod>2023-04-06T07:03:10.655Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/08-chime-open-data.html</loc>
-    <lastmod>2023-04-05T03:06:54.277Z</lastmod>
+    <lastmod>2023-04-06T07:03:11.007Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/09-identifying-type-i-and-ii.html</loc>
-    <lastmod>2023-04-05T03:06:54.673Z</lastmod>
+    <lastmod>2023-04-06T07:03:11.435Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/10-dataframe.html</loc>
-    <lastmod>2023-04-05T03:06:55.021Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/luojiawei2022/repeater_candidate.html</loc>
-    <lastmod>2023-04-05T03:06:55.337Z</lastmod>
-  </url>
-  <url>
-    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/luojiawei2022/frb-ml.html</loc>
-    <lastmod>2023-04-05T03:06:55.837Z</lastmod>
+    <lastmod>2023-04-06T07:03:11.799Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/notebooks/luojiawei2022/average_f2.html</loc>
-    <lastmod>2023-04-05T03:06:56.157Z</lastmod>
+    <lastmod>2023-04-06T07:03:12.187Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/luojiawei2022/repeater_candidate.html</loc>
+    <lastmod>2023-04-06T07:03:12.535Z</lastmod>
+  </url>
+  <url>
+    <loc>https://github.com/Thaza-Kun/sarjana/notebooks/luojiawei2022/frb-ml.html</loc>
+    <lastmod>2023-04-06T07:03:13.039Z</lastmod>
   </url>
   <url>
     <loc>https://github.com/Thaza-Kun/sarjana/about.html</loc>
-    <lastmod>2023-04-05T03:06:56.429Z</lastmod>
+    <lastmod>2023-04-06T07:03:13.331Z</lastmod>
   </url>
 </urlset>
