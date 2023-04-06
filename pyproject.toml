@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "sarjana"
-version = "0.3.0"
+version = "0.3.1"
 description = ""
 authors = ["Thaza_Kun <61819672+Thaza-Kun@users.noreply.github.com>"]
 packages = [

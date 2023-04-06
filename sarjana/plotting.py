@@ -9,9 +9,9 @@ from sarjana.signal import (
     find_full_width_nth_maximum,
     find_peaks,
     is_multipeak,
-    scattered_gaussian_signal,
 )
-from sarjana.optimize import fit_time_series
+from sarjana.signal.optimize import fit_time_series
+from sarjana.signal.template import scattered_gaussian_signal
 
 
 def get_value_at_non_integer_index(index: float, initial: float, delta: float) -> float:

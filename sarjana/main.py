@@ -10,13 +10,13 @@ import matplotlib.pyplot as plt
 
 from sarjana import commands
 from sarjana.collections import generate_scattered_gaussian_model
-from sarjana.optimize import fit_time_series
+from sarjana.signal.optimize import fit_tilted_2d_gaussian, fit_time_series
 from sarjana.signal import (
     find_full_width_nth_maximum,
-    scattered_gaussian_signal,
     find_peaks,
 )
 from sarjana.handlers import ParquetWaterfall
+from sarjana.signal.template import scattered_gaussian_signal
 
 app = typer.Typer()
 
@@ -35,7 +35,8 @@ app = typer.Typer()
 # TODO So apparently these are not even properly measured in Janskys?
 # So I need to find the proper values from the calibrated wfall?
 # Rujuk: https://chime-frb-open-data.github.io/waterfall/#plotting-calibrated-data
-# TODO Investigate wfall by strip
+
+# TODO Get all multipeak programmatically and run the algorithm
 
 import seaborn as sns
 
@@ -63,70 +64,59 @@ def debug(
     frb: str = typer.Argument(...),
 ):
     """Misc functions to be debug"""
-    import dfdt
     from pathlib import Path
     import os
+
+    import dfdt
+
+    from sarjana.signal.template import gauss_2d
+    from sarjana.signal.optimize import fit_2d
     from sarjana.signal.transform import autocorrelate_waterfall
 
-    burstpath = Path(os.getenv("DATAPATH"), "23891929_DM348.8_waterfall.npy")
-    burst_ = np.load(burstpath)
-    burst = ParquetWaterfall(Path(os.getenv("DATAPATH"), "raw", "wfall", frb))
+    # x = np.arange(0, 100, 0.1)
+    # xy = [arr.T for arr in np.meshgrid(x, x)]
+    # z = gauss_2d(xy=xy, amplitude=1, sigma_x=100, sigma_y=50, theta=0.5*np.pi, z_offset=0, center=(50, 50))
+    # plt.contour(z)
 
-    # burst parameters
-    dm_uncertainty = 0.2  # pc cm-3
-    source = "R3"
-    eventid = "23891929"
-
-    # instrument parameters
     dt_s = 0.00098304
     df_mhz = 0.0244140625
     nchan = 16384
     freq_bottom_mhz = 400.1953125
     freq_top_mhz = 800.1953125
+    sub_factor = 64
 
-    timeseries = np.nansum(burst.wfall, axis=0)
-    timeseries_var = np.nanstd(np.diff(timeseries))
-    peaks, _ = find_peaks(timeseries, prominence=timeseries_var)
-    widths = find_full_width_nth_maximum(timeseries, peaks, n=10)
-    width = np.array([*widths]).max()
-
-    peak = peaks[0]
-
-    ds = dfdt.DynamicSpectrum(dt_s, df_mhz, nchan, freq_bottom_mhz, freq_top_mhz)
-    DS = dfdt.DynamicSpectrum(
-        burst.dt,
-        np.diff(burst.plot_freq)[0],
-        burst.wfall.shape[1],
-        burst.plot_freq.min(),
-        burst.plot_freq.max(),
-    )
-    data = dfdt.ac_mc_drift(
-        burst.wfall,
-        dm_uncertainty,
-        burst.eventname,
-        burst.eventname,
-        DS,
-        dm_trials=100,
-        mc_trials=100,
-        peak=peak,
-        width=width,
-    )
-
-    plt.imshow(data, aspect="auto")
-    plt.title(burst.eventname)
-    plt.savefig(f"dfdt_{burst.eventname}_autocorrelate2d.png")
+    burstpath = Path(os.getenv("DATAPATH"), "23891929_DM348.8_waterfall.npy")
+    burst_ = np.load(burstpath)
+    burst = ParquetWaterfall(Path(os.getenv("DATAPATH"), "raw", "wfall", frb))
     data = autocorrelate_waterfall(
-        burst.wfall,
-        burst.dt,
-        np.diff(burst.plot_freq).min(),
-        nchannels=len(burst.plot_freq),
-        bottom_freq=burst.plot_freq.min(),
-        top_freq=burst.plot_freq.max(),
+        burst_,
+        dt_s,
+        df_mhz,
+        nchan,
+        freq_bottom_mhz,
+        freq_top_mhz,
     )
+    x = np.linspace(0, 100, data.shape[0])
+    y = np.linspace(0, 100, data.shape[1])
+    xy = [arr.T for arr in np.meshgrid(x, y)]
+    theta = np.linspace(np.radians(-45), np.radians(45))
+    sigma=(10, 1)
+    line = fit_tilted_2d_gaussian(xy=xy, z=data, tilt_range=theta, sigma=sigma)
+    theta_opt = theta[np.argmin(line)]
+    param0 = dict(
+        amplitude=np.nanmax(data),
+        sigma=sigma,
+        theta=theta_opt,
+        z_offset=np.nanmedian(data),
+    )
+    gauss_opt = gauss_2d(
+        xy=xy,
+        **param0
+    )
+    print(1/np.tan(-theta_opt))
     plt.imshow(data, aspect="auto")
-    plt.title(burst.eventname)
-    plt.savefig(f"custom_{burst.eventname}_autocorrelate2d.png")
-    # plt.show()
+    plt.contour(gauss_opt, levels=2)
+    plt.show()
 
 
 @app.command()
