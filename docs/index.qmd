@@ -1,3 +1,4 @@
+::::{.content-visible when-format="html"}
 ---
 title: "Master's Project"
 listing:
@@ -18,4 +19,9 @@ title-block-banner: true
 ## Notebooks
 
 :::{.notebooks}
+:::
+::::
+
+:::{.content-visible when-profile="thesis"}
+{{< include index-thesis.qmd >}}
 :::

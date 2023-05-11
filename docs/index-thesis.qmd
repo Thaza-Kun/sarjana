@@ -18,7 +18,7 @@ For an in-depth review of the growth of FRB research, I would suggest looking in
 In contrast, @bailes_discovery_FRB_2022 is a brief but a more personal record as a person working closely with Lorimer during and after the discovery.
 This review focuses on the properties of FRB and attempts to classify them further by said properties.
 
-![The cumulative number of detected FRBs over the years and notable landmarks as annotated text [@bailes_discovery_FRB_2022].](./_assets/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
+![The cumulative number of detected FRBs over the years and notable landmarks as annotated text [@bailes_discovery_FRB_2022].](./_common/figures/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
 
 <!-- TODO: Redo using FRBSTATS with the annotation -->
 :::
@@ -36,7 +36,7 @@ The maintainers pointed users to refer to the Transient Naming Server (TNS)^[<ht
 Another catalog that can be used to study FRBs is the FRBSTATS catalog [@spanakis-misirlis_frbstats_2021] which is open sourced with an easier to use dashboard compared to TNS.
 One other catalog is the CHIME/FRB Catalog^[<https://www.chime-frb.ca/>] released by the Canadian Hydrogen Intensity Mapping Experiment (CHIME) observatory [@the_chimefrbcollaboration_FirstCHIMEFRB_2021].
 
-![The distribution of FRBs across the sky using the FRBSTATS Catalog [@spanakis-misirlis_frbstats_2021].](./_assets/lat_long.svg){#fig-frb-dist}
+![The distribution of FRBs across the sky using the FRBSTATS Catalog [@spanakis-misirlis_frbstats_2021].](./_common/figures/lat_long.svg){#fig-frb-dist}
 
 <!-- TODO: Use code to draw -->
 
@@ -49,12 +49,16 @@ Limiting one's study to only the CHIME/FRB telescope is not much of a loss for a
 #| fig-cap: The number of FRBs detected by individual telescopes as reported in FRBSTATS^[https://www.herta-experiment.org/frbstats/] to illustrate the sheer dominance of FRBs detected by the CHIME/FRB telescope.
 #| label: fig-count-by-telescope
 
+import os
+
 import pandas as pd
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set_theme()
 
-frbstats_path = Path('.','external','catalog_FRBSTATS2022-11-23.csv')
+DATAPATH = os.getenv('DATAPATH')
+
+frbstats_path = Path(DATAPATH, 'raw','external','catalog_FRBSTATS2022-11-23.csv')
 frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
 frbstats_data['telescope'].replace("CHIME", "CHIME/FRB", inplace=True)
 to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
@@ -74,4 +78,4 @@ plt.tight_layout()
 plt.show()
 ```
 
-{{< include problems.qmd >}}
+{{< include ./thesis/problems.qmd >}}

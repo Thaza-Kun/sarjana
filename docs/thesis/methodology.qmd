@@ -46,11 +46,15 @@ This study is expected to be conducted in four phases:
 #| fig-cap: The expected timeline of the different phases of study. The star represents milestones provided by the university. The vertical orange line represents 'now'.
 #| label: fig-gantt
 
+import os
+
 import pandas as pd
 from pathlib import Path
-from sarjana.scripts import gantt
+from sarjana import gantt
 
-progress = pd.read_csv(Path('..', 'data', 'meta', 'progress-got.csv'), parse_dates=['start', 'end'])
-milestones = pd.read_csv(Path('..', 'data', 'meta', 'milestones.csv'), parse_dates=['date'])
+DATAPATH = os.getenv('DATAPATH')
+
+progress = pd.read_csv(Path(DATAPATH, 'meta', 'progress-got.csv'), parse_dates=['start', 'end'])
+milestones = pd.read_csv(Path(DATAPATH, 'meta', 'milestones.csv'), parse_dates=['date'])
 gantt.generate_gantt(progress, milestones=milestones, show=True)
 ```

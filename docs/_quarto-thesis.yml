@@ -1,10 +1,9 @@
 project:
   type: book
   output-dir: _book
+  resources: _common
   preview: 
       port: 4000
-  # pre-render: 
-  #   - pip install sarjana
 jupyter: python3
 execute: 
   echo: false

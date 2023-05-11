@@ -15,16 +15,20 @@ This particular FRB is special in several ways:
 #| fig-cap: The trends of papers with key words 'Fast Radio Burst' and 'FRB 121102' in its title or abstract as indexed by the NASA Astrophysics Data System (NASA/ADS)
 #| label: fig-literature
 
+import os
+
 import pandas as pd
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns; sns.set_theme()
 
+DATAPATH = os.getenv('DATAPATH')
+
 nasa_ads_frb = pd.read_csv(
-    Path('..', 'data', 'raw', 'external', 'NASA-ADS-FRB-all-papers-count.csv')
+    Path(DATAPATH, 'raw', 'external', 'NASA-ADS-FRB-all-papers-count.csv')
     )
 nasa_ads_frb121102 = pd.read_csv(
-    Path('..', 'data', 'raw', 'external', 'NASA-ADS-FRB121102-papers-count.csv')
+    Path(DATAPATH, 'raw', 'external', 'NASA-ADS-FRB121102-papers-count.csv')
     )
 nasa_ads_frb['Key word'] = 'Fast Radio Bursts'
 nasa_ads_frb121102['Key word'] = 'FRB 121102'
@@ -47,14 +51,14 @@ They are: (i) broadband simple burst, (ii) narrowband simple burst, (iii) comple
 The multi-peak archetype shows peaks at similar frequency ranges with with slightly different intensity.
 The complex multi-subburst archetype, however, show an apparent downwards shift in frequency with respect to time.
 
-![Single examples from the CHIME/FRB Catalog of the different FRB morphologies numbered according to their archetype number. These are FRBs 20190527C, 20190515D, and 20181117B and the 2019 August 10 burst of repeating FRB 20190117A [@pleunis_FastRadioBurst_2021].](./_assets/plenius-archetype.jpg){#fig-pleunis-archetype}
+![Single examples from the CHIME/FRB Catalog of the different FRB morphologies numbered according to their archetype number. These are FRBs 20190527C, 20190515D, and 20181117B and the 2019 August 10 burst of repeating FRB 20190117A [@pleunis_FastRadioBurst_2021].](../_common/figures/plenius-archetype.jpg){#fig-pleunis-archetype}
 
 They found that repeaters never fall under archetype (i) but archetype (iv) was almost always seen in repeaters.
 Moreover, the repeater subbursts never show an upwards shift in frequency.
 Using this information, they try to deduce which of the non-repeaters might repeat based on their morphology. 
 They expect the following FRBs to repeat: FRB 20181125A, FRB 20190308C, FRB 20190527A, FRB 20190422A, FRB 20190423A, FRB 20190601C.
 
-![The morphologies of some non-repeaters showing an apparent upward shift in frequency. [@pleunis_FastRadioBurst_2021]](./_assets/pleunis-non-repeater-upwards-shift.jpg){#fig-non-repeaters-upward-shift}
+![The morphologies of some non-repeaters showing an apparent upward shift in frequency. [@pleunis_FastRadioBurst_2021]](../_common/figures/pleunis-non-repeater-upwards-shift.jpg){#fig-non-repeaters-upward-shift}
 
 A different approach, employed by @cui_FastRadioBursts_2021, looks at the statistical difference between selected properties of FRB -- namely its intrinsic pulse width and its radio luminosity.
 Even with a small sample of 20 repeater vs 91 non-repeater samples, they found a statistical difference well below the p-value of 0.05 for both of the property distributions.
@@ -71,7 +75,7 @@ In contrast, an unsupervised learning is when the input data is unlabelled where
 Inferring relationships directly from multi-dimensional features of FRBs is hard so they make use of a machine learning technique called 'dimensional reduction' where 13 features (10 observational + 3 model-dependent) are reduced to a 2-dimensional projection space.
 The authors found that repeater FRBs tend to be very close to each other in the projection space and concluded, with the help of a clustering algortihm, that non-repeating FRBs which formed groups with said repeaters are potentially repeating.
 
-![A 2D projection space for 13 features of FRBs using the _Uniform Manifold Approximation and Projection_ (UMAP) algorithm [@mcinnes_UMAP_2018]. Note that the x and y direction of a UMAP projection has no specific meaning. However, the algorithm prioritizes preserving the local structure of the data set therefore the formation of clumps means that they are related to each other. The grouping is identified using Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN) [@campello_HDBSCAN_2013]. The 13 features are (i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Parameters xi-xiii are model dependent.](./_assets/repeater-candidates_NC_Chen2022.jpg){#fig-repeater-candidates-Chen2022 width=50%}
+![A 2D projection space for 13 features of FRBs using the _Uniform Manifold Approximation and Projection_ (UMAP) algorithm [@mcinnes_UMAP_2018]. Note that the x and y direction of a UMAP projection has no specific meaning. However, the algorithm prioritizes preserving the local structure of the data set therefore the formation of clumps means that they are related to each other. The grouping is identified using Hierarchical Density-Based Spatial Clustering of Applications with Noise (HDBSCAN) [@campello_HDBSCAN_2013]. The 13 features are (i) boxcar width, (ii) intrinsic width, (iii) peak flux, (iv) fluence, (v) scattering time, (vi) spectral index, (vii) spectral running, (viii) highest frequency, (ix) lowest frequency, (x) peak frequency, (xi) redshift, (xii) radio energy, and (xiii) rest-frame intrinsic duration. Parameters xi-xiii are model dependent.](../_common/figures/repeater-candidates_NC_Chen2022.jpg){#fig-repeater-candidates-Chen2022 width=50%}
 
 @luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 utilizes both supervised and unsupervised learning with the methods split into two papers. 
 Their approach is not to choose any one particular algorithm as a single model but uses multiple runs of multilple algorithms and identify shared classifications.
@@ -95,4 +99,4 @@ This results in 10 regions with 3 of them being a combined region as shown in @f
 They foung that region 8 produces the most significant amount of redshift distribution between the inside and the outside region.
 Their method mainly revolves around the idea that only some of the known FRB track star formation history (found by author to be of type IIb) contrary to the claim by @zhang_CHIMEFastRadio_2022 and @qiang_FastRadioBurst_2022 that the whole population of FRB do not track the star formation rate.
 
-![The distribution of repeaters (red) and non-repeaters (blue) in the $\nu W-L_\nu$ phase space with the divided line. Regions are labelled as per the paper but added by author. Regions with parentheses marks a combined region [@guo_PossibleSubclassificationFast_2022].](./_assets/transient-duration-vs-luminence-labelled_guo2022.png){#fig-transient-duration-vs-luminence_guo2022}
+![The distribution of repeaters (red) and non-repeaters (blue) in the $\nu W-L_\nu$ phase space with the divided line. Regions are labelled as per the paper but added by author. Regions with parentheses marks a combined region [@guo_PossibleSubclassificationFast_2022].](../_common/figures/transient-duration-vs-luminence-labelled_guo2022.png){#fig-transient-duration-vs-luminence_guo2022}
