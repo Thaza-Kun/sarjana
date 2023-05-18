@@ -1,15 +1,10 @@
-import os
 from typing import Optional
 from pathlib import Path
-from datetime import datetime, timedelta
 
 import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
-from tqdm import tqdm
-
-import dfdt
 
 from sarjana.tui import LinearProgress, DownloadProgress
 from sarjana.collections import merge_embedding_into_profile
@@ -20,7 +15,6 @@ from sarjana.download import manage_download_waterfall_data_task, compress_to_pa
 
 from sarjana.signal.properties import is_multipeak
 from sarjana.signal.analyze import find_frequency_drift
-from sarjana.signal import analyze
 
 
 def find_frequency_drift_by_name(
@@ -28,99 +22,6 @@ def find_frequency_drift_by_name(
 ):
     burst = ParquetWaterfall(Path(path, filepattern.format(frbname)))
     return find_frequency_drift(burst.wfall)
-
-
-def find_frequency_drift_acmc_all(n_mc: int = 10, n_dm: int = 10, event_total: int = 0, path: Path = Path(".", "results")):
-    # burst parameters
-    dm_uncertainty = 0.2  # pc cm-3
-
-    # instrument parameters
-    dt_s = 0.00098304
-    df_mhz = 0.0244140625
-    nchan = 16384
-    freq_bottom_mhz = 400.1953125
-    freq_top_mhz = 800.1953125
-
-    ds = dfdt.DynamicSpectrum(dt_s, df_mhz, nchan, freq_bottom_mhz, freq_top_mhz)
-    data = pd.read_parquet(
-        Path(os.getenv("DATAPATH"), "raw", "cfod", "chimefrb_profile.parquet")
-    )
-    columnnames: list = [
-        "subburstname",
-        "constrained",
-        "dfdt_data",
-        "dfdt_mc",
-        "dfdt_mc_low",
-        "dfdt_mc_high",
-        "duration_min",
-    ]
-    try:
-        prev = pd.read_csv(Path(path, "dfdt.csv"))
-        prevnames: set = {i.split("_")[0] for i in prev['subburstname'].to_list()}
-    except FileNotFoundError:
-        pd.DataFrame(columns=columnnames).to_csv(Path(path, "dfdt.csv"))
-        prevnames: set = {}
-
-    eventcount = 0
-    for idx, event in enumerate(data["eventname"], start=1):
-        print(f'{idx} / {len(data["eventname"])} -----------------------')
-        start = datetime.now()
-        burst = ParquetWaterfall(
-            Path(os.getenv("DATAPATH"), "raw", "wfall", f"{event}_waterfall.h5.parquet")
-        )
-        if len(burst.peaks) > 1:
-            if event not in prevnames:
-                for i, (peak, width) in enumerate(
-                    zip(burst.peaks[:-1], burst.widths[:-1]), 1
-                ):
-                    subburstname = f"{burst.eventname}_{i}"
-                    (
-                        dfdt_data,
-                        theta,
-                        theta_sigma,
-                    ) = analyze.frequency_drift_by_autocorrelation(
-                        burst.wfall,
-                        burst.eventname,
-                        subburstname,
-                        ds,
-                        peak,
-                        width,
-                        fdir=path.as_posix() + "/",
-                    )
-                    (
-                        constrained,
-                        dfdt_mc,
-                        dfdt_mc_low,
-                        dfdt_mc_high,
-                    ) = analyze.frequency_drift_by_acmc(
-                        burst.wfall,
-                        dm_uncertainty,
-                        ds,
-                        peak,
-                        width,
-                        dfdt_data,
-                        theta,
-                        theta_sigma,
-                        burst.eventname,
-                        subburstname,
-                        mc_trials=n_mc,
-                        dm_trials=n_dm,
-                        fdir=path.as_posix() + "/",
-                    )
-                    dfdt_df = pd.read_csv(Path(path, "dfdt.csv"), index_col=0)
-                    end = datetime.now()
-                    duration_min: float = (end - start).seconds / 60
-                    pd.concat(
-                        [
-                            dfdt_df,
-                            pd.DataFrame(
-                                [[subburstname, constrained, dfdt_data, dfdt_mc, dfdt_mc_low,dfdt_mc_high, duration_min]], columns=columnnames
-                            ),
-                        ]
-                    ).to_csv(Path(path, 'dfdt.csv'))
-                eventcount += 1
-                if (eventcount == event_total) and (event_total != 0):
-                    break
 
 
 def find_frequency_drift_of_catalog(catalogfile: str, wfall_path: str):

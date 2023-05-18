@@ -1,9 +1,9 @@
 from pathlib import Path
 import pandas as pd
-from sarjana.signal.optimize import fit_time_series
 
-from sarjana.signal import is_multipeak
+from sarjana.signal.properties import is_multipeak
 from sarjana.signal.template import scattered_gaussian_signal
+from sarjana.signal.optimize import fit_time_series
 
 
 def merge_embedding_into_profile(

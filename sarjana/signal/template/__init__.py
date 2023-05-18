@@ -1,41 +1,9 @@
-from typing import Tuple
 import numpy as np
 import scipy
 
 
 def gauss(x: np.ndarray, amplitude: float, center: float, sigma: float):
     return amplitude * np.exp(-((x - center) ** 2) / (2 * sigma**2))
-
-
-def gauss_2d(
-    xy: np.ndarray,
-    amplitude: float,
-    sigma: Tuple[float, float],
-    theta: float,
-    z_offset: float,
-):
-    """2D gaussian."""
-    x, y = xy
-    sigma_x, sigma_y = sigma
-    center_x, center_y = (np.nanmin(x) + np.nanmax(x))/2, (np.nanmin(y) + np.nanmax(y))/2
-    a = (np.cos(theta) ** 2) / (2 * sigma_x**2) + (np.sin(theta) ** 2) / (
-        2 * sigma_y**2
-    )
-    b = -(np.sin(2 * theta)) / (4 * sigma_x**2) + (np.sin(2 * theta)) / (
-        4 * sigma_y**2
-    )
-    c = (np.sin(theta) ** 2) / (2 * sigma_x**2) + (np.cos(theta) ** 2) / (
-        2 * sigma_y**2
-    )
-    z = z_offset + amplitude * np.exp(
-        -(
-            a * ((x - center_x) ** 2)
-            + 2 * b * (x - center_x) * (y - center_y)
-            + c * ((y - center_y) ** 2)
-        )
-    )
-
-    return z
 
 
 def scattered_gaussian_signal(
@@ -75,3 +43,4 @@ def scattered_gaussian_signal(
         sigma / (np.sqrt(2) * tau)
     )
     return amplitude * 0.5 * np.exp(first_term) * (1 + scipy.special.erf(second_term))
+

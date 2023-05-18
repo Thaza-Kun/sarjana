@@ -4,7 +4,7 @@ from typing import Callable, Dict, List, Optional, Tuple
 import numpy as np
 import scipy
 
-from sarjana.signal.template import gauss_2d
+from sarjana.signal.template.gauss2d import Gauss2D
 
 # TODO wrapper
 # def fit_template(func):
@@ -42,22 +42,30 @@ def fit_time_series(
 def fit_tilted_2d_gaussian(
     xy: Tuple[np.ndarray, np.ndarray],
     z: np.ndarray,
-    tilt_range: np.ndarray,
     sigma: Tuple[float, float] = (5, 10),
-):
-    vec = []
-    for theta in tilt_range:
-        print(f"{theta=}", end="\r")
-        z_test = gauss_2d(
-            xy,
-            amplitude=np.nanmax(z),
-            sigma=sigma,
-            theta=theta,
-            z_offset=np.nanmedian(z),
+    theta: float = 0.0,
+) -> Tuple[float, Tuple[float, float]]:
+    scores_theta = []
+    x, y = xy
+    center = (np.nanmin(x) + np.nanmax(x)) / 2, (np.nanmin(y) + np.nanmax(y)) / 2
+    gauss = Gauss2D(
+        amplitude=np.nanmax(z),
+        sigma=sigma,
+        theta=theta,
+        offset=np.nanmedian(z),
+        center=center,
+    )
+    lambda_parameter = 100
+    h_theta = 0.01
+    print(gauss.theta)
+    print((1 - lambda_parameter) * gauss.d2func_dtheta2(x, y))
+    for _ in range(100):
+        left_hand_side = (1 - lambda_parameter) * gauss.d2func_dtheta2(x, y)
+        right_hand_side = gauss.dfunc_dtheta(x, y) * (
+            gauss(x, y) - gauss(x, y, modify={"theta": h_theta})
         )
-        score = (z_test - z) ** 2
-        vec.append(np.nansum(score))
-    return vec
+        h_theta = right_hand_side / left_hand_side
+    return gauss.theta, gauss.sigma
 
 
 def fit_2d(
@@ -68,6 +76,7 @@ def fit_2d(
 ) -> Dict[str, Tuple[float, float]]:
     def flattened_func(*args, **kwargs):
         return func(*args, **kwargs).ravel()
+
     z = np.nan_to_num(z)
     params_keys: List[str] = [*deepcopy(func.__annotations__).keys()][:-1]
     guesses = {key: 1 for key in params_keys[1:]}

@@ -5,7 +5,7 @@ import copy
 
 from typing import Tuple
 
-from sarjana.signal import find_peaks, find_full_width_nth_maximum
+from sarjana.signal.properties import full_width_nth_maximum, find_peaks
 
 
 def remove_radio_frequency_interference(
@@ -52,24 +52,11 @@ def remove_radio_frequency_interference(
     return spec, wfall, model_wfall
 
 
-def autocorrelate_waterfall(
-    wfall: np.ndarray,
-    timedelta: float,
-    freqdelta: float,
-    nchannels: int,
-    bottom_freq: float,
-    top_freq: float,
-) -> np.ndarray:
-    # NOTE I ignored the rfi removal process in here
-    subbanded_channel_bandwidth = freqdelta * (nchannels / wfall.shape[0])
-    center_frequencies = (
-        np.arange(bottom_freq, top_freq, subbanded_channel_bandwidth)
-        + subbanded_channel_bandwidth / 2.0
-    )
+def autocorrelate_waterfall(wfall: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     timeseries = np.nansum(wfall, axis=0)
     timeseries_var = np.nanstd(np.diff(timeseries))
     peaks, _ = find_peaks(timeseries, prominence=timeseries_var)
-    widths = find_full_width_nth_maximum(timeseries, peaks, n=10)
+    widths = full_width_nth_maximum(timeseries, peaks, n=10)
     width = np.array([*widths]).max()
 
     peak = peaks[0]
@@ -109,4 +96,16 @@ def autocorrelate_waterfall(
     scaled_ac2d = copy.deepcopy(ac2d)
 
     scaling_factor = np.nanmax(scaled_ac2d)
-    return scaled_ac2d / scaling_factor
+    scaled_ac2d = scaled_ac2d / scaling_factor
+
+    noise_ac2d = scipy.signal.correlate2d(
+        noise_waterfall, noise_waterfall, mode="full", boundary="fill", fillvalue=0
+    )
+
+    noise_ac2d[noise_ac2d.shape[0] // 2, :] = np.nan
+    noise_ac2d[:, noise_ac2d.shape[1] // 2] = np.nan
+
+    scaled_noise_ac2d = copy.deepcopy(noise_ac2d)
+    scaled_noise_ac2d = scaled_noise_ac2d / scaling_factor
+
+    return scaled_ac2d, scaled_noise_ac2d

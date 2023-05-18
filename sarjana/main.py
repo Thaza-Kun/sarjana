@@ -3,6 +3,9 @@ from copy import deepcopy
 import rich
 import typer
 
+from pathlib import Path
+import os
+
 import pandas as pd
 import numpy as np
 import matplotlib
@@ -11,11 +14,11 @@ import matplotlib.pyplot as plt
 from sarjana import commands
 from sarjana.collections import generate_scattered_gaussian_model
 from sarjana.signal.optimize import fit_tilted_2d_gaussian, fit_time_series
-from sarjana.signal import (
-    find_full_width_nth_maximum,
-    find_peaks,
+from sarjana.signal.analyze import (
+    find_frequency_drift,
 )
 from sarjana.handlers import ParquetWaterfall
+from sarjana.signal.properties import full_width_nth_maximum, find_peaks
 from sarjana.signal.template import scattered_gaussian_signal
 
 app = typer.Typer()
@@ -37,6 +40,8 @@ app = typer.Typer()
 # Rujuk: https://chime-frb-open-data.github.io/waterfall/#plotting-calibrated-data
 
 # TODO Get all multipeak programmatically and run the algorithm
+# TODO Refine dfdt algorithm
+# TODO Plot the dfdt (for visual confirmation)
 
 import seaborn as sns
 
@@ -60,63 +65,21 @@ def plot_mean(data, **kwargs):
 
 
 @app.command()
-def debug(
-    frb: str = typer.Argument(...),
-):
+def debug(file: str = typer.Argument(...)):
     """Misc functions to be debug"""
-    from pathlib import Path
-    import os
+    wfall = np.load(Path(os.getenv("DATAPATH"), "23891929_DM348.8_waterfall.npy"))
+    print(find_frequency_drift(wfall))
 
-    import dfdt
 
-    from sarjana.signal.template import gauss_2d
-    from sarjana.signal.optimize import fit_2d
-    from sarjana.signal.transform import autocorrelate_waterfall
-
-    # x = np.arange(0, 100, 0.1)
-    # xy = [arr.T for arr in np.meshgrid(x, x)]
-    # z = gauss_2d(xy=xy, amplitude=1, sigma_x=100, sigma_y=50, theta=0.5*np.pi, z_offset=0, center=(50, 50))
-    # plt.contour(z)
-
-    dt_s = 0.00098304
-    df_mhz = 0.0244140625
-    nchan = 16384
-    freq_bottom_mhz = 400.1953125
-    freq_top_mhz = 800.1953125
-    sub_factor = 64
-
-    burstpath = Path(os.getenv("DATAPATH"), "23891929_DM348.8_waterfall.npy")
-    burst_ = np.load(burstpath)
-    burst = ParquetWaterfall(Path(os.getenv("DATAPATH"), "raw", "wfall", frb))
-    data = autocorrelate_waterfall(
-        burst_,
-        dt_s,
-        df_mhz,
-        nchan,
-        freq_bottom_mhz,
-        freq_top_mhz,
-    )
-    x = np.linspace(0, 100, data.shape[0])
-    y = np.linspace(0, 100, data.shape[1])
-    xy = [arr.T for arr in np.meshgrid(x, y)]
-    theta = np.linspace(np.radians(-45), np.radians(45))
-    sigma=(10, 1)
-    line = fit_tilted_2d_gaussian(xy=xy, z=data, tilt_range=theta, sigma=sigma)
-    theta_opt = theta[np.argmin(line)]
-    param0 = dict(
-        amplitude=np.nanmax(data),
-        sigma=sigma,
-        theta=theta_opt,
-        z_offset=np.nanmedian(data),
-    )
-    gauss_opt = gauss_2d(
-        xy=xy,
-        **param0
-    )
-    print(1/np.tan(-theta_opt))
-    plt.imshow(data, aspect="auto")
-    plt.contour(gauss_opt, levels=2)
-    plt.show()
+@app.command()
+def drift(
+    n: int = typer.Option(10, help="Number of monte carlo run"),
+    m: int = typer.Option(10, help="Number of DM trial run"),
+    events: int = typer.Option(0, help="How many events to calculate. (0 = all)"),
+    path: str = typer.Option('.', help="Path of results"),
+):
+    """Find frequency drift"""
+    commands.find_frequency_drift_acmc_all(n_mc=n,n_dm=m, event_total=events, path=Path(path))
 
 
 @app.command()

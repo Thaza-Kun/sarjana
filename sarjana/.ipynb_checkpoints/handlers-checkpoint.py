@@ -6,7 +6,7 @@ import numpy as np
 import h5py
 import pandas as pd
 
-from sarjana.signal import transform, properties
+from sarjana.signal import transform
 from scipy.signal import peak_widths
 
 
@@ -122,10 +122,10 @@ class ParquetWaterfall:
         self.model_wfall = np.reshape(self["model_wfall"], self._wfall_shape)
         self.cal_wfall = np.reshape(self["cal_wfall"], self._cal_wfall_shape)
 
-        self.peaks, *_ = properties.find_peaks(
-            deepcopy(self.model_ts), prominence=np.nanstd(np.diff(self.model_ts))
+        self.peaks, *_ = find_peaks(
+            deepcopy(burst.model_ts), prominence=np.nanstd(np.diff(burst.model_ts))
         )
-        self.widths, *_ = peak_widths(deepcopy(self.model_ts), self.peaks)
+        self.widths, *_ = peak_widths(deepcopy(burst.model_ts), peaks)
 
 
 class H5Waterfall:
