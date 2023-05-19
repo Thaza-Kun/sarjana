@@ -64,7 +64,6 @@ def find_frequency_drift_acmc_all(n_mc: int = 10, n_dm: int = 10, event_total: i
     eventcount = 0
     for idx, event in enumerate(data["eventname"], start=1):
         print(f'{idx} / {len(data["eventname"])} -----------------------')
-        start = datetime.now()
         burst = ParquetWaterfall(
             Path(os.getenv("DATAPATH"), "raw", "wfall", f"{event}_waterfall.h5.parquet")
         )
@@ -73,6 +72,7 @@ def find_frequency_drift_acmc_all(n_mc: int = 10, n_dm: int = 10, event_total: i
                 for i, (peak, width) in enumerate(
                     zip(burst.peaks[:-1], burst.widths[:-1]), 1
                 ):
+                    start = datetime.now()
                     subburstname = f"{burst.eventname}_{i}"
                     (
                         dfdt_data,
