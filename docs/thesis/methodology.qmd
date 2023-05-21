@@ -1,15 +1,94 @@
 # Methodology
 
-## Data Source {#sec-data}
+## Data Source {#sec-method-data}
 
-The main source of data for this research will be the CHIME/FRB Catalog.
-The methods described by @bohanchen_uncloaking_2021, @luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 is tested against the CHIME/FRB Catalog and not from other telescopes.
-Obtaining data from other telescopes presents a bit of a challenge because of the difference in robustness between reporting.
-As an example, @the_chimefrbcollaboration_FirstCHIMEFRB_2021 reports the highest frequency and the lowest frequency of a FRB while others do not which was used by @bohanchen_uncloaking_2021 as their input parameter.
-Therefore, replicating the methods described above requires reprocessing data from their respective sources to obtain desired properties.
-Some links to the raw data is appended in @sec-appendix-raw
+### Catalogs {#sec-method-data-catalog}
 
-## Subclassification Criteria
+Several catalogs exist for the study of FRBs.
+The first one is the FRBCAT [@petroff_FRBCATFastRadio_2016] which is no longer maintained past July 2020^[<https://www.frbcat.org/>].
+The maintainers pointed users to refer to the Transient Naming Server (TNS)^[<https://www.wis-tns.org/>] instead which contains various other transients so it can be a bit hard to navigate.
+Another catalog that can be used to study FRBs is the FRBSTATS catalog [@spanakis-misirlis_frbstats_2021] which is open sourced with an easier to use dashboard compared to TNS.
+One other catalog is the CHIME/FRB Catalog 1^[<https://www.chime-frb.ca/>] released by the Canadian Hydrogen Intensity Mapping Experiment (CHIME) observatory [@the_chimefrbcollaboration_FirstCHIMEFRB_2021].
+
+The catalog used depends on the use-case of the paper.
+For example, @cui_StatisticalPropertiesFast_2021 utilized the FRBCAT catalog while @chen_OneoffRepeatingFast_2022 used the CHIME/FRB Catalog 1 in their statistical analysis.
+@bailes_discovery_FRB_2022 used the FRBSTATS Catalog to show a statistical overview of the growth of FRB detections.
+Recent authors such as @hashimoto_EnergyFunctionsFast_2022, @bohanchen_uncloaking_2021 and @pleunis_FastRadioBurst_2021 used the CHIME/FRB Catalog 1 for their comprehensive analysis over a large dataset.
+@pleunis_FastRadioBurst_2021 remarked that this dataset allowed them to have a large overview of the morphologies of FRBs which was not possible in previous studies.
+
+An attempt was made by this proposal's author to apply the method of @bohanchen_uncloaking_2021 using the FRBSTATS Catalog but was not able replicate the result.
+This failure can be attributed to the scope of properties that was recorded in FRBSTATS vs CHIME/FRB Catalog 1.
+As mentioned in @sec-class-ml-features, the range of frequencies are ranked high in importance consistently across all three papers.
+FRBSTATS does not record the highest and lowest freuquency mainly because these values were not reported in other telescopes.
+
+The replication was successful when using CHIME/FRB Catalog 1.
+Therefore, this author proposes to mainly use this catalog due to the fact that it (i) has a comprehensive detail of each FRBs and (ii) has a raw data hosted in their server.
+Reason (ii) allows this author to extract more information from the FRB when necessary.
+Limiting one's study to only the CHIME/FRB telescope is not much of a loss for a statistical study because most of the detected FRBs are contained in this catalog as illustrated in @fig-count-by-telescope.
+
+```{python}
+#| fig-cap: The number of FRBs detected by individual telescopes as reported in FRBSTATS^[<https://www.herta-experiment.org/frbstats/>] to illustrate the sheer dominance of FRBs detected by the CHIME/FRB telescope. Among the 818 FRBs recorded by @spanakis-misirlis_frbstats_2021, 632 (77.3%) bursts are from the CHIME/FRB telescope.^[The count is higher than was indicated by CHIME/FRB Catalog 1 because it includes bursts detected after the catalog's release.]
+#| label: fig-count-by-telescope
+
+import os
+
+import pandas as pd
+from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set_theme()
+
+DATAPATH = os.getenv('DATAPATH')
+
+frbstats_path = Path(DATAPATH, 'raw','external','catalog_FRBSTATS2022-11-23.csv')
+frbstats_data = pd.read_csv(frbstats_path, parse_dates=['utc'])
+frbstats_data['telescope'].replace("CHIME", "CHIME/FRB", inplace=True)
+to_plot = frbstats_data[frbstats_data['telescope'].str.contains('Incoherent') == False]
+counts = to_plot['telescope'].value_counts()
+
+plt.figure(figsize=(8,4))
+ax = sns.countplot(to_plot, y='telescope', order=counts.index)
+for i in range(len(counts.index)):
+    ax.text(counts[i]+0.25,i, str('{}%'.format(round(counts[i]/sum(counts)*100, 1))), fontdict=dict(
+        color='black',
+        fontsize=8,
+        verticalalignment='center',
+    ))
+
+plt.tight_layout()
+
+plt.show()
+```
+
+### New Repeaters {#sec-method-data-new-repeaters}
+
+A new catalog by the CHIME/FRB Collaboration was released in @andersen_CHIMEFRBDiscovery_2023^[<https://www.chime-frb.ca/repeater_catalog>] containing new sources of repeaters.
+This study will take this opportunity to compare this CHIME/FRB 2023 Catalog with the previous results mentioned in @sec-class-repeating-predict alongside the analysis described in @sec-method-analysis.
+
+## Analysis {#sec-method-analysis}
+
+Studies done by @bohanchen_uncloaking_2021, @luo_machinelearningfrb_2022 and @zhuge_machinelearningfrb_2022 was able to produce meaningful result from the CHIME/FRB Catalog 1.
+However, the morphological archetypes defined in @pleunis_FastRadioBurst_2021 was not considered in these studies.
+This author proposes to consider the effect of the morphology archetypes in the machine learning analyses.
+Two kinds of method will be employed: (1) the machine learning methods will be replicated and the distrubution of morphology archetypes will be studied, and (2) to machine learning methods will be replicated with the addition that information about the morphology archetype will be used as one of the input.
+
+One challenge in doing so is the fact that @pleunis_FastRadioBurst_2021 only described the morphology archetypes with an eyeball distribution in the catalog.
+No data has been given about which FRB belong to which archetype.
+If the method described above should be done, the classification of archetypes should be done first.
+The workflow is summarized in @fig-methodology-flowchart.
+
+```{mermaid}
+%%| fig-cap: Proposed workflow to combine morphological archetypes with machine learning results. 
+%%| label: fig-methodology-flowchart
+flowchart LR
+A[(CHIME/FRB Catalog 1)] --> |input| B[Classify\nMorphology Archetype]
+A --> |input| C[Machine Learning\nAlgorithm]
+B --> |input| H[Machine Learning\nAlgorithm]
+H --> |output| G((Analyse\nMachine Learning\nResult\nWith\nArchetype\nAs Input))
+B --> |compare| F((Analyse\nArchetype Distribution\nAmong\nMachine Learning\nResult))
+C --> |output| F
+```
+
+<!-- ## Subclassification Criteria
 
 A close look at @fig-repeater-candidates-Chen2022 reveals that repeaters clump together at different points on the 2D projection.
 This could be due to differences between repeaters which was not looked at by the literature.
@@ -26,35 +105,33 @@ The test employed shall not make any assumption about the shape of the distribut
 As such, tests such as the Kilmogorov--Smirnov test (KS test) and the Mann--Whitney--Wilcoxon test (MWW test) is adequate for this study because they do not assume the shape of distribution but rather on the differences between the shape of each data's cumulative density function [@ivezic_StatisticsDataMining_2020].
 The MWW test have been used by @cui_FastRadioBursts_2021 to test the differences between the intrinsic pulse width and radio luminosities of the repeaters and non-repeaters.
 
-<!-- TODO There must be a name to this resampling(?) method? 👇 -->
+TODO There must be a name to this resampling(?) method? 👇
+
 
 To introduce a control to the test, we will swap the labels of the FRBs randomly and test their differences.
-The chosen subclassification is expected to show a significant difference rather than choosing a random label.
+The chosen subclassification is expected to show a significant difference rather than choosing a random label. -->
 
 ## Timeline
 
-This study is expected to be conducted in four phases:
+This study is expected to be conducted in four phases with the timeline suggested in @fig-gantt:
 
-1.	Data Exploration. This is the phase where I replicate results from important papers. The aim is to familiarize with the data and methods.
-2.  Theoretical Study. This is the phase where I familiarize with the theoretical aspect of fast radio bursts. The aim is to understand the differences and similarities between them and develop suitable methodologies for testing.
-3.	Statistical Study. This is the phase where I process the data and test the properties selected in phase 2.
-4.  Extrapolation. This is the phase where I the same consideration with data outside of CHIME/FRB. As mentioned in @sec-data, the other telescope requires the raw data to be collected and processed; which is why 'data collection' extends beyond 'Data Exploration'
-5.	Thesis writing. This is where I write my dissertation and finish my study.
+1. Data Exploration. Methods and results from selected papers are replicated in this phase. The aim is to be familiar with the data and methods.
+2. Morphology Analysis. The method described in @sec-method-analysis is done in this phase. 
+3. Extrapolation. Results are compared with new data described in @sec-method-data-new-repeaters.
+4. Thesis. Dissertation is written in this phase.
 
 ```{python}
 #| warning: false
 #| fig-cap: The expected timeline of the different phases of study. The star represents milestones provided by the university. The vertical orange line represents 'now'.
 #| label: fig-gantt
 
-import os
-
 import pandas as pd
 from pathlib import Path
 from sarjana import gantt
 
-DATAPATH = os.getenv('DATAPATH')
+DATAPATH = Path('..', '_common', 'metadata', 'gantt')
 
-progress = pd.read_csv(Path(DATAPATH, 'meta', 'progress-got.csv'), parse_dates=['start', 'end'])
-milestones = pd.read_csv(Path(DATAPATH, 'meta', 'milestones.csv'), parse_dates=['date'])
+progress = pd.read_csv(Path(DATAPATH, 'progress-got.csv'), parse_dates=['start', 'end'])
+milestones = pd.read_csv(Path(DATAPATH, 'milestones.csv'), parse_dates=['date'])
 gantt.generate_gantt(progress, milestones=milestones, show=True)
 ```

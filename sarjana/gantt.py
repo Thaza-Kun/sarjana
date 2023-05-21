@@ -85,7 +85,7 @@ def generate_gantt(
         milestones.loc[:, ["rel_date"]] = milestones["date"].apply(
             lambda x: (x - thesis_start).days
         )
-        locations = [3, 4, 6, 7]
+        locations = [3, 4, 6, 6]
         idx = 0
         thesis_writing_location = len(progress["task"].unique()) - 1
         for date, name in zip(milestones["rel_date"], milestones["name"]):

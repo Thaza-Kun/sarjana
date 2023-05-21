@@ -1,6 +1,18 @@
-# Properties of Fast Radio Bursts {#sec-properties}
+# Properties {#sec-properties}
+
+The properties of an FRB can be divided into two types: an observed property and a derived property.
+An observed property is a property that is apparent from the signal whose value can be taken directly from the signal or calculated with minimal assumption.
+A derived property is a property whose value highly depends on the model used for the calculation.
 
 ## Observed Properties
+
+Given a single pulse of FRB, the following properties can be observed: frequency range, pulse width, fluence, flux, scattering time, spectral index.
+Some of them are discussed in this section.
+
+<!-- TODO Write -->
+<!-- ## Frequency Ranges {#sec-prop-freq}
+
+... -->
 
 ### Dispersion Measure {#sec-prop-dm}
 
@@ -26,12 +38,13 @@ where $a=K^{-1}$ and $\Delta\nu^{-2}_{\text{lo}-\text{hi}}$ is the difference of
 Users of calculation software should be made aware which conventions are used.
 For the sake of precision, both values with its uncertainty are provided here [@kulkarni_dispersion_2020]:
 
+
 $$
-\begin{align}
-a &= 4.148 806 4239(11) \text{GHz}^2\text{pc}^{-1}\,\text{cm}^3\text{ms}\\
-K &= 241.033 1786(66)  \text{GHz}^{-2}\text{pc}\,\text{cm}^{-3}\text{s}
-\end{align}
-$${#eq-dm-coefficients}
+    a = 4.148 806 4239(11) \text{GHz}^2\text{pc}^{-1}\,\text{cm}^3\text{ms}
+$${#eq-dm-coefficients-a}
+$$
+    K = 241.033 1786(66)  \text{GHz}^{-2}\text{pc}\,\text{cm}^{-3}\text{s}
+$${#eq-dm-coefficients-k}
 
 ### Intrinsic Pulse Width
 
@@ -72,6 +85,12 @@ $$
 $$ {#eq-RM-intergral}
 
 ## Derived Properties
+
+Most of the derived properties rely heavily on the cosmological models used.
+Here, we can see that the redshift of an FRB rely on assumptions about the distribution of matter.
+Other derived property rely on this redshift.
+As we do not know the source of the FRB, we have no other way of corroborating its true distance.
+This method remains the only method.   
 <!-- ### Luminosity -->
 <!-- TODO: Isi -->
 
@@ -94,7 +113,7 @@ Its value highly depends on its galactic latitude as there is little material hi
 The redshift of FRB can be calculated by the $\text{DM}_\text{IGM}$ [@hashimoto_NoRedshiftEvolution_2020],
 $$
 \text{DM}_\text{IGM}(z) = \Omega_b \frac{3H_0c}{8\pi G m_p}
-    \times \int_0^z \frac{(1 + z′) f_\text{IGM}(z′) (Y_H X_{e,H}(z′) + \frac{1}{2}Y_p X_{e,He}(z′))}{\{\Omega_m (1 + z′)^3 + \Omega_\Lambda(1 + z′)^{3[1+w(z′)]}\}1/2} dz′,
+    \times \int_0^z \frac{(1 + z^\prime) f_\text{IGM}(z^\prime) (Y_H X_{e,H}(z^\prime) + \frac{1}{2}Y_p X_{e,He}(z^\prime))}{\{\Omega_m (1 + z^\prime)^3 + \Omega_\Lambda(1 + z^\prime)^{3[1+w(z^\prime)]}\}1/2} dz^\prime,
 $$
 assuming a flat universe. 
 $X_{e,}$ and $Y$ are the ionization fractions and mass fractions of the intergalatic hydrogen (H) and helium (He) accordingly.
@@ -115,15 +134,15 @@ TODO: Isi  -->
 ### Energy
 
 The energy of a FRB can be calculated as a time-integration of its luminosity function at rest frame $\nu_\text{rest}$ GHz [@hashimoto_LuminosityDurationRelation_2019],
+
 $$
-\begin{align}
-E_{\nu_\text{rest}} 
-&= \int_\text{pulse} \frac{4\pi D_L(z)^2}{(1+z)^{1+\alpha}}\left(\frac{\nu_\text{rest}}{\nu_\text{obs}}\right)^\alpha S_{\nu_\text{obs}} \text{d}t, \\
-&= \frac{4\pi D_L(z)^2}{(1+z)^{2+\alpha}}\left(\frac{\nu_\text{rest}}{\nu_\text{obs}}\right)^\alpha\mathcal{F}_{\nu_\text{obs}},\\
-& \text{(in ergs Hz$^{-1}$)}
-\end{align}
-$$ {#eq-energy-by-time-integrated-luminosity}
-where $D_L(z)$ is the luminosity distance calculated from redshift and -- following @eq-fluence-by-integral -- $S_\nu_\text{obs}$ is the flux density at the observed frequency and $\mathcal{F}_\nu_\text{obs}$ is its fluence.
+    E_{\nu_\text{rest}} = \int_\text{pulse} \frac{4\pi D_L(z)^2}{(1+z)^{1+\alpha}}\left(\frac{\nu_\text{rest}}{\nu_\text{obs}}\right)^\alpha S_{\nu_\text{obs}} \text{d}t
+$${#eq-energy-by-time-integrated-luminosity-int}
+$$
+    E_{\nu_\text{rest}} = \frac{4\pi D_L(z)^2}{(1+z)^{2+\alpha}}\left(\frac{\nu_\text{rest}}{\nu_\text{obs}}\right)^\alpha\mathcal{F}_{\nu_\text{obs}} \text{(in ergs Hz$^{-1}$)}
+$${#eq-energy-by-time-integrated-luminosity-eval}
+
+where $D_L(z)$ is the luminosity distance calculated from redshift and -- following @eq-fluence-by-integral -- $S{_{\nu_\text{obs}}}$ is the flux density at the observed frequency and $\mathcal{F}{_{\nu_\text{obs}}}$ is its fluence.
 However, @hashimoto_EnergyFunctionsFast_2022 offered an energy function derived directly from a fluence integreated over frequency because the fluence is less affected by the finite time resolution of instruments [@macquart_FRBEventRate_2018] and it minimizes uncertainty over diverse spectral shapes highlighted in @pleunis_FastRadioBurst_2021. It is calculated as
 $$
 E_\text{obs} = \mathcal{F}_\text{obs} \times 400\text{MHz}.

@@ -1,29 +1,18 @@
-:::{.content-visible unless-profile="litreview"}
-## Problem Statement {#sec-problem}
+:::{.content-visible when-profile="proposal"}
 
-It is very apparent that the nature of FRB is currently unknown.
-@petroff_fast_2019 counted at least 55 papers on the theories for the progenitor models of FRB, most of which involves a neutron star.
-This research does not attempt to add a new progenitor theory into the literature.
-However, this theoretical aspect of the study of FRB can benefit from having an understanding in the difference and similarities between known FRBs.
+## Research Objective {#sec-objective}
 
-The most obvious difference between FRBs is that some of them repeat but some of them seem to not repeat. 
-Some literature have found differences in morphology and distribution discussed later in the same section.
-All these differences will be discussed in @sec-classification.
+Given that nature of FRBs is currently unknown and many have proposed a progenitor theory, this research does not attempt to add a new progenitor theory into the literature.
+This research proposes to find similarities and differences in the current population of detected FRBs.
+This approach will help progress in constraining theories on FRB's origin and the search for FRB sources.
 
-However, these literatures does not address the possibility of a subtype within their respective known types.
-This research aims to address that possibility with the assumption that both repeaters and non-repeaters may not have a single origin but multiple origins with overlapping properties making up the 'fast radio burst' phenomena.
-These are the questions that this research proposes to answer:
+There is a possibility that FRBs may come from different origins masked as a single phenomena which adds complexity to this endeavour.
+However, even if there is a possible subpopulation of FRBs, the differences between them are not obvious.
+@sec-classification summarizes the effort on classifying FRBs.
+This study attempts to add a dimension to classification efforts by seriously considering morphological archetypes (@sec-class-morphology) as a property of FRB.
 
-1. Does subsets of repeaters and non-repeaters with specific criteria show statistical significance as opposed to randomly assigning subset labels? 
-2. What properties of FRB makes up the differences between subsets?
-3. Finally, can these subsets be fitted into existing theories showing that they are indeed multiple phenomena masked as one?
-
-## Objective
-
-Following the questions defined in @sec-problem, here are the objectives of this study:
-
-1. To employ several methods that can be used to differentiate known FRBs.
-2. To study the statistical differences between properties of FRBs which will thus define characteristics of the respective subclasses.
-3. To compare several theories of FRB where their properties can be evaluated and match them with the subsets.
+This study aims to investigate the relationship between the morphology of FRBs with other properties described in @sec-properties.
+Then, the effect of the morphology of FRBs to the statistical analysis and machine learning results will be investigated.
+Finally, the results from this study and previous study with newly released data catalog (@sec-method-data-new-repeaters) will be compared.
 
 :::
