@@ -1,0 +1,21 @@
+---
+title: "Master's Project"
+listing:
+  contents: notebooks
+  sort: "date desc"
+  type: default
+  # categories: true
+  # sort-ui: false
+  # filter-ui: false
+page-layout: full
+title-block-banner: true
+---
+
+## Plan
+
+![](./_assets/gantt-chart.png)
+
+## Notebooks
+
+:::{.notebooks}
+:::

@@ -1,11 +1,9 @@
 book:
-  title: "Statistical Study Of Current Fast Radio Bursts (FRB) Transients (Proposal)"
-  subtitle: 'SMX7001'
+  subtitle: (Proposal)
   chapters:
     - index.qmd
-    # - thesis/_intro.qmd
     - thesis/literature.qmd
     - thesis/methodology.qmd
     - thesis/references.qmd
-  appendices: 
-    - thesis/appendix/sources.qmd
+  # appendices: 
+  #   - thesis/appendix/sources.qmd

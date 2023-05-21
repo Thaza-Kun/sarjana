@@ -1,29 +1,28 @@
 project:
-  type: website
+  type: book
+  output-dir: _book
+  resources: _common
   preview: 
-      port: 4050
-  render: 
-      - 'index.qmd'
-      - notebooks/*
-      - 'about.qmd'
-  # pre-render: 
-  #   - python ./scripts/gantt.py
+      port: 4000
+jupyter: python3
+execute: 
+  echo: false
 
-website:
-  title: "Masters Project"
-  navbar:
-    right:
-      - about.qmd
-  #     - icon: github
-  #       href: https://github.com/
-  #     - icon: twitter
-  #       href: https://twitter.com
+
 format:
-  html:
-    theme: cosmo
-    # css: styles.css
-    twitter-card: true
-    open-graph: true
-    reader-mode: true
+  pdf:
+    documentclass: scrreport
+    pdf-engine: pdflatex
+    # template: ./_common/_templates/template.tex
+  docx:
+    reference-doc: ./_common/templates/template.docx
 
-title-block-banner: true
+book:
+  title: "Statistical Study Of Current Fast Radio Bursts (FRB) Population"
+  author: "Murthadza Aznam (S2163122)"
+  date: '29 May 2023'
+  date-format: 'DD MMM YYYY'
+
+bibliography: ./_common/references.bib
+filters: 
+  - include-subchapters

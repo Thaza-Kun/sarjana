@@ -1,27 +1,70 @@
-::::{.content-visible when-format="html"}
----
-title: "Master's Project"
-listing:
-  contents: notebooks
-  sort: "date desc"
-  type: default
-  # categories: true
-  # sort-ui: false
-  # filter-ui: false
-page-layout: full
-title-block-banner: true
----
+# Introduction
 
-## Plan
+## History
 
-![](./_assets/gantt-chart.png)
+About 40 years since the discovery of pulsars [@hewish_rapidlyPulsating_1968], @lorimer_bright_2007 found an intriguing burst in the archival data of pulsar surveys collected by the Parkes Telescope.
+Pulsars are generally a weak source of radio with flux densities ranging from 0.001 to 5 Jy [@stappers_pulsars_2011]. 
+However, this burst is highly energetic with $30\pm 10$ Jy flux density and its distance is inferred to be of extra-galactic origin which leads @lorimer_bright_2007 to conclude it as a new phenomenon.
+The burst is informally known as the 'Lorimer Burst'.
 
-## Notebooks
+Subsequent search for Lorimer Burst-like signal later supported Lorimer's hypothesis especially in @thornton_population_2013 where 4 more bursts with similar properties are reported.
+The report prompted more astronomers to discover more Lorimer Burst-like signal whether by combing through archival data or by outright detection in many telescopes around the world.
+The name 'fast radio burst' (FRB) were adopted and the Lorimer Burst is now known as FRB 20010724 following the convention FRB YYYYMMDDX [@petroff_fast_2022] where X is an additional identifier from the English alphabet.
+As detections accumulate, it is apparent that FRBs are a homogenous phenomena occuring uniformly in our sky.
 
-:::{.notebooks}
+<!-- TODO: Use code to draw -->
+![The distribution of FRBs across the sky using the FRBSTATS Catalog [@spanakis-misirlis_frbstats_2021].](./_common/figures/lat_long.svg){#fig-frb-dist}
+
+FRBs are characterized as a radio pulse with durations in the order of milliseconds and a relatively high dispersion measure.
+With increasing interests in FRBs, progress have been made in detections (especially with the commisioning of the CHIME/FRB telescope [@the_chimefrbcollaboration_chime_2018] and in the future, BURSTT [@lin_BURSTTBustlingUniverse_2022]), theoretical models (a list of theories can be found in @platts_LivingTheoryCatalogue_2019), and analyses (especially on FRB 121102).
+@fig-literature illustrates the research landscape of FRBs since 2013 when the term fast radio bursts is introduced.
+For an in-depth review of the growth of FRB research, readers are suggested to read @petroff_fast_2019 and their follow-up review @petroff_fast_2022.
+<!-- In contrast, @bailes_discovery_FRB_2022 is a brief but more personal record as a person working closely with Lorimer during and after the discovery. -->
+
+At least 55 papers were written to propose their theories on how FRBs come about [@petroff_fast_2019]. 
+Most of which involves a neutron star or perhaps some sort of highly magnetized star called a 'magnetar' [@cui_FastRadioBursts_2021].
+A small number was colocated with a galaxy [@petroff_fast_2022] but most of the sources are still unkown.
+This makes identifying a progenitor model difficult.
+It is still not known how FRBs come about.
+
+```{python}
+#| fig-cap: The trends of papers with key words 'Fast Radio Burst' and 'FRB 121102' in its title or abstract since 2013 until the end of 2022 as indexed by the NASA Astrophysics Data System (NASA/ADS)
+#| label: fig-literature
+
+import os
+
+import pandas as pd
+from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns; sns.set_theme()
+
+DATAPATH = os.getenv('DATAPATH')
+
+nasa_ads_frb = pd.read_csv(
+    Path(DATAPATH, 'raw', 'external', 'NASA-ADS-FRB-all-papers-count.csv')
+    )
+nasa_ads_frb121102 = pd.read_csv(
+    Path(DATAPATH, 'raw', 'external', 'NASA-ADS-FRB121102-papers-count.csv')
+    )
+nasa_ads_frb['Key word'] = 'Fast Radio Bursts'
+nasa_ads_frb121102['Key word'] = 'FRB 121102'
+
+data = pd.concat([nasa_ads_frb121102, nasa_ads_frb])
+data['Items'] = data['Article Count'].apply(lambda x: ['x'] * x)
+data = data.explode('Items')
+
+plt.figure(figsize=(8,4))
+ax = sns.histplot(data, x='Year', hue='Key word', bins=len(data['Year'].unique()), element='step', multiple='dodge')
+sns.move_legend(ax, 'upper left')
+```
+
+:::{.content-visible when-profile="litreview"}
+<!-- TODO: Redo using FRBSTATS with the annotation -->
+![The cumulative number of detected FRBs over the years and notable landmarks as annotated text [@bailes_discovery_FRB_2022].](./_common/figures/frb-research-review_C_Bailes2022.jpg){#fig-detection-history}
 :::
-::::
 
-:::{.content-visible when-profile="thesis"}
-{{< include index-thesis.qmd >}}
+:::{.content-visible when-profile="proposal"}
+<!-- This proposal will be structured as follows: @sec-properties lists some of the known properties of a FRB. Some of these properties are taken directly from measurements while some of these properties are inferred from their observational properties and from certain assumptions about the cosmology of the universe. @sec-classification discusses some known types of FRB and some attempts to further subclassify them. -->
+
+{{< include ./thesis/problems.qmd >}}
 :::
