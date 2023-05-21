@@ -8,11 +8,11 @@ This approach will help progress in constraining theories on FRB's origin and th
 
 There is a possibility that FRBs may come from different origins masked as a single phenomena which adds complexity to this endeavour.
 However, even if there is a possible subpopulation of FRBs, the differences between them are not obvious.
-@sec-classification summarizes the effort on classifying FRBs.
-This study attempts to add a dimension to classification efforts by seriously considering morphological archetypes (@sec-class-morphology) as a property of FRB.
+@Sec-classification summarizes the effort on classifying FRBs.
+This study attempts to add a dimension to classification efforts by seriously considering morphological archetypes (@Sec-class-morphology) as a property of FRB.
 
 This study aims to investigate the relationship between the morphology of FRBs with other properties described in @sec-properties.
 Then, the effect of the morphology of FRBs to the statistical analysis and machine learning results will be investigated.
-Finally, the results from this study and previous study with newly released data catalog (@sec-method-data-new-repeaters) will be compared.
+Finally, the results from this study and previous study with newly released data catalog (@Sec-method-data-new-repeaters) will be compared.
 
 :::

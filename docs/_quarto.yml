@@ -8,6 +8,10 @@ jupyter: python3
 execute: 
   echo: false
 
+crossref:
+  sec-prefix: section
+  eq-prefix: eq.
+  fig-prefix: figure
 
 format:
   pdf:
