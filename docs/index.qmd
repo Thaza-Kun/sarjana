@@ -17,7 +17,7 @@ As detections accumulate, it is apparent that FRBs are a homogenous phenomena oc
 
 FRBs are characterized as a radio pulse with durations in the order of milliseconds and a relatively high dispersion measure.
 With increasing interests in FRBs, progress have been made in detections (especially with the commisioning of the CHIME/FRB telescope [@the_chimefrbcollaboration_chime_2018] and in the future, BURSTT [@lin_BURSTTBustlingUniverse_2022]), theoretical models (a list of theories can be found in @platts_LivingTheoryCatalogue_2019), and analyses (especially on FRB 121102).
-@fig-literature illustrates the research landscape of FRBs since 2013 when the term fast radio bursts is introduced.
+@Fig-literature illustrates the research landscape of FRBs since 2013 when the term fast radio bursts is introduced.
 For an in-depth review of the growth of FRB research, readers are suggested to read @petroff_fast_2019 and their follow-up review @petroff_fast_2022.
 <!-- In contrast, @bailes_discovery_FRB_2022 is a brief but more personal record as a person working closely with Lorimer during and after the discovery. -->
 
