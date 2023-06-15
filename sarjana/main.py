@@ -43,6 +43,8 @@ app = typer.Typer()
 # TODO Refine dfdt algorithm
 # TODO Plot the dfdt (for visual confirmation)
 
+# TODO Categorize into three: simple broadband, simple shortband, multiburst
+
 import seaborn as sns
 
 
@@ -76,10 +78,22 @@ def drift(
     n: int = typer.Option(10, help="Number of monte carlo run"),
     m: int = typer.Option(10, help="Number of DM trial run"),
     events: int = typer.Option(0, help="How many events to calculate. (0 = all)"),
-    path: str = typer.Option('.', help="Path of results"),
+    path: str = typer.Option(".", help="Path of results"),
 ):
     """Find frequency drift"""
-    commands.find_frequency_drift_acmc_all(n_mc=n,n_dm=m, event_total=events, path=Path(path))
+    commands.find_frequency_drift_acmc_all(
+        n_mc=n, n_dm=m, event_total=events, path=Path(path)
+    )
+
+
+@app.command()
+def categorize(
+    catalog_file: str = typer.Argument(..., help="Parquet file containing statistical data."),
+    wfall_catalog_file: str = typer.Argument(..., help="Parquet file containing wfall data."),
+    saveto: str = typer.Argument(..., help="Parquet file to save to"),
+):
+    """Categorize bandwidth using k-means cluster and saves"""
+    commands.cluster_kmeans_on_bandwidth(catalog_file, wfall_catalog_file, saveto)
 
 
 @app.command()

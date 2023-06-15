@@ -4,8 +4,8 @@ project:
       port: 4050
   render: 
       - 'index.qmd'
-      - notebooks/*
-      - 'about.qmd'
+      # - notebooks/*
+      # - 'about.qmd'
   # pre-render: 
   #   - python ./scripts/gantt.py
 

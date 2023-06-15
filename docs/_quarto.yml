@@ -1,13 +1,3 @@
-project:
-  type: book
-  output-dir: _book
-  resources: _common
-  preview: 
-      port: 4000
-jupyter: python3
-execute: 
-  echo: false
-
 crossref:
   sec-prefix: section
   eq-prefix: eq.

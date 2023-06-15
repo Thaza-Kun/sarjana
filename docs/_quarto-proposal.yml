@@ -1,3 +1,13 @@
+project:
+  type: book
+  output-dir: _book
+  resources: _common
+  preview: 
+      port: 4000
+jupyter: python3
+execute: 
+  echo: false
+
 book:
   subtitle: (Proposal)
   date: '22 May 2023'

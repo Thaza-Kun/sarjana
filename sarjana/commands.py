@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sns
+from sklearn.cluster import KMeans
 from tqdm import tqdm
 
 import dfdt
@@ -30,7 +31,12 @@ def find_frequency_drift_by_name(
     return find_frequency_drift(burst.wfall)
 
 
-def find_frequency_drift_acmc_all(n_mc: int = 10, n_dm: int = 10, event_total: int = 0, path: Path = Path(".", "results")):
+def find_frequency_drift_acmc_all(
+    n_mc: int = 10,
+    n_dm: int = 10,
+    event_total: int = 0,
+    path: Path = Path(".", "results"),
+):
     # burst parameters
     dm_uncertainty = 0.2  # pc cm-3
 
@@ -56,7 +62,7 @@ def find_frequency_drift_acmc_all(n_mc: int = 10, n_dm: int = 10, event_total: i
     ]
     try:
         prev = pd.read_csv(Path(path, "dfdt.csv"))
-        prevnames: set = {i.split("_")[0] for i in prev['subburstname'].to_list()}
+        prevnames: set = {i.split("_")[0] for i in prev["subburstname"].to_list()}
     except FileNotFoundError:
         pd.DataFrame(columns=columnnames).to_csv(Path(path, "dfdt.csv"))
         prevnames: set = {}
@@ -114,13 +120,45 @@ def find_frequency_drift_acmc_all(n_mc: int = 10, n_dm: int = 10, event_total: i
                         [
                             dfdt_df,
                             pd.DataFrame(
-                                [[subburstname, constrained, dfdt_data, dfdt_mc, dfdt_mc_low,dfdt_mc_high, duration_min]], columns=columnnames
+                                [
+                                    [
+                                        subburstname,
+                                        constrained,
+                                        dfdt_data,
+                                        dfdt_mc,
+                                        dfdt_mc_low,
+                                        dfdt_mc_high,
+                                        duration_min,
+                                    ]
+                                ],
+                                columns=columnnames,
                             ),
                         ]
-                    ).to_csv(Path(path, 'dfdt.csv'))
+                    ).to_csv(Path(path, "dfdt.csv"))
                 eventcount += 1
                 if (eventcount == event_total) and (event_total != 0):
                     break
+
+
+def cluster_kmeans_on_bandwidth(
+    catalog_file: str, wfall_catalog_file: str, saveto: str
+):
+    chimefrb_catalog_1 = pd.read_csv(Path(catalog_file))
+    cat_wfall = pd.read_parquet(Path(wfall_catalog_file))
+    cat_wfall["is_multipeak"] = [
+        is_multipeak(x.copy()) for x in cat_wfall["model_ts"].values
+    ]
+    cat = pd.merge(
+        cat_wfall[["is_multipeak", "eventname"]], chimefrb_catalog_1, left_on="eventname", right_on="tns_name"
+    ).drop(columns="tns_name")
+    cat["bandwidth"] = cat["high_freq"] - cat["low_freq"]
+    clusterer = KMeans(n_clusters=2).fit(cat.loc[cat["is_multipeak"] == False, ["bandwidth"]])
+    cat.loc[cat["is_multipeak"] == False, ["kmeans_label"]] = clusterer.predict(
+        cat.loc[cat["is_multipeak"] == False, ["bandwidth"]]
+        )
+    cat['kmeans_label'].fillna(len(cat['kmeans_label'].unique()) -1, inplace=True)
+    cat.to_parquet(Path(saveto))
+    return cat
 
 
 def find_frequency_drift_of_catalog(catalogfile: str, wfall_path: str):
