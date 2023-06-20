@@ -238,13 +238,12 @@ def plot_many_flux_profile_by_clustering_groups(
 
 
 def download_waterfall_data_from_chimefrb_database(
-    eventnames: list, tofile: str, path: str, limit: Optional[int] = None
+    eventnames: list, tofile: str, path: str, baseurl: str, limit: Optional[int] = None
 ) -> None:
     """
     TODO: DOCS
     """
     basepath = Path(path)
-    baseurl = "https://ws.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/files/vault/AstroDataCitationDOI/CISTI.CANFAR/21.0007/data/waterfalls/data"
     try:
         if tofile is None:
             raise FileNotFoundError

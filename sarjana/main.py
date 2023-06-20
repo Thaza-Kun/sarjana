@@ -127,8 +127,9 @@ def download(
     limit: int = typer.Option(None, help="How many to download"),
 ):
     """Download waterfall data from CHIME/FRB database"""
+    baseurl = os.getenv("CHIME_WFALL_URL")
     commands.download_waterfall_data_from_chimefrb_database(
-        eventnames=eventnames, tofile=tofile, path=path, limit=limit
+        eventnames=eventnames, tofile=tofile, path=path, bsaeurl=baseurl, limit=limit
     )
 
 
