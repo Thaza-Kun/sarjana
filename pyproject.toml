@@ -37,6 +37,8 @@ ferb = "sarjana.main:app"
 
 [tool.poetry.group.test.dependencies]
 dfdt = {git = "https://github.com/zpleunis/dfdt.git"}
+euporie = "^2.4.3"
+nteract-on-jupyter = "^2.1.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

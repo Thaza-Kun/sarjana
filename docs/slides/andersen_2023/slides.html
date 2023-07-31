@@ -347,31 +347,115 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">CHIME/FRB Discovery of 25 Repeating Fast Radio Burst Sources</h1>
+  <p class="subtitle"><a href="https://dx.doi.org/10.3847/1538-4357/ac33ac" class="uri">https://dx.doi.org/10.3847/1538-4357/ac33ac</a></p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-<a href="https://dx.doi.org/10.3847/1538-4357/ac33ac">B. C. Andersen. et. al.&nbsp;(2023)</a><a href="#/fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> 
+B. C. Andersen. et. al.&nbsp;(2023) 
 </div>
 </div>
 </div>
 
 </section>
-<section>
-<section id="content" class="title-slide slide level1 center">
-<h1>Content</h1>
-<p>The paper highlights three (3) things: 1. The method used in identifying which two or more signals are repeaters. 2. They found that repeaters tend to have lower DM from apparent non-repeaters. 3. They found that repeater fraction tends to an equilibrium of <span class="math inline">\(2.6^{+2.9}_{-2.6}%\)</span> over time.</p>
+<section id="data-source" class="slide level2 center">
+<h2>Data Source</h2>
+<ul>
+<li>Detected between 30 Sept 2019 - 01 May 2021.</li>
+<li>Dispersion Measure (DM) ranging from ~220 to ~1700 pc cm<sup>-3</sup></li>
+<li>Signal-to-Noise Ratio (SNR) &gt; 8.5</li>
+<li>Frequency between 400 MHz - 800 MHz</li>
+</ul>
 </section>
-<section id="references" class="slide level2 smaller scrollable">
-<h2>References</h2>
-<div id="refs" role="list">
+<section id="method-identifying-repeaters" class="slide level2 center">
+<h2>Method: Identifying Repeaters</h2>
+<ol type="1">
+<li>Clustering Algorithm</li>
+<li>Contamination Rate</li>
+</ol>
+</section>
+<section id="method-identifying-repeaters-1" class="slide level2 center">
+<h2>Method: Identifying Repeaters</h2>
+<h3 id="clustering-algorithm">Clustering Algorithm</h3>
+<ul>
+<li>Sources with similar RA, DEC, and DM likely come from the same source.</li>
+<li>They used DBSCAN<sup>1</sup> to identify points with similar values in the three measures mentioned.</li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Density–Based Spatial Clustering of Applications with Noise, <span class="citation" data-cites="ester_DensityBasedAlgorithmDiscovering_1996">Ester et al. (<a href="#/references" role="doc-biblioref" onclick="">1996</a>)</span></p></li></ol></aside></section>
+<section id="section" class="slide level2 center">
+<h2></h2>
+<h3 id="clustering-algorithm-1">Clustering Algorithm</h3>
+<ul>
+<li>DBSCAN is a clustering algorithm whose number of clusters are entirely based on the shape of the data.</li>
+</ul>
 
-</div>
-</section></section>
+<img data-src="./figures/dbscan-vs-kmeans.png" class="r-stretch quarto-figure-center"><p class="caption">Comparison with another clustering algorithm, taken from <a href="https://github.com/NSHipster/DBSCAN" class="uri">https://github.com/NSHipster/DBSCAN</a></p></section>
+<section id="method-identifying-repeaters-2" class="slide level2 center">
+<h2>Method: Identifying Repeaters</h2>
+<h3 id="contamination-rate">Contamination Rate</h3>
+<ul>
+<li>For each cluster, they calculate the probability of detecting additional <span class="math inline">\(x-1\)</span> coincident bursts that are physically unrelated.</li>
+<li>This probability of a coincident burst is a binomial distribution (either coincident, or non-coincident).</li>
+<li>The contamination rate, <span class="math inline">\(R_{cc}\)</span>, is then equals to this probability multiplied by the number of total detections, <span class="math inline">\(N=2197\)</span>.</li>
+</ul>
+</section>
+<section id="section-1" class="slide level2 center">
+<h2></h2>
+<h3 id="contamination-rate-1">Contamination Rate</h3>
+
+<img data-src="./figures/contamination-rate.png" class="r-stretch"></section>
+<section id="section-2" class="slide level2 center">
+<h2></h2>
+<h3 id="contamination-rate-2">Contamination Rate</h3>
+<ul>
+<li>“Gold” sample (32 sources): A source with <span class="math inline">\(R_{cc} &lt; 0.5\)</span> is deemed as a real repeating sources of FRBs, such that there is less than 50% probability that one source in the sample got included by chance.</li>
+<li>“Silver” sample (18 sources): A source with <span class="math inline">\(0.5 \leq R_{cc} &lt; 5\)</span> is a candidate repeater and warrants follow up observation.</li>
+<li><mark>Excluding those with inconsistent localizations</mark>, we arrive at 25 gold samples and 14 silver samples.</li>
+</ul>
+</section>
+<section id="section-3" class="slide level2 center">
+<h2></h2>
+
+<img data-src="./figures/detection-timelines.png" class="r-stretch"></section>
+<section id="analysis" class="slide level2 center">
+<h2>Analysis</h2>
+<ul>
+<li>Most repeater bursts show narrow bandwidths of typically 50–200 MHz.</li>
+<li>Some sources showing bursts with clear cases of downward–drifting subbursts, consistent with <span class="citation" data-cites="pleunis_FastRadioBurst_2021">Pleunis et al. (<a href="#/references" role="doc-biblioref" onclick="">2021</a>)</span>.</li>
+<li>Repeaters have consistently lower DM compared to non-repeaters.</li>
+<li>Repeater show no significant difference in flux.</li>
+</ul>
+</section>
+<section id="repeater-fraction" class="slide level2 center">
+<h2>Repeater Fraction</h2>
+<ul>
+<li>By dividing the sky into 6 declination bins, they found that the repeater fraction tends to an equilibrium of 2.6%.</li>
+</ul>
+
+<img data-src="./figures/repeater-fraction.png" class="r-stretch"></section>
+<section id="conclusion" class="slide level2 center">
+<h2>Conclusion</h2>
+<ol type="1">
+<li>A combination of clustering algorithm and contamination rate calculation found 25 new repeaters and 14 candidate repeaters.</li>
+<li>Repeaters have consistently lower DM from non-repeaters.</li>
+<li>Repeater fraction tends to an equilibrium of <span class="math inline">\(2.6^{+2.9}_{-2.6}\%\)</span> over time.</li>
+</ol>
+</section>
 <section>
 <section id="thank-you" class="title-slide slide level1 center">
 <h1>Thank You</h1>
 
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-ester_DensityBasedAlgorithmDiscovering_1996" class="csl-entry" role="listitem">
+Ester, M., H. Kriegel, J. Sander, and Xiaowei Xu. 1996. <span>“A <span>Density-Based Algorithm</span> for <span>Discovering Clusters</span> in <span>Large Spatial Databases</span> with <span>Noise</span>.”</span> In <em>Knowledge <span>Discovery</span> and <span>Data Mining</span></em>.
+</div>
+<div id="ref-pleunis_FastRadioBurst_2021" class="csl-entry" role="listitem">
+Pleunis, Ziggy, Deborah C. Good, Victoria M. Kaspi, Ryan Mckinven, Scott M. Ransom, Paul Scholz, Kevin Bandura, et al. 2021. <span>“Fast <span>Radio Burst Morphology</span> in the <span>First CHIME</span>/<span>FRB Catalog</span>.”</span> <em>The Astrophysical Journal</em> 923 (1): 1. <a href="https://doi.org/10.3847/1538-4357/ac33ac">https://doi.org/10.3847/1538-4357/ac33ac</a>.
+</div>
+</div>
 </section>
 <section id="progress-report" class="slide level2 center">
 <h2>Progress Report</h2>
@@ -381,12 +465,16 @@
 </div>
 </div>
 </section>
-<section id="publication-report" class="slide level2 center">
-<h2>Publication Report</h2>
+<section id="progress-report-1" class="slide level2 center">
+<h2>Progress Report</h2>
 <ol type="1">
 <li>Fast Radio Burst Morphology Consideration of Unsupervised Machine Learning Result
 <ul>
-<li>Status: Data Analysis (Expect to finish by the end of March and write report by April)</li>
+<li>Status: Calculation of Parameters for the new repeaters</li>
+</ul></li>
+<li>BURSTT Collaboration
+<ul>
+<li>Status: Early communication with Taiwan team</li>
 </ul></li>
 </ol>
 <div class="footer footer-default">
