@@ -23,7 +23,8 @@ rich = "^13.3.1"
 typer = "^0.7.0"
 h5py = "^3.8.0"
 seaborn = "^0.12.2"
-riptide-ffa = "^0.2.4"
+# riptide-ffa = "^0.2.4"
+py-pdm = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 nbformat = "^5.7.0"
