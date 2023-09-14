@@ -102,14 +102,24 @@ The idea is that the uncertainty in the periodicity is tied to the fact that som
 # Result
 
 ## FRB20180916B
-- All three methods were able to recover the known periodicity for FRB20180916B of 16 days with considerable standard deviation and false alarm probability of ....
+The methodology were first applied to FRB20180916B as a test.
+The Lomb--Scargle periodogram points to a periodicity of 16.33$\pm$0.01^[The estimation results in uncertainty below 0.01] days with a false alarm probability of ... .
+The Duty Cycle periodogram shows that it has a periodicity of 16.60$\pm$0.21 days with a duty cycle of 42.11% while the Phase Dispersion Minimization periodogram shows a periodicity of 16.39$\pm$ ... days.
+The low uncertainty in Lomb--Scargle periodogram can be attributed to the FRB having 77 detections with a well-defined periodicity so leaving one out does not affect the result that much.
+This is consistent with the accepted value of 16 days (citation needed).
+
 ## FRB20190915D
+The periodicity results for FRB20190915D are 30.06$\pm$10.21 days using the Lomb--Scargle periodogram, 30.00$\pm$0.47 days using the Duty Cycle periodogram and 13.84$\pm$0.01 days using the Phase Dispersion Minimization periodogram.
+Its false alarm probability is 4.87% and the duty cycle is ... .
+It is surprising that phase dispersion minimization shows a different result. Why is that?
+
 - FRB20190915D shows consistent periodicity of 30 days with false alarm probability of 1% using Lomb--Scargle periodogram and the duty cycle periodogram.
 - However, the phase dispersion minimization periodogram show a different periodicity of 13.84 days with no standard deviation.
   The leave one out strategy does not yield a significant standard deviation.
   It may be because ...
+
 ## FRB20191106C
-- In contrast, FRB20191106C shows inconsistent result.
+In contrast, FRB20191106C shows inconsistent result.
 
 # Discussion
 
