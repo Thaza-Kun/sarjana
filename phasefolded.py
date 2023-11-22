@@ -66,12 +66,15 @@ def main(
     phases = phases.reset_index().rename(columns={"index": "phase_bin"})
     phases["phase"] = phases["phase_bin"].apply(lambda x: x.left)
     phases = pd.concat([phases, pd.DataFrame([{"detections": 0, "phase": 1.0}])])
-
+    
     a = sns.relplot(
         phases, x="phase", y="detections", kind="line", drawstyle="steps-post"
     )
-    a.ax.yaxis.set_major_locator(ticker.MultipleLocator(tick))
+    YAXIS = np.arange(0, phases["detections"].max() + 10, tick)
+    a.ax.set_yticks(YAXIS)
     a.set(ylim=(0, 10 * (1 + int(phases["detections"].max() / 10))))
+    plt.title(chosen_name)
+    plt.tight_layout()
     plt.savefig(f"{chosen_name}-phase-{period}.png")
 
 

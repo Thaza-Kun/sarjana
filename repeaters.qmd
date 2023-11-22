@@ -1,5 +1,5 @@
 ---
-title: "Periodictity of FRB Repeaters with Limited Sample"
+title: "Possible Periodictity of Two Fast Radio Bursts (FRB) Repeaters with Limited Detections: FRB20190915D and  FRB20191106C"
 authors: 
   - name: Murthadza Aznam
     affiliation: Universiti Malaya
@@ -13,16 +13,37 @@ authors:
   - name: Matdhesh Kummar Jayaganthan
     affiliation: Universiti Malaya
 format:
+  aft-pdf:
+    classoption: [rmp, twocolumn]
+    include-in-header: _twocolumn_longtable.tex
   pdf:
-    documentclass: article
+    documentclass: revtex4-2
+    classoption:
+      - rmp
+      - amsmath
+      - amssymb
+      - preprint
     number-sections: true
-    toc: true
-    lof: true
-    lot: true
+    toc: false
+    lof: false
+    lot: false
+    template-partials:
+      - _partials\title.tex
+      - _partials\tables.tex
+      - _partials\before-body.tex
+    include-in-header: _twocolumn_longtable.tex
 bibliography: bibliography.bib
+abstract: |
+  Fast radio burst (FRB) is a class of transients characterized by its miliseconds scale duration with a relatively high dispersion measure. 
+  Some of them show repetition and among those, only some of them seem to repeat regularly. 
+  This paper tries to characterize the periodicity of FRBs whose repetition seems to be limited within a certain timeframe -- FRB20190915D and FRB20191106C as the chosen examples -- from a 3 year dataset provided by the CHIME/FRB 2023 Catalog. 
+  This paper found that the periodicity can be characterized with more than 50% certainty despite the limited samples given that the waiting time is bimodally distributed.
 ---
 
-<!-- 
+<!-- TODO Keywords -->
+<!-- TODO Publication location -->
+
+<!-- IDEA
 # Considerations
 - [ ] Waiting time distribution
 - [ ] Evolution
@@ -30,52 +51,40 @@ bibliography: bibliography.bib
   - [ ] Flux
   - [ ] Width
   - [ ] Energy
-
-# Subjects
-- [ ] Known Repeaters
-  - [ ] FRB20180916B
-- [ ] New Repeaters 
-  - [ ] New repeater with more detections (FRB20201130A?)
-  - [ ] FRB20190915D (Good example) 10 detections
-  - [ ] FRB20191106C (Bad example) 7 detections
-- [ ] Known repeaters with limited samples
-  - [ ] FRB20180916B with
-    - [ ] 0.25*Period window
-    - [ ] 0.5*Period window
-    - [ ] 1*Period window
-    - [ ] 2*Period window
-    - [ ] 3*Period window
 -->
 
 # Introduction
-Fast Radio Bursts (FRB) are a class of transients first discovered by @lorimer_BrightMillisecondRadio_2007 with currently unknown origin.
+Fast Radio Burst (FRB) is a class of transients first discovered by @lorimer_BrightMillisecondRadio_2007 with currently unknown origin.
 It is characterized as a radio pulse with durations in the order of milliseconds and a relatively high dispersion measure.
-Its high dispersion measure suggests an extragalactic origin consistent with observation of identified hosts such as @bannister_SingleFastRadio_2019, @chatterjee_DirectLocalizationFast_2017, and @ravi_FastRadioBurst_2019.
+Its high dispersion measure suggests an extragalactic origin consistent with observation of identified hosts such as in @bannister_SingleFastRadio_2019, @chatterjee_DirectLocalizationFast_2017, and @ravi_FastRadioBurst_2019.
 
 With increasing interests in FRBs, progress have been made in detections (especially with the commisioning of the CHIME/FRB telescope [@thechimefrbcollaborationCHIMEFastRadio2018] and in the future, BURSTT [@lin_BURSTTBustlingUniverse_2022]), theoretical models (a list of theories can be found in @platts_LivingTheoryCatalogue_2019), and analyses (especially on regularly repeating bursts such as FRB20121102A and FRB20180916B).
 For an in-depth review of the growth of FRB research, readers are suggested to read @petroff_FastRadioBursts_2019 and their follow-up review @petroff_FastRadioBursts_2022.
 
 Currently, FRBs can be categorized as repeating or non-repeating.
-The population seem to favor non-repeating FRBs over repeating FRBs as @thechimefrbcollaborationCHIMEFastRadio2018 reports on 18 (3.7%) repeating sources are among 492 FRB sources detected^[<https://www.chime-frb.ca/catalog>].
+The population seem to favor non-repeating FRBs over repeating FRBs as @thechimefrbcollaborationCHIMEFastRadio2018 reports on 18 (3.7%) repeating sources are among 492 FRB sources detected [^catalog].
+A recent paper [@andersen_CHIMEFRBDiscovery_2023] estimates that repeating sources constitutes about 2.6% of known FRBs.
 However, it is important to note that there is no guarantee that one-off FRBs will not repeat.
 Following this assumption, the term 'apparently non-repeating FRB' have been used in various papers, such as in @cui_FastRadioBursts_2021, @cui_StatisticalPropertiesFast_2021, and @katz_AbsencePeriodicityRepeating_2022.
+
 Multiple statistical analyses seem to support the idea that they are truly two different population of FRBs with consistent differences between repeating and non-repeating FRB in various properties [@cui_FastRadioBursts_2021; @chen_OneoffRepeatingFast_2022; @zhang_StatisticalSimilarityRepeating_2022].
-This consistency does not prevent some authors in assuming that a small part of the non-repeating FRBs might repeat in the future, as was done by @bohanchen_UncloakingHiddenRepeating_2021, @luo_MachineLearningClassification_2022, @zhu-ge_MachineLearningClassification_2022, and @pleunis_FastRadioBurst_2021.
+This consistency does not prevent some authors in assuming that a small part of the non-repeating FRBs might repeat in the future dubbed as 'potentially repeating' or 'repeater candidates', as was done by @bohanchen_UncloakingHiddenRepeating_2021, @luo_MachineLearningClassification_2022, @zhu-ge_MachineLearningClassification_2022, and @pleunis_FastRadioBurst_2021.
 
 Regularly repeating FRBs such as FRB20121102A and FRB20180916B are rare.
 Most of the repeaters currently identified has a limited sample which makes it hard to study its individual property.
 As such, many repeaters are understudied as its low number of samples provide limited certainty.
 This paper tries to study the property of individual sources with limited samples.
 
-Since periodicity generally requires many data points, this paper examines whether it is possible to determine the periodicity of a source with at least 50% confidence using samples with more than 3 and less than 20 event counts?
+Since periodicity generally requires many data points, this paper examines whether it is possible to determine the periodicity of a source with at least 50% confidence using samples with more than 3 and less than 20 event counts.
 If so, what are the criteria to differentiate between determinable and non-determinable periodicity?
 Having this criteria can help anticipate new detections.
 
+[^catalog]: <https://www.chime-frb.ca/catalog>
+
 # Methodology
 
-<!-- TODO Confirm event counts -->
-This paper will examine the periodicity of FRB20190915D (13 detections) and FRB20191106C (7 detections) from the CHIME/FRB Catalog 2023^[<https://www.chime-frb.ca/repeater_catalog>] [@andersen_CHIMEFRBDiscovery_2023].
-This paper will also include FRB20180916B (? detections) from CHIME/FRB Catalog 1^[<https://www.chime-frb.ca/catalog>] [@thechimefrbcollaborationFirstCHIMEFRB2021] to compare the validity of methods since its periodicity value is well quantified to be around 16 days [@thechimefrbcollaborationPeriodicActivityFast2020; @sand_CHIMEFRBStudy_2023].
+This paper will examine the periodicity of FRB20190915D (10 detections) and FRB20191106C (7 detections) from the CHIME/FRB Catalog 2023^[<https://www.chime-frb.ca/repeater_catalog>] [@andersen_CHIMEFRBDiscovery_2023].
+This paper will also include FRB20180916B (77 detections) from CHIME/FRB Catalog 1 [^catalog] [@thechimefrbcollaborationFirstCHIMEFRB2021] to compare the validity of methods since its periodicity value is well quantified to be around 16 days [@thechimefrbcollaborationPeriodicActivityFast2020; @sand_CHIMEFRBStudy_2023].
 
 ## Periodogram
 A periodogram is a function of cost versus periods which quantifies the strength of the fit between the given period and the time series data.
@@ -136,7 +145,7 @@ The periodograms of FRB20180916B (left), FRB20190915D (middle column) and FRB201
 :::
 
 
-| burst name    |Lomb--Scargle  | Duty Cycle | Phase Dispersion Minimization |
+| burst name    |LS  | DC | PDM |
 | :---          |:---:          | :---:       | :---: |
 | FRB20180916B  | 16.33±0.00    | 16.30±0.21 (36.8%) | 23.56±0.00 |
 | FRB20190915D  | 30.06±10.21   | 29.97±0.95 (10.5%) | 47.75±0.14 |
@@ -209,10 +218,14 @@ This might explain the ever increasing detection count as it reaches peak and th
 # Conclusion
 
 This paper determines that it is possible to evaluate the periodicity of FRBs despite small event counts.
+The choice of periodogram seems to matter as the Phase Dispersion Minimization method seems to offshoot for FRBs, but using multiple periodogram methods help find a consistent pattern. 
 The bimodal distribution of waiting times seems crucial in the determinability of its periodicity.
 This paper also hints that there might a new class of FRB whose repeatability seems limited -- such as an inspiraling collision -- suggesting that FRBs might be divided into three classes: (i) continuously repeating, (ii) limited repeating, or (iii) one-off.
 
 # Acknowledgement
+
+The authors wishes to thank the team from CHIME/FRB for their initiative in open data which allowed this work to happen.
+We would like to acknowledge the grant <TODO: GRANT NUMBER> for funding the research activities of the radio cosmology lab group in Universiti Malaya in which the development of the Malaysian VGOS radio telescope is taking place.
 
 <!-- TODO: Acknowledge geran VGOS 'for funding the the radio cosmology lab research activities' -->
 

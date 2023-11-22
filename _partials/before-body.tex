@@ -1,0 +1,16 @@
+$if(has-frontmatter)$
+\frontmatter
+$endif$
+$if(abstract)$
+\begin{abstract}
+    $abstract$
+\end{abstract}
+$endif$
+$if(title)$
+\author{$for(authors)$$it.name.literal$$sep$$endfor$}
+$if(beamer)$
+\frame{\titlepage}
+$else$
+\maketitle
+$endif$
+$endif$
