@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.13)  20 NOV 2023 17:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.13)  24 NOV 2023 21:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -376,7 +376,8 @@ Class revtex4-2 Info: multicol was not loaded (OK!) on input line 20.
 File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count307
 \l__pdf_internal_box=\box71
-) (./main.aux)
+)
+No file main.aux.
 \openout1 = `main.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
@@ -397,14 +398,13 @@ LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
 LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 20.
 LaTeX Font Info:    ... okay on input line 20.
- (c:/tools/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
+(c:/tools/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
  (c:/tools/TinyTeX/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
 Package hyperref Info: Link coloring OFF on input line 20.
- (./main.out) (./main.out)
 \@outlinefile=\write4
 \openout4 = `main.out'.
 
@@ -417,153 +417,277 @@ Class revtex4-2 Info: Line numbering not turned on yet on input line 20.
 \openout3 = `mainNotes.bib'.
 
 Class revtex4-2 Info: Overriding \@LN@LLerror on input line 20.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 49.
  (c:/tools/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 60.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 49.
  (c:/tools/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 10000) in paragraph at lines 93--95
+
+Package natbib Warning: Citation `lorimer_BrightMillisecondRadio_2007' on page 1 undefined on input line 53.
+
+
+Package natbib Warning: Citation `bannister_SingleFastRadio_2019' on page 1 undefined on input line 55.
+
+
+Package natbib Warning: Citation `chatterjee_DirectLocalizationFast_2017' on page 1 undefined on input line 55.
+
+
+Package natbib Warning: Citation `ravi_FastRadioBurst_2019' on page 1 undefined on input line 55.
+
+
+Package natbib Warning: Citation `thechimefrbcollaborationCHIMEFastRadio2018' on page 1 undefined on input line 57.
+
+
+Package natbib Warning: Citation `lin_BURSTTBustlingUniverse_2022' on page 1 undefined on input line 57.
+
+
+Package natbib Warning: Citation `platts_LivingTheoryCatalogue_2019' on page 1 undefined on input line 57.
+
+
+Package natbib Warning: Citation `petroff_FastRadioBursts_2019' on page 1 undefined on input line 58.
+
+
+Package natbib Warning: Citation `petroff_FastRadioBursts_2022' on page 1 undefined on input line 58.
+
+
+Package natbib Warning: Citation `thechimefrbcollaborationCHIMEFastRadio2018' on page 1 undefined on input line 61.
+
+
+Package natbib Warning: Citation `Note1' on page 1 undefined on input line 61.
+
+
+Package natbib Warning: Citation `andersen_CHIMEFRBDiscovery_2023' on page 1 undefined on input line 62.
+
+
+Package natbib Warning: Citation `cui_FastRadioBursts_2021' on page 1 undefined on input line 64.
+
+
+Package natbib Warning: Citation `cui_StatisticalPropertiesFast_2021' on page 1 undefined on input line 64.
+
+
+Package natbib Warning: Citation `katz_AbsencePeriodicityRepeating_2022' on page 1 undefined on input line 64.
+
+
+Package natbib Warning: Citation `cui_FastRadioBursts_2021' on page 1 undefined on input line 66.
+
+
+Package natbib Warning: Citation `chen_OneoffRepeatingFast_2022' on page 1 undefined on input line 66.
+
+
+Package natbib Warning: Citation `zhang_StatisticalSimilarityRepeating_2022' on page 1 undefined on input line 66.
+
+
+Package natbib Warning: Citation `bohanchen_UncloakingHiddenRepeating_2021' on page 1 undefined on input line 67.
+
+
+Package natbib Warning: Citation `luo_MachineLearningClassification_2022' on page 1 undefined on input line 67.
+
+
+Package natbib Warning: Citation `zhu-ge_MachineLearningClassification_2022' on page 1 undefined on input line 67.
+
+
+Package natbib Warning: Citation `pleunis_FastRadioBurst_2021' on page 1 undefined on input line 67.
+
+
+Package natbib Warning: Citation `Note2' on page 1 undefined on input line 80.
+
+
+Package natbib Warning: Citation `andersen_CHIMEFRBDiscovery_2023' on page 1 undefined on input line 80.
+
+
+Package natbib Warning: Citation `Note1' on page 1 undefined on input line 81.
+
+
+Package natbib Warning: Citation `thechimefrbcollaborationFirstCHIMEFRB2021' on page 1 undefined on input line 81.
+
+
+Package natbib Warning: Citation `thechimefrbcollaborationPeriodicActivityFast2020' on page 1 undefined on input line 81.
+
+
+Package natbib Warning: Citation `sand_CHIMEFRBStudy_2023' on page 1 undefined on input line 81.
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 80--82
 []\OT1/cmr/m/n/10 This pa-per will ex-am-ine the pe-ri-od-ic-ity of
  []
 
 
-Underfull \hbox (badness 1845) in paragraph at lines 93--95
-\OT1/cmr/m/n/10 de-tec-tions) from CHIME/FRB Cat-a-log 1[[]][[]] to
- []
+Package natbib Warning: Citation `lomb_LeastSquaresFrequencyAnalysis_1976' on page 1 undefined on input line 93.
+
+
+Package natbib Warning: Citation `scargle_StudiesAstronomicalTime_1982' on page 1 undefined on input line 93.
+
+
+Package natbib Warning: Citation `vanderplas_UnderstandingLombScargle_2018' on page 1 undefined on input line 95.
+
+
+Package natbib Warning: Citation `Note3' on page 1 undefined on input line 96.
 
 [1{c:/tools/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 1137) in paragraph at lines 123--127
+
+Package natbib Warning: Citation `rajwade_PossiblePeriodicActivity_2020' on page 2 undefined on input line 101.
+
+
+Package natbib Warning: Citation `stellingwerf_PeriodDeterminationUsing_1978' on page 2 undefined on input line 106.
+
+
+Package natbib Warning: Citation `Note4' on page 2 undefined on input line 109.
+
+
+Underfull \hbox (badness 1137) in paragraph at lines 106--110
 []\OT1/cmr/m/n/10 Phase Dis-per-sion Min-i-miza-tion is a phase--folding
  []
 
-<figs/periodograms.png, id=157, 505.89pt x 505.89pt>
-File: figs/periodograms.png Graphic file (type png)
-<use figs/periodograms.png>
-Package pdftex.def Info: figs/periodograms.png  used on input line 159.
+
+Package natbib Warning: Citation `vanderplas_UnderstandingLombScargle_2018' on page 2 undefined on input line 116.
+
+
+Package natbib Warning: Citation `rajwade_PossiblePeriodicActivity_2020' on page 2 undefined on input line 123.
+
+
+LaTeX Warning: Reference `tbl-result' on page 2 undefined on input line 133.
+
+
+LaTeX Warning: Reference `fig-periodogram' on page 2 undefined on input line 133.
+
+
+Package natbib Warning: Citation `thechimefrbcollaborationPeriodicActivityFast2020' on page 2 undefined on input line 133.
+
+
+Package natbib Warning: Citation `sand_CHIMEFRBStudy_2023' on page 2 undefined on input line 133.
+
+<periodograms.png, id=26, 505.89pt x 505.89pt>
+File: periodograms.png Graphic file (type png)
+<use periodograms.png>
+Package pdftex.def Info: periodograms.png  used on input line 143.
 (pdftex.def)             Requested size: 255.0pt x 255.0054pt.
 
-Overfull \hbox (9.0pt too wide) in paragraph at lines 159--160
+Overfull \hbox (9.0pt too wide) in paragraph at lines 143--144
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 169--169
+Underfull \hbox (badness 10000) in paragraph at lines 153--153
 []|\OT1/cmr/m/n/9 16.30\TS1/cmr/m/n/9 ±\OT1/cmr/m/n/9 0.21
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 170--170
+Underfull \hbox (badness 10000) in paragraph at lines 154--154
 []|\OT1/cmr/m/n/9 29.97\TS1/cmr/m/n/9 ±\OT1/cmr/m/n/9 0.95
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 171--171
+Underfull \hbox (badness 10000) in paragraph at lines 155--155
 []|\OT1/cmr/m/n/9 33.16\TS1/cmr/m/n/9 ±\OT1/cmr/m/n/9 26.21
  []
 
 
-Overfull \hbox (7.99246pt too wide) in paragraph at lines 171--171
+Overfull \hbox (7.99246pt too wide) in paragraph at lines 155--155
 []|\OT1/cmr/m/n/9 122.31\TS1/cmr/m/n/9 ±\OT1/cmr/m/n/9 108.51| 
  []
 
 
-Underfull \hbox (badness 6526) in paragraph at lines 176--179
+Underfull \hbox (badness 6526) in paragraph at lines 160--163
 []\OT1/cmr/m/n/10 This pat-tern also emerges in the re-sults for
  []
 
-[2]
+[2 <./periodograms.png>]
 
-LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix] on input line 183.
+LaTeX Warning: A float is stuck (cannot be placed); try class option [floatfix] on input line 163.
 
-<./figs/FRB20180916B-phase-16.33.png, id=176, 361.35pt x 361.35pt>
-File: ./figs/FRB20180916B-phase-16.33.png Graphic file (type png)
-<use ./figs/FRB20180916B-phase-16.33.png>
-Package pdftex.def Info: ./figs/FRB20180916B-phase-16.33.png  used on input line 189.
+<FRB20180916B-phase-16.33.png, id=43, 361.35pt x 361.35pt>
+File: FRB20180916B-phase-16.33.png Graphic file (type png)
+<use FRB20180916B-phase-16.33.png>
+Package pdftex.def Info: FRB20180916B-phase-16.33.png  used on input line 172.
 (pdftex.def)             Requested size: 117.29782pt x 117.29951pt.
-<./figs/FRB20190915D-phase-30.06.png, id=177, 361.35pt x 361.35pt>
-File: ./figs/FRB20190915D-phase-30.06.png Graphic file (type png)
-<use ./figs/FRB20190915D-phase-30.06.png>
-Package pdftex.def Info: ./figs/FRB20190915D-phase-30.06.png  used on input line 190.
+<FRB20190915D-phase-30.06.png, id=44, 361.35pt x 361.35pt>
+File: FRB20190915D-phase-30.06.png Graphic file (type png)
+<use FRB20190915D-phase-30.06.png>
+Package pdftex.def Info: FRB20190915D-phase-30.06.png  used on input line 173.
 (pdftex.def)             Requested size: 117.29782pt x 117.29951pt.
-<figs/waiting.png, id=179, 474.0912pt x 360.6273pt>
-File: figs/waiting.png Graphic file (type png)
-<use figs/waiting.png>
-Package pdftex.def Info: figs/waiting.png  used on input line 212.
+
+LaTeX Warning: Reference `sec-why-30' on page 3 undefined on input line 186.
+
+<waiting.png, id=45, 474.0912pt x 360.6273pt>
+File: waiting.png Graphic file (type png)
+<use waiting.png>
+Package pdftex.def Info: waiting.png  used on input line 194.
 (pdftex.def)             Requested size: 255.0pt x 193.97096pt.
 
-Overfull \hbox (9.0pt too wide) in paragraph at lines 212--213
+Overfull \hbox (9.0pt too wide) in paragraph at lines 194--195
  [][] 
  []
 
 
-Underfull \hbox (badness 1259) in paragraph at lines 215--221
+LaTeX Warning: Reference `fig-waitingtime' on page 3 undefined on input line 198.
+
+
+Package natbib Warning: Citation `hewitt_AreciboObservationsBurst_2022' on page 3 undefined on input line 199.
+
+
+Package natbib Warning: Citation `jahns_FRB20121102ANovember_2022' on page 3 undefined on input line 199.
+
+
+Underfull \hbox (badness 1259) in paragraph at lines 197--202
 \OT1/cmr/m/n/10 bi-modal dis-tri-bu-tion con-sis-tent with FRB20180916B
  []
 
-[3 <./figs/periodograms.png> <./figs/FRB20180916B-phase-16.33.png> <./figs/FRB20190915D-phase-30.06.png> <./figs/waiting.png>]
-<./figs/FRB20190915D-countplot.png, id=198, 1084.05pt x 361.35pt>
-File: ./figs/FRB20190915D-countplot.png Graphic file (type png)
-<use ./figs/FRB20190915D-countplot.png>
-Package pdftex.def Info: ./figs/FRB20190915D-countplot.png  used on input line 237.
+<./FRB20190915D-countplot.png, id=46, 1084.05pt x 361.35pt>
+File: ./FRB20190915D-countplot.png Graphic file (type png)
+<use ./FRB20190915D-countplot.png>
+Package pdftex.def Info: ./FRB20190915D-countplot.png  used on input line 218.
 (pdftex.def)             Requested size: 255.0pt x 84.99997pt.
 
-Overfull \hbox (9.0pt too wide) in paragraph at lines 237--238
+Overfull \hbox (9.0pt too wide) in paragraph at lines 218--219
  [][] 
  []
 
-
-Underfull \hbox (badness 5607) in paragraph at lines 249--253
+[3 <./FRB20180916B-phase-16.33.png> <./FRB20190915D-phase-30.06.png> <./waiting.png>]
+Underfull \hbox (badness 5607) in paragraph at lines 230--232
 []\OT1/cmr/m/n/10 The au-thors wishes to thank the team from
  []
 
-(./main.bbl [4 <./figs/FRB20190915D-countplot.png>]
-Underfull \hbox (badness 1629) in paragraph at lines 99--100
- []\OT1/cmr/m/n/9 K. Zhang, L. Li, Z. Zhang, Q. Li, J. Luo, and
- []
+No file main.bbl.
 
+Package natbib Warning: There were undefined citations.
 
-Underfull \hbox (badness 1365) in paragraph at lines 99--100
- \OT1/cmr/m/n/9 Non-Repeating Fast Ra-dio Bursts, []Uni-verse \OT1/cmr/bx/n/9 8\OT1/cmr/m/n/9 , 355
- []
-
-[5]
-Underfull \hbox (badness 10000) in paragraph at lines 135--136
- [][]$\OT1/cmtt/m/n/9 https : / / docs . astropy . org / en / stable / api / astropy .
- []
-
-
-Underfull \hbox (badness 1253) in paragraph at lines 147--148
- []\OT1/cmr/m/n/9 D. M. He-witt, M. P. Snelders, J. W. T. Hes-sels,
- []
-
-) [6] (./main.aux)
+[4 <./FRB20190915D-countplot.png>] (./main.aux)
  ***********
 LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-09>
  ***********
 
 
+LaTeX Warning: There were undefined references.
+
+
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 22A13ADEED772A478649E4A1E091E075;3293.
+
+Package rerunfilecheck Warning: File `main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `main.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  5FE9A8824C796812CF45305D7765BD5A;3187.
  ) 
 Here is how much of TeX's memory you used:
- 12865 strings out of 476226
- 199625 string characters out of 5796974
- 1960558 words of memory out of 5000000
- 34595 multiletter control sequences out of 15000+600000
- 572075 words of font info for 87 fonts, out of 8000000 for 9000
+ 12668 strings out of 476226
+ 193587 string characters out of 5796974
+ 1950558 words of memory out of 5000000
+ 34445 multiletter control sequences out of 15000+600000
+ 571562 words of font info for 85 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 75i,9n,79p,5237b,668s stack positions out of 10000i,1000n,20000p,200000b,200000s
- <c:/tools/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0900.600pk> <c:/tools/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
-Output written on main.pdf (6 pages, 359151 bytes).
+ 75i,9n,79p,519b,517s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ <c:/tools/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm0900.600pk> <c:/tools/TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1000.600pk><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb><c:/tools/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmti9.pfb>
+Output written on main.pdf (4 pages, 325964 bytes).
 PDF statistics:
- 365 PDF objects out of 1000 (max. 8388607)
- 312 compressed objects within 4 object streams
- 63 named destinations out of 1000 (max. 500000)
- 170 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 140 PDF objects out of 1000 (max. 8388607)
+ 95 compressed objects within 1 object stream
+ 27 named destinations out of 1000 (max. 500000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

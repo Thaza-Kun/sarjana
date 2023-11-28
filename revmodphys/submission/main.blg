@@ -28,7 +28,7 @@ Control: year (1) truncated
 Control: production of eprint (0) enabled
 You've used 35 entries,
             6079 wiz_defined-function locations,
-            1893 strings with 31293 characters,
+            1893 strings with 31289 characters,
 and the built_in function-call counts, 79471 in all, are:
 = -- 2938
 > -- 4145
