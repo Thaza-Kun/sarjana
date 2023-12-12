@@ -1,7 +1,0 @@
-# Conclusion
-
-Current effort to classify FRB other than the obvious difference between repeaters and non-repeaters are very speculative due to the lack of information on FRB.
-Most of these efforts are based on the data released by CHIME/FRB.
-Data outside of the CHIME/FRB telescope is often neglected due to the difference in robustness between the reported properties. 
-If data from other telescopes were to be included in the analysis, considerable efforts will be needed to process those data with the same robustness offered by CHIME/FRB Catalog.
-More data is expected in the future, especially from but not limited to CHIME/FRB, and is hoped to reveal some differences between properties and may reveal the nature of these mysterious bursts.

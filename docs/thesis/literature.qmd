@@ -1,9 +1,0 @@
-# Literature Review
-
-:::{.as-subchapter}
-{{< include properties.qmd >}}
-:::
-
-::::{.as-subchapter}
-{{< include classification.qmd >}}
-::::

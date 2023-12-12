@@ -1,7 +1,0 @@
-title: Include Subchapter
-author: Murthadza Aznam
-version: 1.0.0
-quarto-required: ">=1.2"
-contributes:
-  filters:
-    - include-subchapters.lua
