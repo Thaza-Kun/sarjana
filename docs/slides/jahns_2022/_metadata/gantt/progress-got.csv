@@ -1,0 +1,11 @@
+start,end,phase,task
+2022-10-17,2023-07-27,Data Exploration,Data Collection
+2022-10-17,2022-12-26,Data Exploration,Literature Review
+2022-10-17,2022-12-26,Data Exploration,Machine Learning
+2022-12-26,2023-03-17,Theoretical Study,Literature Review
+2022-12-26,2023-04-17,Theoretical Study,Theoretical Consideration
+2023-04-17,2023-07-27,Statistical Study,Literature Review
+2023-04-17,2023-10-16,Statistical Study,Statistical Testing
+2023-10-16,2024-04-15,Extrapolation,Signal Processing
+2024-02-01,2024-04-15,Extrapolation,Analysis
+2024-02-01,2024-10-14,Thesis Writing,Thesis Writing
