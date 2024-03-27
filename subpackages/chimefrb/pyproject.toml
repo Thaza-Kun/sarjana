@@ -1,28 +1,17 @@
 [project]
-name = "sarjana"
+name = "chimefrb"
 version = "0.1.0"
 description = "Add your description here"
-authors = [
-    { name = "Thaza_Kun", email = "61819672+Thaza-Kun@users.noreply.github.com" }
-]
 dependencies = [
-    "rich>=13.7.1",
-    "typer>=0.9.0",
     "pandas>=2.2.1",
     "numpy>=1.26.4",
-    "astropy>=6.0.0",
     "pyarrow>=15.0.1",
+    "astropy>=6.0.0",
     "matplotlib>=3.8.3",
-    "seaborn>=0.13.2",
-    "pypdm>=1.1",
-    "py-pdm>=0.6.0",
-    "scipy>=1.12.0"
+    "PySide2>=5.13.2",
 ]
 readme = "README.md"
-requires-python = ">= 3.11"
-
-[project.scripts]
-hello = "sarjana:hello"
+requires-python = ">= 3.8"
 
 [build-system]
 requires = ["hatchling"]
@@ -36,4 +25,4 @@ dev-dependencies = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/sarjana"]
+packages = ["src/chimefrb"]

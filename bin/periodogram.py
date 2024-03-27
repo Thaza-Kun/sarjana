@@ -333,38 +333,44 @@ def calculate(
 
 def graph(width: float, height: float, wspcae: float = typer.Option(0.15)):
     methods = defaultdict(defaultdict)
-    freqgrid = np.load('./data/freq-grid.npy')
+    freqgrid = np.load("./data/freq-grid.npy")
     for method in ["LS", "PF", "PDM"]:
         items = defaultdict(np.array)
         for name in FRBName._member_names_:
-            items[name] = np.load(f'./data/{name}-{method}-power.npy')
+            items[name] = np.load(f"./data/{name}-{method}-power.npy")
         methods[method] = items
-    print(methods['LS'][FRBName.FRB20190915D])
+    print(methods["LS"][FRBName.FRB20190915D])
     print(freqgrid)
-    fig, ax = plt.subplots(3,3, sharex=True, figsize=(width,height))
+    fig, ax = plt.subplots(3, 3, sharex=True, figsize=(width, height))
     fig.subplots_adjust(hspace=0)
     fig.suptitle("Periodograms of different methods and FRBs")
-    fig.supxlabel('Period (days)')
+    fig.supxlabel("Period (days)")
     for x in ax.flatten():
-        x.set_xscale('log')
+        x.set_xscale("log")
     ax[0, 0].set_title(FRBName.FRB20180916B)
     ax[0, 1].set_title(FRBName.FRB20190915D)
     ax[0, 2].set_title(FRBName.FRB20191106C)
-    
-    for row, label, file, key in zip(range(3), ['Lomb-Scargle Power', 'Duty Cycle', 'Phase Dispersion (Theta)'], ['lomb-scargle', 'duty-cycle', 'PDM'], ['LS', 'PF', 'PDM']):
+
+    for row, label, file, key in zip(
+        range(3),
+        ["Lomb-Scargle Power", "Duty Cycle", "Phase Dispersion (Theta)"],
+        ["lomb-scargle", "duty-cycle", "PDM"],
+        ["LS", "PF", "PDM"],
+    ):
         ax[row, 0].set_ylabel(label)
-        for col, name in zip(range(3),FRBName._member_names_):
-            best = pd.read_csv(f'./data/{name}-{file}.csv')
-            ax[row, col].plot(1/freqgrid, methods[key][name])
-            ax[row, col].axvline(best['period'].item(), color='red')
+        for col, name in zip(range(3), FRBName._member_names_):
+            best = pd.read_csv(f"./data/{name}-{file}.csv")
+            ax[row, col].plot(1 / freqgrid, methods[key][name])
+            ax[row, col].axvline(best["period"].item(), color="red")
             ax[row, col].axvspan(
-                max(0, (best["period"] - (best['stdev'])).item()), 
-                (best["period"] + (best['stdev'])).item(),
-                alpha=0.2
+                max(0, (best["period"] - (best["stdev"])).item()),
+                (best["period"] + (best["stdev"])).item(),
+                alpha=0.2,
             )
-    
+
     plt.tight_layout()
-    plt.savefig('periodograms.png')
+    plt.savefig("periodograms.png")
+
 
 if __name__ == "__main__":
     app = typer.Typer()

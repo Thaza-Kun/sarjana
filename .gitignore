@@ -20,3 +20,5 @@ data/graphs/debug/*
 !*/*.qmd
 
 /.luarc.json
+**/*.npy
+**/*.png

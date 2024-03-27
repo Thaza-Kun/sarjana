@@ -70,22 +70,13 @@ def main(
         ylim=(0, 5),
     )
     size = 20
-    a.ax.set_title(
-        label=f"Number of events of {chosen_name} per day",
-        fontsize=size
-    )
-    a.ax.set_ylabel(
-        ylabel="Count",
-        fontsize=size
-    )
-    a.ax.set_xlabel(
-        xlabel="Date",
-        fontsize=size
-    )
+    a.ax.set_title(label=f"Number of events of {chosen_name} per day", fontsize=size)
+    a.ax.set_ylabel(ylabel="Count", fontsize=size)
+    a.ax.set_xlabel(xlabel="Date", fontsize=size)
     for i, b in zip(interval, interval_s):
         a.ax.axvspan(b, i, color="gray", alpha=alpha)
     a.figure.tight_layout()
-    a.set_figsize=((5,15))
+    a.set_figsize = (5, 15)
     a.ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     plt.savefig(f"{chosen_name}-countplot.png")
     pd.DataFrame(

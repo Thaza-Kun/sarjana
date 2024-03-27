@@ -66,7 +66,7 @@ def main(
     phases = phases.reset_index().rename(columns={"index": "phase_bin"})
     phases["phase"] = phases["phase_bin"].apply(lambda x: x.left)
     phases = pd.concat([phases, pd.DataFrame([{"detections": 0, "phase": 1.0}])])
-    
+
     a = sns.relplot(
         phases, x="phase", y="detections", kind="line", drawstyle="steps-post"
     )
