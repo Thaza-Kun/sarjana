@@ -38,10 +38,22 @@ CATALOG_PATH_CSV = Path(DATAPATH, "raw", "catalog2023", "chimefrb2023repeaters.c
 CATALOG1_PATH_PARQUET = Path(DATAPATH, "catalog_1.parquet")
 
 
-class FRBName(enum.StrEnum):
-    FRB20180916B = "FRB20180916B"  # (77)
-    FRB20190915D = "FRB20190915D"  # 👍 (10)
-    FRB20191106C = "FRB20191106C"  # 👎 (7)
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--folder",
+        "-f",
+        help="Folder containing {repeater_name}/{column}.npy",
+        type=pathlib.Path,
+    )
+    parser.add_argument("--out", "-o", help="Output file", type=pathlib.Path)
+    parser.add_argument("--name", help="Repeater name", type=str)
+    parser.add_argument("--begin", help="Begin date", type=datetime)
+    parser.add_argument("--end", help="End date", type=datetime)
+    parser.add_argument("--n", help="Coefficient", type=int, default=5)
+    parser.add_argument("--rate", help="Burst rate (hr-1)", type=float)
+    parser.add_argument("--outdir", help="Output dir", type=pathlib.Path)
+    return parser.parse_args()
 
 
 def calc_inactive_frac(timeseries: TimeSeries, trial_periods: np.ndarray):
@@ -141,15 +153,7 @@ def estimate_error_leave_one_out(
     )["std"]
 
 
-def calculate(
-    chosen_name: FRBName,
-    lombscargle: bool = typer.Option(False, "--ls"),
-    dutycycle: bool = typer.Option(False, "--dc"),
-    phase_disp_min: bool = typer.Option(False, "--pdm"),
-    begin: datetime = typer.Option(None),
-    end: datetime = typer.Option(None),
-    n_0: int = typer.Option(5, "--n"),
-):
+def calculate(arguments: argparse.Namespace):
     chosen_name: str = chosen_name.value
 
     cat1 = pd.read_parquet(CATALOG1_PATH_PARQUET)[
