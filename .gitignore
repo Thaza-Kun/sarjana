@@ -9,6 +9,7 @@
 data/processed/
 data/interim/
 data/graphs/debug/*
+data/*
 
 # Quarto generated output
 *.quarto/
@@ -22,3 +23,5 @@ data/graphs/debug/*
 /.luarc.json
 **/*.npy
 **/*.png
+**/*.pyd
+**/target/*
