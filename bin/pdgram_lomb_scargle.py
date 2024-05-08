@@ -77,7 +77,7 @@ def main(arguments: argparse.Namespace):
     eventdir = pathlib.Path(arguments.folder, chosen_name)
 
     def get_column(columnname: str) -> np.ndarray:
-        return np.load(pathlib.Path(arguments.folder, chosen_name, f"{columnname}.npy"))
+        return np.load(pathlib.Path(eventdir, f"{columnname}.npy"))
 
     fluences = get_column("fluence")
     fluences_time = get_column("mjd_400_barycentered")
@@ -87,7 +87,7 @@ def main(arguments: argparse.Namespace):
 
     Y = np.zeros_like(observations)
     for i, fluence in zip(np.digitize(fluences_time, observations), fluences):
-        Y[i] = fluence
+        Y[i - 1] = fluence
 
     if arguments.begin:
         Y = Y[Y > Time(arguments.begin).to_datetime()]
@@ -96,8 +96,8 @@ def main(arguments: argparse.Namespace):
 
     time = Time(observations, format="mjd")
 
-    freq_min = 2 * arguments.rate * (1 / u.hour)
-    freq_max = 3 / ((observations.max() - observations.min()) * u.day)
+    freq_min = 2.0 * arguments.rate * (1 / u.hour)
+    freq_max = 0.0001 * (1 / u.hour)
 
     print(freq_min)
     print(freq_max)
@@ -105,11 +105,11 @@ def main(arguments: argparse.Namespace):
     n_eval = max(
         min(
             int(
-                arguments.n * freq_min.value * (observations.max() - observations.min())
+                arguments.n * freq_max.value * (observations.max() - observations.min())
             ),
-            5_000,
+            10_000,
         ),
-        500,
+        1_000,
     )
 
     print(f"{n_eval=}")
@@ -120,6 +120,7 @@ def main(arguments: argparse.Namespace):
     print(arguments.name)
     print("Periodogram")
     power = LombScargle_periodogram(time, Y, freq_grid)
+    print(power)
     ls_period = 1 / freq_grid[np.nanargmax(power)]
     print("FAP")
     # ls_fap = LombScargle(time, Y).false_alarm_probability(

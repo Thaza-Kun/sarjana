@@ -29,20 +29,20 @@ import os
 
 
 def myexecute(cmd):
-    print("'%s'"%cmd)
+    print("'%s'" % cmd)
     os.system(cmd)
 
 
 # dDM steps from DDplan.py
-dDMs      = [2.0, 3.0]
+dDMs = [2.0, 3.0]
 # dsubDM steps
-dsubDMs   = [48., 72.]
+dsubDMs = [48.0, 72.0]
 # downsample factors
 downsamps = [4, 8]
 # number of calls per set of subbands
-subcalls  = [7, 3]
-# The low DM for each set of DMs 
-startDMs  = [0.0, 336.0]
+subcalls = [7, 3]
+# The low DM for each set of DMs
+startDMs = [0.0, 336.0]
 # DMs/call
 dmspercall = 24
 # Number of subbands
@@ -52,27 +52,35 @@ basename = "Lband"
 # The name of the raw data file (or files if you use wildcards) to use
 rawfiles = "GBT*.fil"
 # The name of the maskfile to apply (if no mask, use None)
-maskfile = basename+"_rfifind.mask"
+maskfile = basename + "_rfifind.mask"
 
 # Loop over the DDplan plans
-for dDM, dsubDM, downsamp, subcall, startDM in \
-        zip(dDMs, dsubDMs, downsamps, subcalls, startDMs):
+for dDM, dsubDM, downsamp, subcall, startDM in zip(
+    dDMs, dsubDMs, downsamps, subcalls, startDMs
+):
     # Get our downsampling right
-    subdownsamp = downsamp/2
+    subdownsamp = downsamp / 2
     datdownsamp = 2
-    if downsamp < 2: subdownsamp = datdownsamp = 1
+    if downsamp < 2:
+        subdownsamp = datdownsamp = 1
     # Loop over the number of calls
     for ii in range(subcall):
-        subDM = startDM + (ii+0.5)*dsubDM
+        subDM = startDM + (ii + 0.5) * dsubDM
         # First create the subbands
         if maskfile:
-            myexecute("prepsubband -mask %s -sub -subdm %.2f -nsub %d -downsamp %d -o %s %s" %
-                      (maskfile, subDM, nsub, subdownsamp, basename, rawfiles))
+            myexecute(
+                "prepsubband -mask %s -sub -subdm %.2f -nsub %d -downsamp %d -o %s %s"
+                % (maskfile, subDM, nsub, subdownsamp, basename, rawfiles)
+            )
         else:
-            myexecute("prepsubband -sub -subdm %.2f -nsub %d -downsamp %d -o %s %s" %
-                      (subDM, nsub, subdownsamp, basename, rawfiles))
+            myexecute(
+                "prepsubband -sub -subdm %.2f -nsub %d -downsamp %d -o %s %s"
+                % (subDM, nsub, subdownsamp, basename, rawfiles)
+            )
         # And now create the time series
-        loDM = startDM + ii*dsubDM
-        subnames = basename+"_DM%.2f.sub[0-9]*"%subDM
-        myexecute("prepsubband -lodm %.2f -dmstep %.2f -numdms %d -downsamp %d -o %s %s" %
-                  (loDM, dDM, dmspercall, datdownsamp, basename, subnames))
+        loDM = startDM + ii * dsubDM
+        subnames = basename + "_DM%.2f.sub[0-9]*" % subDM
+        myexecute(
+            "prepsubband -lodm %.2f -dmstep %.2f -numdms %d -downsamp %d -o %s %s"
+            % (loDM, dDM, dmspercall, datdownsamp, basename, subnames)
+        )

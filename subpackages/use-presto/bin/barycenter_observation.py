@@ -23,21 +23,19 @@ def parse_arguments() -> argparse.Namespace:
 
 def main(arguments: argparse.Namespace):
     for eventdir in arguments.path.iterdir():
-        print(eventdir)
-        topos = np.load(pathlib.Path(eventdir, "mjd_400.npy"))
-        nn = len(topos)
-
-        # # Vectors needed to be initialized
-        bary = np.zeros(nn, "d")
-        vel = np.zeros(nn, "d")
-        ra = np.load(pathlib.Path(eventdir, "ra_1.npy")).mean()
-        dec = np.load(pathlib.Path(eventdir, "dec_1.npy")).mean()
-
-        # # Output written to file
-        barycenter(topos, bary, vel, f"{ra}", f"{dec}", "CH", "DE200")
-        np.save(
-            pathlib.Path(eventdir, "mjd_400_barycentered.npy"), bary, allow_pickle=False
-        )
+        if (obspath := pathlib.Path(arguments.path, "observations.npy")).exists():
+            topos = np.load(obspath)
+            nn = len(topos)
+            # # Vectors needed to be initialized
+            bary = np.zeros(nn, "d")
+            vel = np.zeros(nn, "d")
+            # # Output written to file
+            barycenter(topos, bary, vel, f"{ra}", f"{dec}", "CH", "DE200")
+            np.save(
+                pathlib.Path(eventdir, "mjd_400_observations_barycentered.npy"),
+                bary,
+                allow_pickle=False,
+            )
 
 
 if __name__ == "__main__":

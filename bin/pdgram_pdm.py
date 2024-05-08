@@ -93,7 +93,7 @@ def main(arguments: argparse.Namespace):
 
     Y = np.zeros_like(observations)
     for i, fluence in zip(np.digitize(fluences_time, observations), fluences):
-        Y[i] = fluence
+        Y[i - 1] = fluence
 
     if arguments.begin:
         Y = Y[Y > Time(arguments.begin).to_datetime()]
@@ -106,16 +106,16 @@ def main(arguments: argparse.Namespace):
     freq_max = 3 / ((observations.max() - observations.min()) * u.day)
 
     print(freq_min)
-    print(freq_max)
+    print(freq_max.to(1 / u.hour))
 
     n_eval = max(
         min(
             int(
                 arguments.n * freq_min.value * (observations.max() - observations.min())
             ),
-            5_000,
+            10_000,
         ),
-        500,
+        1_000,
     )
     print(f"{n_eval=}")
     print(f"{(observations.max()-observations.min())=}")

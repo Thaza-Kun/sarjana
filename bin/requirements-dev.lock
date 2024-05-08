@@ -10,6 +10,7 @@
 -e file:.
 astropy==6.0.1
     # via bin
+    # via userust
 astropy-iers-data==0.2024.3.25.0.29.50
     # via astropy
 colorama==0.4.6
@@ -28,6 +29,7 @@ llvmlite==0.42.0
     # via numba
 matplotlib==3.8.3
     # via seaborn
+    # via userust
 numba==0.59.1
     # via bin
 numpy==1.26.4
@@ -38,7 +40,9 @@ numpy==1.26.4
     # via pandas
     # via py-pdm
     # via pyerfa
+    # via scipy
     # via seaborn
+    # via userust
 packaging==24.0
     # via astropy
     # via matplotlib
@@ -59,11 +63,17 @@ pytz==2024.1
     # via pandas
 pyyaml==6.0.1
     # via astropy
+scipy==1.13.0
+    # via bin
+    # via userust
 seaborn==0.13.2
     # via bin
+    # via userust
 six==1.16.0
     # via python-dateutil
 tqdm==4.66.2
     # via bin
 tzdata==2024.1
     # via pandas
+userust @ file:///D:/home/kerja/sarjana/bin/../userust
+    # via bin

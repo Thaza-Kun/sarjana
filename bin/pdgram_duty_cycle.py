@@ -168,7 +168,7 @@ def main(arguments: argparse.Namespace):
 
     Y = np.zeros_like(observations)
     for i, fluence in zip(np.digitize(fluences_time, observations), fluences):
-        Y[i] = fluence
+        Y[i - 1] = fluence
 
     if arguments.begin:
         Y = Y[Y > Time(arguments.begin).to_datetime()]
@@ -188,9 +188,9 @@ def main(arguments: argparse.Namespace):
             int(
                 arguments.n * freq_min.value * (observations.max() - observations.min())
             ),
-            5_000,
+            10_000,
         ),
-        500,
+        1_000,
     )
 
     print(f"{n_eval=}")
@@ -219,7 +219,7 @@ def main(arguments: argparse.Namespace):
 
     g = sns.lineplot(x=1 / freq_grid, y=frac)
     g.axvline(PF_period.value, color="red", alpha=1)
-    g.axvspan(low_, high_, alpha=0.3)
+    g.axvspan(min(low_, 1 / freq_grid.min().value), high_, alpha=0.3)
     g.set_xscale("log")
     g.set_xlabel("Period (days)")
     g.set_ylabel("Inactive Fraction (%)")
