@@ -33,44 +33,44 @@ def LombScargle_periodogram(
     return power
 
 
-def snr_greedy_harmonic_sum(power: np.ndarray, grid: np.ndarray) -> np.ndarray:
-    def get_snr(sums: np.ndarray, mean: float, std: float) -> float:
-        return np.max((sums - mean) / std)
+# def snr_greedy_harmonic_sum(power: np.ndarray, grid: np.ndarray) -> np.ndarray:
+#     def get_snr(sums: np.ndarray, mean: float, std: float) -> float:
+#         return np.max((sums - mean) / std)
 
-    def compare_snr(
-        snr: float, h: int, snr_max: float, h_m: float
-    ) -> Tuple[float, float]:
-        return np.nanmax([snr, snr_max]), np.nanmax([h, h_m])
+#     def compare_snr(
+#         snr: float, h: int, snr_max: float, h_m: float
+#     ) -> Tuple[float, float]:
+#         return np.nanmax([snr, snr_max]), np.nanmax([h, h_m])
 
-    SNR = np.empty(len(grid))
-    for i, f in enumerate(grid):
-        let_sum = 0
-        d = 0
-        snr_max = 0
-        h_m = 0
-        # fundamental bin
-        x_d = power[i]
-        x_d_plus_1 = power[min(i + 1, len(grid) - 1)]
-        if x_d_plus_1 > x_d:
-            d += 1
-            let_sum += x_d_plus_1
-        else:
-            let_sum += x_d
-        snr_max = get_snr(let_sum, np.mean(power), np.std(power))
-        # higher harmonics
-        for h in range(arguments.harmonics):
-            x_d = power[min(int(h * i + d), len(grid) - 1)]
-            x_d_plus_1 = power[min(int(h * i + d + 1), len(grid) - 1)]
-            if x_d_plus_1 > x_d:
-                d += 1
-                let_sum += x_d_plus_1
-            else:
-                let_sum += x_d
-            snr = get_snr(let_sum, np.mean(power), np.std(power))
-            snr_max, h_m = compare_snr(snr_max, h_m, snr, h)
-        SNR[i] = snr_max
-        h_0 = h_m
-    return SNR
+#     SNR = np.empty(len(grid))
+#     for i, f in enumerate(grid):
+#         let_sum = 0
+#         d = 0
+#         snr_max = 0
+#         h_m = 0
+#         # fundamental bin
+#         x_d = power[i]
+#         x_d_plus_1 = power[min(i + 1, len(grid) - 1)]
+#         if x_d_plus_1 > x_d:
+#             d += 1
+#             let_sum += x_d_plus_1
+#         else:
+#             let_sum += x_d
+#         snr_max = get_snr(let_sum, np.mean(power), np.std(power))
+#         # higher harmonics
+#         for h in range(arguments.harmonics):
+#             x_d = power[min(int(h * i + d), len(grid) - 1)]
+#             x_d_plus_1 = power[min(int(h * i + d + 1), len(grid) - 1)]
+#             if x_d_plus_1 > x_d:
+#                 d += 1
+#                 let_sum += x_d_plus_1
+#             else:
+#                 let_sum += x_d
+#             snr = get_snr(let_sum, np.mean(power), np.std(power))
+#             snr_max, h_m = compare_snr(snr_max, h_m, snr, h)
+#         SNR[i] = snr_max
+#         h_0 = h_m
+#     return SNR
 
 
 @dataclass
@@ -167,8 +167,21 @@ def main(arguments: argparse.Namespace):
     simdir = pathlib.Path(outdir, name)
     simdir.mkdir(parents=True, exist_ok=True)
 
+    observations = thisfrb.telescope_observations
     if arguments.freq_grid is not None:
         freq_grid = np.load(arguments.freq_grid) * (1 / u.hour)
+    elif arguments.rate is not None:
+        n_eval = arguments.grid
+        freq_min = 2 * arguments.rate * (1 / u.hour)
+        freq_max = 3 / ((observations.max() - observations.min()) * u.day)
+
+        freq_grid = np.linspace(freq_max, freq_min, n_eval)
+    else:
+        n_eval = arguments.grid
+        freq_min = 0.1 * (1 / u.hour)
+        freq_max = 3 / ((observations.max() - observations.min()) * u.day)
+
+        freq_grid = np.linspace(freq_max, freq_min, n_eval)
 
     view_index = len(sim_frb.signal[(sim_frb.telescope_observations < begin)])
     view_len = len(view)
@@ -182,9 +195,9 @@ def main(arguments: argparse.Namespace):
         view_len,
         detection_rate,
         arguments,
-        rng,
+        arguments.seed,
         LombScargle_periodogram,
-        snr_greedy_harmonic_sum,
+        # snr_greedy_harmonic_sum,
         find_peaks,
         sim_ensemble,
         frb_ensemble,
@@ -199,8 +212,8 @@ def main(arguments: argparse.Namespace):
     #     pickle.dump(frb_ensemble, f)
 
     print(f"Drawing figure to {outdir}")
-    sim_ensemble.filter(snr=cutoff_SNR, power=cutoff_power)
-    frb_ensemble.filter(snr=cutoff_SNR, power=cutoff_power)
+    # sim_ensemble.filter(snr=cutoff_SNR, power=cutoff_power)
+    # frb_ensemble.filter(snr=cutoff_SNR, power=cutoff_power)
     plotted = {
         "freq": np.concatenate((1 / np.array(sim_ensemble.freq), 1 / np.array(frb_ensemble.freq))),
         "power": np.concatenate((sim_ensemble.power, frb_ensemble.power)),
@@ -212,8 +225,6 @@ def main(arguments: argparse.Namespace):
             )
         ),
     }
-    print(plotted)
-
     fig, axs = plt.subplots(2, 2)
 
     g = sns.histplot(
@@ -256,7 +267,6 @@ def main(arguments: argparse.Namespace):
     )
     g.set_xlabel("SNR")
     g.set_ylabel("Power")
-    print(plotted)
 
     g = sns.histplot(
         data=plotted,
