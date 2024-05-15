@@ -10,7 +10,7 @@ mod args {
     pub struct Arguments {
         // Required because clap interprets `file.py` from `python file.py` as the first argument
         #[cfg(feature = "pyargs")]
-        _pyfile: String,
+        pub(crate) _pyfile: String,
         #[arg(short, long)]
         #[pyo3(get)]
         pub parent: std::path::PathBuf,
@@ -35,7 +35,7 @@ mod args {
         #[arg(long, default_value = None)]
         #[pyo3(get)]
         pub rate: Option<f64>,
-        #[arg(long, default_value_t = 25.)]
+        #[arg(long, default_value_t = 0.)]
         #[pyo3(get)]
         pub min_SNR: f32,
         #[arg(long, default_value_t = 0.)]
@@ -47,7 +47,7 @@ mod args {
         #[arg(long, default_value = None)]
         #[pyo3(get)]
         pub period: Option<f64>,
-        #[arg(long, default_value_t = 10.)]
+        #[arg(long, default_value_t = 1.)]
         #[pyo3(get)]
         pub snr_scale: f64,
     }
@@ -79,23 +79,41 @@ mod ensemble {
         pub snr: Vec<f64>,
         #[pyo3(get)]
         pub freq: Vec<f64>,
+        #[pyo3(get)]
+        pub group: Vec<u128>,
     }
 
     #[pymethods]
     impl Ensemble {
-        #[new]
-        fn new() -> Self {
+        #[staticmethod]
+        fn empty() -> Self {
             Ensemble {
                 runs: 0,
                 power: vec![],
                 snr: vec![],
                 freq: vec![],
+                group: vec![],
+            }
+        }
+
+        #[new]
+        fn new(power: Vec<f64>, snr: Vec<f64>, freq: Vec<f64>, group: Vec<u128>) -> Self {
+            Ensemble {
+                runs: *group
+                    .iter()
+                    .max_by(|x, y| x.partial_cmp(y).unwrap())
+                    .unwrap(),
+                power,
+                snr,
+                freq,
+                group,
             }
         }
 
         fn __repr__(&self) -> String {
             format!("{:?}", self)
         }
+
         fn filter(&mut self, power: Option<f64>, snr: Option<f64>) {
             if let Some(snr_) = snr {
                 let filter = Vec::from_iter(self.snr.iter())
@@ -123,6 +141,13 @@ mod ensemble {
                     .filter(|(_s, f)| f == &&true)
                     .map(|(&s, _f)| s)
                     .collect::<Vec<f64>>();
+                self.group = self
+                    .group
+                    .iter()
+                    .zip(&filter)
+                    .filter(|(_s, f)| f == &&true)
+                    .map(|(&s, _f)| s)
+                    .collect::<Vec<u128>>();
             }
             if let Some(power_) = power {
                 let filter = Vec::from_iter(self.snr.iter())
@@ -150,6 +175,13 @@ mod ensemble {
                     .filter(|(_s, f)| f == &&true)
                     .map(|(&s, _f)| s)
                     .collect::<Vec<f64>>();
+                self.group = self
+                    .group
+                    .iter()
+                    .zip(&filter)
+                    .filter(|(_s, f)| f == &&true)
+                    .map(|(&s, _f)| s)
+                    .collect::<Vec<u128>>();
             }
         }
     }
@@ -160,6 +192,12 @@ mod ensemble {
             self.snr.extend_from_slice(snr);
             self.freq.extend_from_slice(freq);
             self.runs += 1;
+            self.group.extend_from_slice(
+                std::iter::repeat(self.runs)
+                    .take(power.len())
+                    .collect::<Vec<u128>>()
+                    .as_slice(),
+            )
         }
     }
 
@@ -260,7 +298,8 @@ mod ensemble {
     }
 
     #[pyfunction]
-    pub fn iterate_periodogram(
+    // #[cfg(feature = "pyargs")]
+    pub fn generate_periodogram_ensembles(
         py: Python<'_>,
         sim_signal: Bound<'_, PyArray1<f64>>,
         // astropy.Time
@@ -275,21 +314,24 @@ mod ensemble {
         seed: usize,
         periodogram: Bound<'_, PyFunction>,
         find_peak: Bound<'_, PyFunction>,
-        mut sim_ensemble: Ensemble,
-        mut frb_ensemble: Ensemble,
         py_freq_grid: PyObject,
     ) -> PyResult<(Ensemble, Ensemble)> {
         let mut rng = ChaCha8Rng::seed_from_u64(seed as u64);
+        let mut sim_ensemble = Ensemble::empty();
+        let mut frb_ensemble = Ensemble::empty();
         let sim_signal = sim_signal.to_vec().unwrap();
+
         let freq_grid =
             Array1::from_vec(py_freq_grid.getattr(py, "value")?.extract::<Vec<f64>>(py)?);
+
         let prepend = std::iter::repeat(false)
             .take(view_index.into())
             .collect::<Vec<bool>>();
         let append = std::iter::repeat(false)
             .take(sim_signal.len() - (view_index + view_length) as usize)
             .collect::<Vec<bool>>();
-        for _ in tqdm!(0..arguments.runs, position = 0) {
+
+        for n in tqdm!(0..arguments.runs, position = 0) {
             let filter: Vec<bool> = (0..view_length)
                 .map(|_| {
                     [
@@ -335,9 +377,28 @@ mod ensemble {
             }
 
             {
+                let shifted_py_freq_grid = py_freq_grid
+                    .clone()
+                    .getattr(py, "__add__")
+                    .unwrap()
+                    .call1(
+                        py,
+                        (
+                            py.eval_bound(&format!("({} / u.hour)", (n as f64 * 1e-3)), None, None)
+                                .expect(&format!(
+                            "Perhaps `u` is not recognized. Try `import astro.units as u` in {}.",
+                            if cfg!(feature = "pyargs") {
+                                arguments._pyfile.clone()
+                            } else {
+                                "python file".to_string()
+                            }
+                        )),
+                        ),
+                    )
+                    .unwrap();
                 let power = timeit! {"FRB-Power" <- Array1::from_vec(periodogram
                     .call(
-                    (frb_time.clone(), frb_signal.clone(), py_freq_grid.clone()),
+                    (frb_time.clone(), frb_signal.clone(), shifted_py_freq_grid.clone()),
                     None,
                 )?
                 .extract::<Vec<f64>>()?)};
@@ -367,6 +428,9 @@ fn _main(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_class::<args::Arguments>()?;
     m.add_function(wrap_pyfunction!(args::parse_arguments, m)?)?;
     m.add_class::<ensemble::Ensemble>()?;
-    m.add_function(wrap_pyfunction!(ensemble::iterate_periodogram, m)?)?;
+    m.add_function(wrap_pyfunction!(
+        ensemble::generate_periodogram_ensembles,
+        m
+    )?)?;
     Ok(())
 }

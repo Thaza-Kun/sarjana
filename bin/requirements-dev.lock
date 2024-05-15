@@ -28,14 +28,18 @@ kiwisolver==1.4.5
 llvmlite==0.42.0
     # via numba
 matplotlib==3.8.3
+    # via bin
     # via seaborn
     # via userust
+ndtest @ git+https://github.com/syrte/ndtest
+    # via bin
 numba==0.59.1
     # via bin
 numpy==1.26.4
     # via astropy
     # via contourpy
     # via matplotlib
+    # via ndtest
     # via numba
     # via pandas
     # via py-pdm
@@ -47,7 +51,9 @@ packaging==24.0
     # via astropy
     # via matplotlib
 pandas==2.2.1
+    # via bin
     # via seaborn
+    # via userust
 pillow==10.2.0
     # via matplotlib
 py-pdm==0.6.0
@@ -65,6 +71,7 @@ pyyaml==6.0.1
     # via astropy
 scipy==1.13.0
     # via bin
+    # via ndtest
     # via userust
 seaborn==0.13.2
     # via bin

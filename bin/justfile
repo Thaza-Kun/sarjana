@@ -1,8 +1,5 @@
 set shell := ["nu", "-c"]
 
-simulate name n="1000" parent="../data/catalog2023":
-    python simulate_const.py --parent {{parent}} --name {{name}} -o ../output/img/simulated/ --runs {{n}}
-
 periodogram name rate folder="../data/catalog2023" n="100":
     python pdgram_lomb_scargle.py --folder {{folder}} --name {{name}} --n {{n}} --rate {{rate}} --outdir ../output/img/
 
@@ -29,14 +26,15 @@ eval_snr_per_power name folder="../data/catalog2023":
 
     python eval_SNR_per_power.py --pgram {{folder}}/{{name}}/pdgram-DutyCycle.npy --grid {{folder}}/{{name}}/pdgram-freq-grid.npy --snr {{folder}}/{{name}}/pdgram-DutyCycle.npy-SNR.npy --outdir ../output/img/{{name}}/ --method "Duty Cycle"
 
-simulate_all:
+simulate_all n="1000":
     #!nu
     date now | format date "%Y-%m-%d %H:%M:%S " | save --append sim-log.txt 
     
     "[START]\n" | save --append sim-log.txt
     
     let items = [
-        ["FRB20201130A", 2.34   , "../data/catalog2021-2/"],
+        ["FRB20180916B", 4.48   , "../data/catalog2021-2/", 16.33],
+        ["FRB20201130A", 2.34   ],
         ["FRB20191106C", 2.54e-2],
         ["FRB20200619A", 1.3e-2 ],
         ["FRB20190804E", 1.52e-2],
@@ -62,60 +60,50 @@ simulate_all:
         ["FRB20200926A", 1.58e-3],
         ["FRB20180910A", 3.83e-3],
     ]
-    let done = [
-        ["FRB20180916B", "../data/catalog2021-2/"]
-        ["FRB20201130A", ],
-        ["FRB20191106C", ],
-        ["FRB20200619A", ],
-        ["FRB20190804E", ],
-        ["FRB20190915D", ],
-        ["FRB20200929C", ],
-        ["FRB20201221B", ],
-        ["FRB20200809E", ],
-        ["FRB20190609C", ],
-        ["FRB20190226B", ],
-        ]
-    let wait = [
-        ["FRB20200223B", ],
-        ["FRB20200202A", ],
-    ]
-    let items = [
-        ["FRB20190430C", ],
-        ["FRB20200420A", ],
-        ["FRB20200127B", ],
-        ["FRB20201114A", ],
-        ["FRB20190110C", ],
-        ["FRB20200118D", ],
-        ["FRB20181226F", ],
-        ["FRB20191013D", ],
-        ["FRB20191114A", ],
-        ["FRB20190113A", ],
-        ["FRB20200913C", ],
-        ["FRB20200926A", ],
-        ["FRB20180910A", ],
-    ];
 
+    # for item in $items {
+    # try {
+    # echo $"($item)"
+    # 
+    # if (($item | length) >= 3) {
+    # python ensemble_generate.py --parent $item.2 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --rate $item.1
+    # } else {
+    # python ensemble_generate.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --rate $item.1
+    # }
+    # 
+    # 
+    # date now | format date "%Y-%m-%d %H:%M:%S " | save --append sim-log.txt
+    # 
+    # $"DATA ($item.0)\n" | save --append sim-log.txt
+    # 
+    # } catch {
+    # 
+    # date now | format date $"%Y-%m-%d %H:%M:%S [ERROR] ($item.0)\n" | save --append sim-log.txt
+    # 
+    # }
+    # }
     for item in $items {
         try {
             echo $"($item)"
 
-            if (($item | length) == 3) {
-                just simulate $item.0 100 $item.1 $item.2
-            } else {
-                just simulate $item.0 100 $item.1
+            if (($item | length) >= 3) {
+                python ensemble_plot_diagnostics.py --parent $item.2 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --period $item.3 --rate $item.1 --min-snr 10 --min-power 0.05
+                } else {
+                python ensemble_plot_diagnostics.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --rate $item.1 --min-snr 10 --min-power 0.05
             }
 
             
             date now | format date "%Y-%m-%d %H:%M:%S " | save --append sim-log.txt
             
-            $"($item.0)\n" | save --append sim-log.txt
+            $"PLOT ($item.0)\n" | save --append sim-log.txt
 
         } catch {
         
-            date now | format date $"%Y-%m-%d %H:%M:%S [ERROR] ($item.0)\n" | save --append sim-log.txt
+            date now | format date $"%Y-%m-%d %H:%M:%S [ERROR] PLOT ($item.0)\n" | save --append sim-log.txt
         
         }
     }
+
 
 run:
     #!nu

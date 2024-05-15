@@ -37,6 +37,7 @@ packaging==24.0
     # via matplotlib
 pandas==2.2.2
     # via seaborn
+    # via userust
 pillow==10.3.0
     # via matplotlib
 pyerfa==2.0.1.4

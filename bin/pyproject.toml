@@ -3,7 +3,18 @@ name = "bin"
 version = "0.1.0"
 description = "Add your description here"
 authors = [{ name = "Thaza_Kun", email = "61819672+Thaza-Kun@users.noreply.github.com" }]
-dependencies = ["astropy>=5.2.2", "seaborn>=0.13.2", "tqdm>=4.66.2", "py-pdm>=0.6.0", "numba>=0.58.1", "scipy>=1.10.1", "userust @ file:///../userust"]
+dependencies = [
+    "astropy>=5.2.2",
+    "seaborn>=0.13.2",
+    "tqdm>=4.66.2",
+    "py-pdm>=0.6.0",
+    "numba>=0.58.1",
+    "scipy>=1.10.1",
+    "userust @ file:///D:/home/kerja/sarjana/bin/../userust",
+    "matplotlib>=3.7.5",
+    "pandas>=2.0.3",
+    "ndtest @ git+https://github.com/syrte/ndtest",
+]
 readme = "README.md"
 requires-python = ">= 3.8"
 
