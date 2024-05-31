@@ -38,6 +38,7 @@ def main(arguments: argparse.Namespace):
     runs = arguments.runs
     # TEMPORARILY uses the seed argument
     grid_num = arguments.seed if arguments.seed != 16 else 5  # Overriding the default
+    pdgram_name = arguments.periodogram.upper()
 
     simdir = pathlib.Path(outdir, name)
     simdir.mkdir(parents=True, exist_ok=True)
@@ -51,35 +52,35 @@ def main(arguments: argparse.Namespace):
     print(f"Loading ensemble data from {datadir}")
     frb_ensemble = Ensemble(
         power=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-frb-power.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-frb-power.npy")
         ),
         snr=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-frb-snr.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-frb-snr.npy")
         ),
         freq=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-frb-freq.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-frb-freq.npy")
         ),
         group=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-frb-group.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-frb-group.npy")
         ),
     )
     sim_ensemble = Ensemble(
         power=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-sim-power.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-sim-power.npy")
         ),
         snr=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-sim-snr.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-sim-snr.npy")
         ),
         freq=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-sim-freq.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-sim-freq.npy")
         ),
         group=np.load(
-            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-sim-group.npy")
+            pathlib.Path(datadir, f"n{runs:0>6}-g{arguments.grid:0>6}-pdgram={pdgram_name}-sim-group.npy")
         ),
     )
     # Required to filter first to unify length (for some reason the length isnt uniform)
-    frb_ensemble.filter(snr=0, power=0)
-    sim_ensemble.filter(snr=0, power=0)
+    # frb_ensemble.filter(snr=0, power=0)
+    # sim_ensemble.filter(snr=0, power=0)
 
     plotted = pd.DataFrame(
         {

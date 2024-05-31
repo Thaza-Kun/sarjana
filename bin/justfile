@@ -61,35 +61,38 @@ simulate_all n="1000":
         ["FRB20180910A", 3.83e-3],
     ]
 
-    # for item in $items {
-    # try {
-    # echo $"($item)"
-    # 
-    # if (($item | length) >= 3) {
-    # python ensemble_generate.py --parent $item.2 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --rate $item.1
-    # } else {
-    # python ensemble_generate.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --rate $item.1
-    # }
-    # 
-    # 
-    # date now | format date "%Y-%m-%d %H:%M:%S " | save --append sim-log.txt
-    # 
-    # $"DATA ($item.0)\n" | save --append sim-log.txt
-    # 
-    # } catch {
-    # 
-    # date now | format date $"%Y-%m-%d %H:%M:%S [ERROR] ($item.0)\n" | save --append sim-log.txt
-    # 
-    # }
-    # }
+    for item in $items {
+        try {
+            echo $"($item)"
+            
+            if (($item | length) >= 3) {
+            python ensemble_generate.py --parent $item.2 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --rate $item.1 --periodogram LS
+            python ensemble_generate.py --parent $item.2 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --rate $item.1 --periodogram PDM
+            } else {
+            python ensemble_generate.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --rate $item.1 --periodogram LS
+            python ensemble_generate.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --rate $item.1 --periodogram PDM
+            }
+            
+            
+            date now | format date "%Y-%m-%d %H:%M:%S " | save --append sim-log.txt
+            
+            $"DATA ($item.0)\n" | save --append sim-log.txt
+            
+        } catch {
+        
+            date now | format date $"%Y-%m-%d %H:%M:%S [ERROR] ($item.0)\n" | save --append sim-log.txt
+    }
+    }
     for item in $items {
         try {
             echo $"($item)"
 
             if (($item | length) >= 3) {
-                python ensemble_plot_diagnostics.py --parent $item.2 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --period $item.3 --rate $item.1 --min-snr 10 --min-power 0.05
+                python ensemble_plot_single.py --parent $item.2 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --period $item.3 --rate $item.1 --min-snr 2.5 --min-power 0 --periodogram LS
+                python ensemble_plot_single.py --parent $item.2 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --period $item.3 --rate $item.1 --min-snr 2.5 --min-power -1. --periodogram PDM
                 } else {
-                python ensemble_plot_diagnostics.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-11/ --runs {{n}} --rate $item.1 --min-snr 10 --min-power 0.05
+                python ensemble_plot_single.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --rate $item.1 --min-snr 2.5 --min-power 0 --periodogram LS
+                python ensemble_plot_single.py --parent ../data/catalog2023 --name $item.0 -o ../output/2024-05-31/ --runs {{n}} --rate $item.1 --min-snr 2.5 --min-power -1. --periodogram PDM
             }
 
             

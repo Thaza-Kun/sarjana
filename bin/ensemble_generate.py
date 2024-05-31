@@ -7,6 +7,7 @@
 """Generate an ensemble of periodogram peaks
 """
 
+from typing import Tuple
 from userust import parse_arguments, generate_periodogram_ensembles
 
 import argparse
@@ -15,19 +16,89 @@ from dataclasses import dataclass, field
 
 import numpy as np
 from scipy.signal import find_peaks
+import pandas as pd
 
 from astropy.time import Time
-from astropy.timeseries import LombScargle
+from astropy.timeseries import LombScargle, TimeSeries
 import astropy.units as u
 
+from pdmpy import pdm
+
+# Suppress FutureWarning messages
+import warnings
+
+warnings.simplefilter(action="ignore", category=FutureWarning)
 
 def LombScargle_periodogram(
     time: u.Quantity, obs: np.ndarray, freq_grid: u.Quantity
-) -> np.ndarray:
+) -> Tuple[np.ndarray, np.ndarray]:
     LS = LombScargle(time, obs)
     power = LS.power(freq_grid)
-    return power
+    return power, freq_grid.value
 
+def pdm_periodogram(
+    time: np.ndarray, obs: np.ndarray, freq_grid: u.Quantity
+) -> Tuple[np.ndarray, np.ndarray]:
+    if type(time) is Time:
+        time = time.value
+    f, theta = pdm(
+        time,
+        obs,
+        f_min=freq_grid.min().value,
+        f_max=freq_grid.max().value,
+        delf=freq_grid.diff()[0].value,
+    )
+    return -theta, f
+
+
+# It seems that this is not useful
+# because the simulation has no inactive period
+# making it null by definition
+# Maybe we can fix this by generating a function with inactive period
+# Or maybe this can be a strong indication that 
+# the active period is indeed periodic and not random
+def duty_cycle_periodogram(
+    time: u.Quantity, obs: np.ndarray, freq_grid: u.Quantity
+) -> Tuple[np.ndarray, np.ndarray]:
+    # TODO: For some reason, the simulation data is empty
+    def calc_inactive_frac(
+        time: Time, data: np.ndarray, trial_periods: np.ndarray
+    ):
+        def check_cumsum(cumsum: np.ndarray) -> float:
+            inactive = 0
+            state = 0
+            prev = 0
+            for current in cumsum:
+                if current == prev:
+                    state += 1
+                else:
+                    prev = current
+                    inactive = state if state > inactive else inactive
+                    state = 0
+            return inactive
+        fracs = []
+        # processes = []
+        timeseries = TimeSeries(time=time, data={"detections": data})
+        print(timeseries)
+        for period in trial_periods:
+            folded_ = timeseries.fold(period=period, wrap_phase=1, normalize_phase=True)
+            # print(folded_)
+            phases = np.array(folded_["time"])
+            counts = np.array(folded_["detections"]).flatten()
+            phases = (
+                pd.DataFrame({"phase": phases, "detections": counts})
+                .groupby(pd.cut(phases, np.arange(0, 1, 0.05)))["detections"]
+                .sum()
+            )
+            phases = phases.reset_index().rename(columns={"index": "phase_bin"})
+            phases["cumsum"] = phases["detections"].cumsum()
+            inactive = check_cumsum(phases["cumsum"].to_numpy())
+            fracs.append(inactive / len(phases))
+        print(phases)
+        print(fracs)
+        return fracs
+    print(obs)
+    return calc_inactive_frac(time, np.floor(obs), 1 / freq_grid), freq_grid.value
 
 @dataclass
 class Transient:
@@ -104,6 +175,12 @@ def main(arguments: argparse.Namespace):
     thisfrb = read_frb_data(name, arguments)
     sim_frb = create_hnull_data(noise=thisfrb.noise, rng=rng, arguments=arguments)
 
+    pdgram_name = arguments.periodogram.upper()
+    PDGRAM = {
+        "LS": LombScargle_periodogram,
+        "PDM": pdm_periodogram
+    }
+
     begin = sim_frb.telescope_observations.min()
     end = sim_frb.telescope_observations.max()
     window_filter = (sim_frb.telescope_observations >= begin) & (
@@ -149,49 +226,49 @@ def main(arguments: argparse.Namespace):
         detection_rate,
         arguments,
         arguments.seed,
-        LombScargle_periodogram,
+        PDGRAM[pdgram_name],
         find_peaks,
         freq_grid,
     )
 
     print(f"Saving ensemble data to {datadir}")
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-sim-power.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-power.npy"),
         sim_ensemble.power,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-sim-snr.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-snr.npy"),
         sim_ensemble.snr,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-sim-freq.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-freq.npy"),
         sim_ensemble.freq,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-sim-group.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-group.npy"),
         frb_ensemble.group,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-frb-power.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-power.npy"),
         frb_ensemble.power,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-frb-snr.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-snr.npy"),
         frb_ensemble.snr,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-frb-freq.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-freq.npy"),
         frb_ensemble.freq,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-frb-group.npy"),
+        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-group.npy"),
         frb_ensemble.group,
         allow_pickle=False,
     )
