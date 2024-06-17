@@ -23,10 +23,15 @@ cython==3.0.10
     # via py-pdm
 fonttools==4.50.0
     # via matplotlib
+jinja2==3.1.4
+    # via pdoc
 kiwisolver==1.4.5
     # via matplotlib
 llvmlite==0.42.0
     # via numba
+markupsafe==2.1.5
+    # via jinja2
+    # via pdoc
 matplotlib==3.8.3
     # via bin
     # via seaborn
@@ -54,12 +59,16 @@ pandas==2.2.1
     # via bin
     # via seaborn
     # via userust
+pdoc==14.5.0
+    # via userust
 pillow==10.2.0
     # via matplotlib
 py-pdm==0.6.0
     # via bin
 pyerfa==2.0.1.1
     # via astropy
+pygments==2.18.0
+    # via pdoc
 pyparsing==3.1.2
     # via matplotlib
 python-dateutil==2.9.0.post0

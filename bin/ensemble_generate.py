@@ -7,8 +7,14 @@
 """Generate an ensemble of periodogram peaks
 """
 
+from copy import deepcopy
 from typing import Tuple
-from userust import parse_arguments, generate_periodogram_ensembles
+from userust import (
+    parse_arguments,
+    generate_periodogram_ensembles,
+    Generator,
+    generate_signal_filter,
+)
 
 import argparse
 import pathlib
@@ -29,12 +35,14 @@ import warnings
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
+
 def LombScargle_periodogram(
     time: u.Quantity, obs: np.ndarray, freq_grid: u.Quantity
 ) -> Tuple[np.ndarray, np.ndarray]:
     LS = LombScargle(time, obs)
-    power = LS.power(freq_grid)
+    power = LS.power(freq_grid.value)
     return power, freq_grid.value
+
 
 def pdm_periodogram(
     time: np.ndarray, obs: np.ndarray, freq_grid: u.Quantity
@@ -46,7 +54,7 @@ def pdm_periodogram(
         obs,
         f_min=freq_grid.min().value,
         f_max=freq_grid.max().value,
-        delf=freq_grid.diff()[0].value,
+        delf=np.mean(freq_grid.diff().value),
     )
     return -theta, f
 
@@ -55,15 +63,13 @@ def pdm_periodogram(
 # because the simulation has no inactive period
 # making it null by definition
 # Maybe we can fix this by generating a function with inactive period
-# Or maybe this can be a strong indication that 
+# Or maybe this can be a strong indication that
 # the active period is indeed periodic and not random
 def duty_cycle_periodogram(
     time: u.Quantity, obs: np.ndarray, freq_grid: u.Quantity
 ) -> Tuple[np.ndarray, np.ndarray]:
     # TODO: For some reason, the simulation data is empty
-    def calc_inactive_frac(
-        time: Time, data: np.ndarray, trial_periods: np.ndarray
-    ):
+    def calc_inactive_frac(time: Time, data: np.ndarray, trial_periods: np.ndarray):
         def check_cumsum(cumsum: np.ndarray) -> float:
             inactive = 0
             state = 0
@@ -76,6 +82,7 @@ def duty_cycle_periodogram(
                     inactive = state if state > inactive else inactive
                     state = 0
             return inactive
+
         fracs = []
         # processes = []
         timeseries = TimeSeries(time=time, data={"detections": data})
@@ -97,8 +104,10 @@ def duty_cycle_periodogram(
         print(phases)
         print(fracs)
         return fracs
+
     print(obs)
     return calc_inactive_frac(time, np.floor(obs), 1 / freq_grid), freq_grid.value
+
 
 @dataclass
 class Transient:
@@ -176,19 +185,7 @@ def main(arguments: argparse.Namespace):
     sim_frb = create_hnull_data(noise=thisfrb.noise, rng=rng, arguments=arguments)
 
     pdgram_name = arguments.periodogram.upper()
-    PDGRAM = {
-        "LS": LombScargle_periodogram,
-        "PDM": pdm_periodogram
-    }
-
-    begin = sim_frb.telescope_observations.min()
-    end = sim_frb.telescope_observations.max()
-    window_filter = (sim_frb.telescope_observations >= begin) & (
-        sim_frb.telescope_observations <= end
-    )
-
-    view = sim_frb.signal[window_filter]
-    detection_rate = len(thisfrb.signal) / len(view)
+    PDGRAM = {"LS": LombScargle_periodogram, "PDM": pdm_periodogram}
 
     simdir = pathlib.Path(outdir, name)
     simdir.mkdir(parents=True, exist_ok=True)
@@ -196,82 +193,92 @@ def main(arguments: argparse.Namespace):
     datadir.mkdir(parents=True, exist_ok=True)
 
     observations = thisfrb.telescope_observations
-    if arguments.freq_grid is not None:
-        freq_grid = np.load(arguments.freq_grid) * (1 / u.hour)
-    elif arguments.rate is not None:
+
+    if arguments.rate is not None:
         n_eval = arguments.grid
         max_period = 200 / (arguments.rate * (1 / u.hour))
         min_period = 1 / (arguments.rate * (1 / u.hour))
         # freq_min = 2 * arguments.rate * (1 / u.hour)
         # freq_max = 3 / ((observations.max() - observations.min()) * u.day)
 
-        freq_grid = np.linspace(1 / max_period, 1 / min_period, n_eval)
+        freq_grid = np.geomspace(1 / max_period, 1 / min_period, num=n_eval)
     else:
         n_eval = arguments.grid
         max_period = 3 / ((observations.max() - observations.min()) * u.day)
         min_period = 0.1 * np.diff(observations).max() * u.day
 
-        freq_grid = np.linspace(1 / max_period, 1 / min_period, n_eval)
+        freq_grid = np.geomspace(1 / max_period, 1 / min_period, num=n_eval)
 
-    view_index = len(sim_frb.signal[(sim_frb.telescope_observations < begin)])
-    view_len = len(view)
-    # Random detections between event window
-    sim_ensemble, frb_ensemble = generate_periodogram_ensembles(
+    sim_ensemble = generate_periodogram_ensembles(
         sim_frb.signal,
-        sim_frb.time,
-        thisfrb.telescope_signal,
-        thisfrb.time,
-        view_index,
-        view_len,
-        detection_rate,
-        arguments,
+        sim_frb.time.value,
+        len(thisfrb.signal),
+        arguments.runs,
         arguments.seed,
         PDGRAM[pdgram_name],
         find_peaks,
         freq_grid,
+        arguments.harmonics,
+        arguments.snr_scale
     )
 
     print(f"Saving ensemble data to {datadir}")
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-power.npy"),
+        pathlib.Path(
+            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-power.npy"
+        ),
         sim_ensemble.power,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-snr.npy"),
+        pathlib.Path(
+            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-snr.npy"
+        ),
         sim_ensemble.snr,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-freq.npy"),
+        pathlib.Path(
+            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-freq.npy"
+        ),
         sim_ensemble.freq,
         allow_pickle=False,
     )
     np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-group.npy"),
+        pathlib.Path(
+            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-group.npy"
+        ),
         frb_ensemble.group,
         allow_pickle=False,
     )
-    np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-power.npy"),
-        frb_ensemble.power,
-        allow_pickle=False,
-    )
-    np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-snr.npy"),
-        frb_ensemble.snr,
-        allow_pickle=False,
-    )
-    np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-freq.npy"),
-        frb_ensemble.freq,
-        allow_pickle=False,
-    )
-    np.save(
-        pathlib.Path(datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-group.npy"),
-        frb_ensemble.group,
-        allow_pickle=False,
-    )
+    # np.save(
+    #     pathlib.Path(
+    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-power.npy"
+    #     ),
+    #     frb_ensemble.power,
+    #     allow_pickle=False,
+    # )
+    # np.save(
+    #     pathlib.Path(
+    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-snr.npy"
+    #     ),
+    #     frb_ensemble.snr,
+    #     allow_pickle=False,
+    # )
+    # np.save(
+    #     pathlib.Path(
+    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-freq.npy"
+    #     ),
+    #     frb_ensemble.freq,
+    #     allow_pickle=False,
+    # )
+    # np.save(
+    #     pathlib.Path(
+    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-group.npy"
+    #     ),
+    #     frb_ensemble.group,
+    #     allow_pickle=False,
+    # )
 
 
 if __name__ == "__main__":

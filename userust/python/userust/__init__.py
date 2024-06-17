@@ -1,3 +1,5 @@
 from userust.main import *
 
-# __all__ = ["hello", "main"]
+from userust import main
+
+__all__ = main.__all__

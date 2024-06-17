@@ -10,6 +10,7 @@ data/processed/
 data/interim/
 data/graphs/debug/*
 data/*
+output/*
 
 # Quarto generated output
 *.quarto/
