@@ -12,7 +12,6 @@ from userust import parse_arguments, Ensemble
 
 import argparse
 import pathlib
-import warnings
 
 import pandas as pd
 import numpy as np
@@ -21,6 +20,7 @@ import seaborn as sns
 from scipy.stats import ks_2samp, mannwhitneyu
 
 # from ndtest import ks2d2s
+import warnings
 
 warnings.filterwarnings("ignore")
 
@@ -50,7 +50,11 @@ def main(arguments: argparse.Namespace):
     grid_num = arguments.seed if arguments.seed != 16 else 5  # Overriding the default
     pdgram_name = arguments.periodogram.upper()
 
-    PDGRAM = {"LS": "Lomb-Scargle", "PDM": "Phase Dispersion Minimization"}
+    PDGRAM = {
+        "LS": "Lomb-Scargle",
+        "PDM": "Phase Dispersion Minimization",
+        "DC": "Duty Cycle",
+    }
 
     simdir = pathlib.Path(outdir, name)
     simdir.mkdir(parents=True, exist_ok=True)
@@ -102,32 +106,32 @@ def main(arguments: argparse.Namespace):
     # plt.close()
 
     print(f"Loading ensemble data from {datadir}")
-    frb_ensemble = Ensemble(
-        power=np.load(
-            pathlib.Path(
-                datadir,
-                f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-power.npy",
-            )
-        ),
-        snr=np.load(
-            pathlib.Path(
-                datadir,
-                f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-snr.npy",
-            )
-        ),
-        freq=np.load(
-            pathlib.Path(
-                datadir,
-                f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-freq.npy",
-            )
-        ),
-        group=np.load(
-            pathlib.Path(
-                datadir,
-                f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-group.npy",
-            )
-        ),
+    # frb_ensemble = Ensemble(
+    frb_power = np.load(
+        pathlib.Path(
+            datadir,
+            f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-power.npy",
+        )
     )
+    frb_snr = np.load(
+        pathlib.Path(
+            datadir,
+            f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-snr.npy",
+        )
+    )
+    frb_freq = np.load(
+        pathlib.Path(
+            datadir,
+            f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-freq.npy",
+        )
+    )
+    #     group=np.load(
+    #         pathlib.Path(
+    #             datadir,
+    #             f"n{runs:0>6}-g{arguments.grid:0>6}-pgram={pdgram_name}-frb-group.npy",
+    #         )
+    #     ),
+    # )
     sim_ensemble = Ensemble(
         power=np.load(
             pathlib.Path(
@@ -160,10 +164,10 @@ def main(arguments: argparse.Namespace):
 
     frb_df = pd.DataFrame(
         {
-            "Period": 1 / np.array(frb_ensemble.freq),
-            "Power": frb_ensemble.power,
-            "SNR": frb_ensemble.snr,
-            "group": frb_ensemble.group,
+            "Period": 1 / np.array(frb_freq),
+            "Power": frb_power,
+            "SNR": frb_snr,
+            "group": 1,
             "label": "observed",
         }
     )
@@ -195,26 +199,26 @@ def main(arguments: argparse.Namespace):
         data["Period"].min(), data["Period"].max(), num_bins_period
     )
     bins_power = np.linspace(data["Power"].min(), data["Power"].max(), num_bins_power)
-    # hist_obs_period, _ = np.histogram(
-    #     data[data["label"] == "observed"]["Period"].to_numpy(),
-    #     density=True,
-    #     bins=bins_period,
-    # )
-    # hist_sim_period, _ = np.histogram(
-    #     data[data["label"] == "simulated"]["Period"].to_numpy(),
-    #     density=True,
-    #     bins=bins_period,
-    # )
-    # hist_obs_power, _ = np.histogram(
-    #     data[data["label"] == "observed"]["Power"].to_numpy(),
-    #     density=True,
-    #     bins=bins_power,
-    # )
-    # hist_sim_power, _ = np.histogram(
-    #     data[data["label"] == "simulated"]["Power"].to_numpy(),
-    #     density=True,
-    #     bins=bins_power,
-    # )
+    hist_obs_period, _ = np.histogram(
+        data[data["label"] == "observed"]["Period"].to_numpy(),
+        density=True,
+        bins=bins_period,
+    )
+    hist_sim_period, _ = np.histogram(
+        data[data["label"] == "simulated"]["Period"].to_numpy(),
+        density=True,
+        bins=bins_period,
+    )
+    hist_obs_power, _ = np.histogram(
+        data[data["label"] == "observed"]["Power"].to_numpy(),
+        density=True,
+        bins=bins_power,
+    )
+    hist_sim_power, _ = np.histogram(
+        data[data["label"] == "simulated"]["Power"].to_numpy(),
+        density=True,
+        bins=bins_power,
+    )
     mwu_period = ks_2samp(
         data[(data["label"] == "observed")]["Period"].to_numpy(),
         data[data["label"] == "simulated"]["Period"].to_numpy(),
@@ -361,7 +365,11 @@ def main(arguments: argparse.Namespace):
     plt.close()
 
 
-if __name__ == "__main__":
+def run():
     print(__doc__)
     arguments = parse_arguments()
     main(arguments)
+
+
+if __name__ == "__main__":
+    run()

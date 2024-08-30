@@ -1,20 +1,22 @@
 [package]
 name = "userust"
-version = "0.3.0"
+version = "0.3.3"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [lib]
 name = "userust"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]
 
 [dependencies]
 clap = { version = "4.5.4", features = ["derive"] }
 ctrlc = "3.4.4"
 indicatif = { version = "0.17.8", features = ["rayon"] }
+itertools = "0.13.0"
 kdam = { version = "0.5.1", features = ["rayon"] }
 ndarray = { version = "0.15.6", features = ["rayon"] }
 npy = "0.4.0"
+npyz = { version = "0.8.3", features = ["npz"] }
 numpy = "0.21.0"
 pyo3 = "0.21"
 rand = { version = "0.8.5", features = ["small_rng"] }

@@ -11,9 +11,8 @@ from copy import deepcopy
 from typing import Tuple
 from userust import (
     parse_arguments,
-    generate_periodogram_ensembles,
     Generator,
-    generate_signal_filter,
+    generate_timeseries_subsample,
 )
 
 import argparse
@@ -23,6 +22,8 @@ from dataclasses import dataclass, field
 import numpy as np
 from scipy.signal import find_peaks
 import pandas as pd
+
+import matplotlib.pyplot as plt
 
 from astropy.time import Time
 from astropy.timeseries import LombScargle, TimeSeries
@@ -39,8 +40,8 @@ warnings.simplefilter(action="ignore", category=FutureWarning)
 def LombScargle_periodogram(
     time: u.Quantity, obs: np.ndarray, freq_grid: u.Quantity
 ) -> Tuple[np.ndarray, np.ndarray]:
-    LS = LombScargle(time, obs)
-    power = LS.power(freq_grid.value)
+    LS = LombScargle(Time(time, format="mjd"), obs)
+    power = LS.power(freq_grid)
     return power, freq_grid.value
 
 
@@ -83,9 +84,9 @@ def duty_cycle_periodogram(
             return inactive
 
         fracs = []
-        # processes = []
-        timeseries = TimeSeries(time=time, data={"detections": data})
-        print(timeseries)
+        timeseries = TimeSeries(
+            time=Time(time, format="mjd"), data={"detections": data}
+        )
         for period in trial_periods:
             folded_ = timeseries.fold(period=period, wrap_phase=1, normalize_phase=True)
             # print(folded_)
@@ -93,18 +94,15 @@ def duty_cycle_periodogram(
             counts = np.array(folded_["detections"]).flatten()
             phases = (
                 pd.DataFrame({"phase": phases, "detections": counts})
-                .groupby(pd.cut(phases, np.arange(0, 1, 0.05)))["detections"]
+                .groupby(pd.cut(phases, np.arange(0, 1, 0.005)))["detections"]
                 .sum()
             )
             phases = phases.reset_index().rename(columns={"index": "phase_bin"})
             phases["cumsum"] = phases["detections"].cumsum()
             inactive = check_cumsum(phases["cumsum"].to_numpy())
             fracs.append(inactive / len(phases))
-        print(phases)
-        print(fracs)
-        return fracs
+        return np.array(fracs)
 
-    print(obs)
     return calc_inactive_frac(time, np.floor(obs), 1 / freq_grid), freq_grid.value
 
 
@@ -184,7 +182,11 @@ def main(arguments: argparse.Namespace):
     sim_frb = create_hnull_data(noise=thisfrb.noise, rng=rng, arguments=arguments)
 
     pdgram_name = arguments.periodogram.upper()
-    PDGRAM = {"LS": LombScargle_periodogram, "PDM": pdm_periodogram}
+    PDGRAM = {
+        "LS": LombScargle_periodogram,
+        "PDM": pdm_periodogram,
+        "DC": duty_cycle_periodogram,
+    }
 
     simdir = pathlib.Path(outdir, name)
     simdir.mkdir(parents=True, exist_ok=True)
@@ -200,84 +202,33 @@ def main(arguments: argparse.Namespace):
         # freq_min = 2 * arguments.rate * (1 / u.hour)
         # freq_max = 3 / ((observations.max() - observations.min()) * u.day)
 
-        freq_grid = np.geomspace(1 / max_period, 1 / min_period, num=n_eval)
+        freq_grid = np.linspace(1 / max_period, 1 / min_period, num=n_eval)
     else:
         n_eval = arguments.grid
         max_period = 3 / ((observations.max() - observations.min()) * u.day)
         min_period = 0.1 * np.diff(observations).max() * u.day
 
-        freq_grid = np.geomspace(1 / max_period, 1 / min_period, num=n_eval)
+        freq_grid = np.linspace(1 / max_period, 1 / min_period, num=n_eval)
 
-    sim_ensemble = generate_periodogram_ensembles(
-        sim_frb.signal,
-        sim_frb.time.value,
-        len(thisfrb.signal),
-        arguments.runs,
-        arguments.seed,
-        PDGRAM[pdgram_name],
-        find_peaks,
-        freq_grid,
-        arguments.harmonics,
-        arguments.snr_scale,
+    gen = Generator(1)
+    noise_sample = generate_timeseries_subsample(
+        sim_frb.time.value, sim_frb.signal, len(thisfrb.signal), gen
     )
+    print(len(thisfrb.time))
+    print(len(thisfrb.signal_arrivals))
+    print(len(thisfrb.signal))
+    print(len(noise_sample.magnitude))
+    frb_pdgram = PDGRAM[pdgram_name](thisfrb.signal_arrivals, thisfrb.signal, freq_grid)
 
-    print(f"Saving ensemble data to {datadir}")
-    np.save(
-        pathlib.Path(
-            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-power.npy"
-        ),
-        sim_ensemble.power,
-        allow_pickle=False,
+    noise_pdgram = PDGRAM[pdgram_name](
+        noise_sample.time, noise_sample.magnitude, freq_grid
     )
-    np.save(
-        pathlib.Path(
-            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-snr.npy"
-        ),
-        sim_ensemble.snr,
-        allow_pickle=False,
-    )
-    np.save(
-        pathlib.Path(
-            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-freq.npy"
-        ),
-        sim_ensemble.freq,
-        allow_pickle=False,
-    )
-    np.save(
-        pathlib.Path(
-            datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-sim-group.npy"
-        ),
-        sim_ensemble.group,
-        allow_pickle=False,
-    )
-    # np.save(
-    #     pathlib.Path(
-    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-power.npy"
-    #     ),
-    #     frb_ensemble.power,
-    #     allow_pickle=False,
-    # )
-    # np.save(
-    #     pathlib.Path(
-    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-snr.npy"
-    #     ),
-    #     frb_ensemble.snr,
-    #     allow_pickle=False,
-    # )
-    # np.save(
-    #     pathlib.Path(
-    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-freq.npy"
-    #     ),
-    #     frb_ensemble.freq,
-    #     allow_pickle=False,
-    # )
-    # np.save(
-    #     pathlib.Path(
-    #         datadir, f"n{runs:0>6}-g{n_eval:0>6}-pgram={pdgram_name}-frb-group.npy"
-    #     ),
-    #     frb_ensemble.group,
-    #     allow_pickle=False,
-    # )
+    residue = frb_pdgram[0] - noise_pdgram[0]
+    plt.plot(1 / frb_pdgram[1], residue)
+    plt.plot(1 / frb_pdgram[1], frb_pdgram[0])
+    plt.plot(1 / frb_pdgram[1], noise_pdgram[0])
+    plt.xscale("log")
+    plt.show()
 
 
 if __name__ == "__main__":

@@ -1,7 +1,6 @@
-use crate::{args::Arguments, timeseries::TimeSeries};
-use core::time;
+use crate::timeseries::TimeSeries;
 use kdam::tqdm;
-use pyo3::{iter, prelude::*, types::PyFunction};
+use pyo3::{prelude::*, types::PyFunction};
 use rand::{prelude::*, SeedableRng};
 use rand_chacha::ChaCha8Rng;
 use std::collections::HashMap;
@@ -12,7 +11,7 @@ use numpy::{PyArray1, PyArrayMethods};
 #[derive(Clone, serde::Deserialize, serde::Serialize, Debug)]
 #[pyclass]
 pub struct Ensemble {
-    runs: u128,
+    pub(crate) runs: u128,
     #[pyo3(get)]
     pub power: Vec<f64>,
     #[pyo3(get)]
@@ -141,9 +140,10 @@ impl Ensemble {
     }
 }
 
-mod snr {
+pub mod snr {
     use kdam::par_tqdm;
     use ndarray::Array1;
+    use pyo3::pyfunction;
     use rayon::{iter::ParallelIterator, prelude::*};
     use std::{
         cmp,
@@ -165,7 +165,18 @@ mod snr {
         )
     }
 
-    pub fn greedy_harmonic_sum(
+    #[pyfunction]
+    pub fn greedy_harmonic_sum(power: Vec<f64>, grid: Vec<f64>, harmonics: u8) -> Vec<f64> {
+        greedy_harmonic_sum_(
+            Array1::from_vec(power),
+            Array1::from_vec(grid),
+            harmonics as usize,
+            1.,
+        )
+        .to_vec()
+    }
+
+    pub fn greedy_harmonic_sum_(
         power: Array1<f64>,
         grid: Array1<f64>,
         harmonics: usize,
@@ -249,23 +260,32 @@ fn evaluate_periodogram(
     // arguments: Arguments,
     harmonics: usize,
     snr_scale: f64,
+    inspections: Bound<'_, PyFunction>,
 ) -> PyResult<()> {
     let res = periodogram
-        .call((time, signal, freq_grid), None)?
+        .call((time.clone(), signal.clone(), freq_grid.clone()), None)?
         .extract::<(Vec<f64>, Vec<f64>)>()?;
     let power = timeit! {"Sim-power" <- Array1::from_vec(res.0)};
     let freq_grid = timeit! {"Sim-freq_grid" <- Array1::from_vec(res.1)};
     let snr = timeit! {
-        "Sim-SignalNoise" <- snr::greedy_harmonic_sum(power.clone(), freq_grid.clone(), harmonics, snr_scale)
+        "Sim-SignalNoise" <- snr::greedy_harmonic_sum_(power.clone(), freq_grid.clone(), harmonics, snr_scale)
     };
+    inspections.call1((
+        signal.to_vec(),
+        time.to_vec(),
+        power.to_vec(),
+        snr.to_vec(),
+        freq_grid.clone().to_vec(),
+        ensemble.runs.clone(),
+    ))?;
     let (peaks, _props) = timeit! {"Sim-Peak" <- find_peak
     .call((power.to_vec().clone(),), None)?
-    .extract::<(Vec<usize>, HashMap<String, Vec<f64>>)>()?};
+        .extract::<(Vec<usize>, HashMap<String, Vec<f64>>)>()?};
 
     timeit! {"Sim-Ensemble" <- ensemble.append(
-            &power.select(Axis(0), peaks.as_slice()).as_slice().ok_or(PyErr::fetch(py))?,
-            &snr.select(Axis(0), peaks.as_slice()).as_slice().ok_or(PyErr::fetch(py))?,
-            &freq_grid.select(Axis(0), peaks.as_slice()).as_slice().ok_or(PyErr::fetch(py))?)
+        &power.select(Axis(0), peaks.as_slice()).as_slice().ok_or(PyErr::fetch(py))?,
+        &snr.select(Axis(0), peaks.as_slice()).as_slice().ok_or(PyErr::fetch(py))?,
+        &freq_grid.select(Axis(0), peaks.as_slice()).as_slice().ok_or(PyErr::fetch(py))?)
     }
     Ok(())
 }
@@ -285,13 +305,14 @@ impl Generator {
     }
 }
 
+#[pyfunction]
 pub fn generate_timeseries_subsample(
     timeseries: Vec<f64>,
     sample: Vec<f64>,
     n: usize,
     rng: &mut Generator,
 ) -> TimeSeries {
-    let subseries = if n >= timeseries.len() {
+    let subseries = if n <= timeseries.len() {
         timeseries
             .choose_multiple(&mut rng.rng, n)
             .map(|a| a.to_owned())
@@ -347,13 +368,14 @@ pub fn generate_periodogram_ensembles(
     py_freq_grid: PyObject,
     harmonics: usize,
     snr_scale: f64,
+    inspections: Bound<'_, PyFunction>,
 ) -> PyResult<Ensemble> {
     let sim_signal = sim_signal.to_vec()?;
     let sim_time = sim_time.to_vec()?;
     let mut rng = Generator::new(seed as u64);
     let mut sim_ensemble = Ensemble::empty();
 
-    for _ in tqdm!(0..runs, position = 0) {
+    for iternum in tqdm!(0..runs, position = 0) {
         // let filter: Vec<bool> = generate_signal_filter(
         //     view_length as usize,
         //     detection_rate as f32,
@@ -383,6 +405,7 @@ pub fn generate_periodogram_ensembles(
             py_freq_grid.clone(),
             harmonics.clone(),
             snr_scale.clone(),
+            inspections.clone(),
         )?;
     }
     Ok(sim_ensemble)

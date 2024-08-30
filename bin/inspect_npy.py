@@ -22,7 +22,7 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def main(arguments: argparse.Namespace):
-    item = np.load(arguments.file)
+    item = np.unique(np.load(arguments.file).round(2))
     print(f"type\t: {item.dtype}")
     print(f"length\t: {len(item)}")
     print(f"Min\t: {item.min()}")
@@ -31,6 +31,7 @@ def main(arguments: argparse.Namespace):
     print(f"Max\t: {item.max()}")
     print(f"Max-min\t: {item.max() - item.min()}")
     print(f"Av.Diff\t: {np.diff(item).mean()}")
+    print(item)
 
 
 if __name__ == "__main__":
