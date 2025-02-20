@@ -4,13 +4,13 @@
 # dependencies = [
 #     "astropy",
 #     "cdshealpix",
+#     "librs",
 #     "numpy",
 #     "pandas",
-#     "userust",
 # ]
 #
 # [tool.uv.sources]
-# userust = { path = "../userust" }
+# librs = { path = "../librs" }
 # ///
 
 # Author: Murthadza Aznam
@@ -30,7 +30,7 @@ import pandas as pd
 from astropy.coordinates import SkyCoord
 import astropy.units as u
 from cdshealpix.ring import skycoord_to_healpix, vertices_skycoord
-from userust import load_many_numpyz
+from librs import load_many_numpyz
 
 # format: "exposure_{YYMMDD:start}_{YYMMDD:end}_beam_FWHM-600_res_{time resolution}s_0.86_arcmin.npz"
 filename = "exposure_{}_{}_transit_{}_beam_FWHM-600_res_{}s_0.86_arcmin.npz"

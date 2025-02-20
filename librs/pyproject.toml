@@ -1,5 +1,5 @@
 [project]
-name = "userust"
+name = "librs"
 version = "0.3.10"
 description = "Add your description here"
 authors = [{ name = "Thaza_Kun", email = "61819672+Thaza-Kun@users.noreply.github.com" }]
@@ -7,24 +7,19 @@ dependencies = ["numpy>=1.24.4", "matplotlib>=3.7.5", "seaborn>=0.13.2", "scipy>
 readme = "README.md"
 requires-python = ">= 3.8"
 
-[project.scripts]
-ensemble = "scripts.ensemble.generate:run"
-plot = "scripts.ensemble.plot:run"
-diagnostics = "scripts.diagnostics.phasefold:run"
-
 [build-system]
 requires = ["maturin>=1.2,<2.0"]
 build-backend = "maturin"
 
-[tool.rye]
-managed = true
-dev-dependencies = ["pip>=24.0"]
+# [tool.rye]
+# managed = true
+# dev-dependencies = ["pip>=24.0"]
 
-[tool.rye.scripts]
-test = "cargo test -c"
+# [tool.rye.scripts]
+# test = "cargo test -c"
 
 [tool.maturin]
 python-source = "python"
 python-packages = ["scripts"]
-module-name = "userust.main"
+module-name = "librs.main"
 features = ["pyo3/extension-module", "pyargs"]

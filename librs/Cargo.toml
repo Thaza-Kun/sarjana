@@ -1,0 +1,18 @@
+[package]
+name = "librs"
+version = "0.3.3"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+name = "librs"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+kdam = { version = "0.5.1", features = ["rayon"] }
+npyz = { version = "0.8.3", features = ["npz"] }
+pyo3 = "0.21"
+rayon = "1.10.0"
+
+[features]
+pyargs = []
