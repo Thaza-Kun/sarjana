@@ -1,3 +1,0 @@
-pyslalib>=1.0.7
-setuptools==60
-presto@ git+https://github.com/scottransom/presto.git

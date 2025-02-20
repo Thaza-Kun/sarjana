@@ -1,3 +1,3 @@
-# msc-sem-4
+# Master's UM
 
 Describe your project here.
