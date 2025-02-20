@@ -1,4 +1,5 @@
 import datetime
+import argparse
 from typing import Tuple
 import pandas as pd
 from astropy.time import Time
@@ -29,6 +30,7 @@ import tqdm
 # [6] Generate (X^2, Inactive_frac) pair for real data
 # [7] Use CDF from [5] to calculate P(X^2, Inactive_frac)
 
+
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--name", type=str, required=True)
@@ -39,9 +41,11 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--size", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=120)
     parser.add_argument("--nbins", type=int, default=36)
+    parser.add_argument("--ngrid", type=float, default=1.0, help="Modifies grid spacing to be 1/n*(original spacing)")
     parser.add_argument("--snr", type=float, default=5.0)
-    parser.add_argument("--datadir", type=str, default='../data/repeaters')
+    parser.add_argument("--datadir", type=str, default="../data/repeaters")
     return parser.parse_args()
+
 
 ## STEP [1] Get data
 #       - arrival_time:
@@ -58,10 +62,11 @@ size = arguments.size
 SNR = arguments.snr
 seed = arguments.seed
 NBINS = arguments.nbins
+ngrid = arguments.ngrid
 
 FRACTION = 1 / 2
 DATADIR = arguments.datadir
-OUTPUTDIR = arguments.output
+OUTDIR = arguments.output
 
 exposure_csv = f"{DATADIR}/{name}/exposure-UL.csv"
 arrivals_csv = f"{DATADIR}/{name}/arrivals.txt"
@@ -92,19 +97,31 @@ L_exposure_total = np.sum(exposure_hr_L)
 exposure_hr = exposure_hr_U + exposure_hr_L
 
 snrs = pd.read_csv(snr_csv, header=None)
-arrivals = pd.read_csv(arrivals_csv, parse_dates=[0], header=None)[snrs.to_numpy() > SNR]
+arrivals = pd.read_csv(arrivals_csv, parse_dates=[0], header=None)
 length_all_arrival = len(arrivals[0])
 
-arrivals = arrivals[
-    (arrivals[0] < (exposures["date"].max() + datetime.timedelta(days=1)))
-    & (arrivals[0] > (exposures["date"].min() - datetime.timedelta(days=1)))
-].sort_values(by=[0])
+within_exposure = (
+    arrivals[0] < (exposures["date"].max() + datetime.timedelta(days=1))
+) & (arrivals[0] > (exposures["date"].min() - datetime.timedelta(days=1)))
+
+
+arrivals = arrivals[snrs.to_numpy() >= SNR][within_exposure]
+snrs = snrs[snrs.to_numpy() >= SNR][within_exposure]
 event_window = arrivals[0].max() - arrivals[0].min()
 arrivals = Time(arrivals[0].to_list(), format="datetime", location=chime)
 
-arrivals = np.array(
-    (arrivals + arrivals.light_travel_time(coord)).to_value("mjd")
+table = {
+    "arrivals": arrivals.to_value("mjd").round(3),
+    "snrs": snrs.to_numpy().flatten().round(1),
+}
+
+arrivals = np.array((arrivals + arrivals.light_travel_time(coord)).to_value("mjd"))
+table["arrivals_barycenter"] = arrivals.round(3)
+# SAVE
+pd.DataFrame(table).sort_values(by="arrivals").to_csv(
+    pathlib.Path(OUTDIR, simname, name, f"{size:.2f}", "Arrivals.csv"), index=False
 )
+arrivals.sort()
 length_some_arrival = len(arrivals)
 
 split_idx = np.digitize(exposure_date, arrivals)
@@ -125,17 +142,27 @@ plt.savefig(pathlib.Path(outdir, "Timeline.png"))
 assert np.nansum(exposure_hr) > 0, "Exposure cannot be zero"
 burst_rate = sum(arrivals) / np.nansum(exposure_hr)
 
+burst_rate_day = burst_rate * 24 # (1/hr) * (hr/day)
+
+print("rate (1/d): ", burst_rate_day)
+print("tau (d): ", (event_window.days * 1 / FRACTION))
+print("spacing (d): ", 1 / (ngrid * burst_rate_day))
+
 periods = np.arange(
-    np.sum(arrivals) / (burst_rate * 24),
+    # np.sum(arrivals) / burst_rate_day,
+    1.5,
     (event_window.days * 1 / FRACTION),
-    1 / (burst_rate * 24),
+    1 / (ngrid*burst_rate_day),
 )
+print("Trial periods:", periods.min(), periods.max(), np.diff(periods)[0])
+print("Trial periods len:", periods.shape)
 
 ## STEP [3] Generate mock data ensemble
 mask_rng = lambda: [
     rng.choice([True, False], size=1, p=[burst_rate * i, 1 - (burst_rate * i)])
     for i in exposure_hr
 ]
+
 
 def chisquare_inactive_pdgram(
     time: np.ndarray,
@@ -177,7 +204,7 @@ def chisquare_inactive_pdgram(
         )
 
         active_phase = bins[curve_count > 0]
-        wait_head = active_phase[0] - 0
+        wait_head = active_phase[0] - (1 / nbins)
         wait_tail = 1 - active_phase[-1]
         if len(np.diff(active_phase)) == 0:
             max_inactive = wait_tail + wait_head

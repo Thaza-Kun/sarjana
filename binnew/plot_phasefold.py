@@ -1,4 +1,14 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "astropy",
+#     "matplotlib",
+#     "numpy",
+#     "pandas",
+# ]
+# ///
 import pathlib
+import argparse
 
 import pandas as pd
 import numpy as np
@@ -11,7 +21,8 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
-plt.rcParams['font.size'] = 15
+plt.rcParams["font.size"] = 15
+
 
 def parse_arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -23,9 +34,10 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--size", type=float, default=1.0)
     parser.add_argument("--period", type=float, required=True)
     parser.add_argument("--nbin", type=int, default=36)
-    parser.add_argument("--datadir", type=str, default='../data/repeaters/')
+    parser.add_argument("--datadir", type=str, default="../data/repeaters/")
     parser.add_argument("--other", type=float, default=None)
     return parser.parse_args()
+
 
 ### STEPS
 # [1] Get:
@@ -40,13 +52,6 @@ def parse_arguments() -> argparse.Namespace:
 # [6] Generate (X^2, Inactive_frac) pair for real data
 # [7] Use CDF from [5] to calculate P(X^2, Inactive_frac)
 
-
-## STEP [1] Get data
-#       - arrival_time:
-#       - exposure_time:
-#       - exposure_hour:
-#       - period_grid:
-
 arguments = parse_arguments()
 
 name = arguments.name
@@ -55,6 +60,7 @@ simname = arguments.simname
 confidence = arguments.confidence
 size = arguments.size
 NBINS = arguments.nbin
+predict_period = arguments.period
 
 FRACTION = 1 / 2
 DATADIR = arguments.datadir
@@ -97,59 +103,38 @@ length_all_arrival = len(arrivals[0])
 
 arrivals = Time(arrivals[0].to_list(), format="datetime", location=chime)
 
-arrivals = np.array(
-    (arrivals + arrivals.light_travel_time(coord)).to_value("mjd")
-)
+arrivals = np.array((arrivals + arrivals.light_travel_time(coord)).to_value("mjd"))
+
 
 def phasefold(time, period, nbins=36, shift=0):
-    phases = (((time - shift) / period) % 1)
+    phases = ((time - shift) / period) % 1
     return np.histogram(phases, nbins, range=(0, 1))
 
-old = arrivals[arrivals<=exposure_date.max()]
+
+old = arrivals[arrivals <= exposure_date.max()]
 curve, bins = phasefold(old, predict_period, shift=exposure_date.min())
 tau_old = old.max() - old.min()
-print(tau_old)
-print((tau_old/(len(old) - 1))/predict_period)
 tau_new = arrivals.max() - arrivals.min()
-print(tau_new)
-print((tau_new/(len(arrivals) - 1))/predict_period)
 
-print(curve)
 curve_, bins_ = phasefold(arrivals, predict_period, shift=exposure_date.min())
-print(curve_)
 
 window = np.array(np.cumsum(curve)).astype(bool)
 window_anti = np.array(np.cumsum(curve[::-1])).astype(bool)[::-1]
 window = [w and w_a for (w, w_a) in zip(window, window_anti)]
 within = curve_[window]
-print(curve[window])
-print(within)
-print(sum(within), "/", sum(curve_))
 
-label = 'T' if size == 1.0 else f'{int(size*100)} % T'
-label_other = 'T + new' if size_other == None else f'{int(size_other*100)} % T'
-plt.step(bins, [*curve, 0], label=label, color="tab:blue", where='post')
-plt.step(bins_, [*curve_, 0], label=label_other, color='tab:orange', where='post')
-plt.step(bins, [*curve, 0], color="tab:blue", where='post')
+# label = "T" if size == 1.0 else f"{int(size*100)} % T"
+# label_other = "T + new" if size_other == None else f"{int(size_other*100)} % T"
+plt.step(bins, [*curve, 0], label=None, color="tab:blue", where="post")
+# plt.step(bins_, [*curve_, 0], label=label_other, color="tab:orange", where="post")
+plt.step(bins, [*curve, 0], color="tab:blue", where="post")
 plt.gca().yaxis.set_major_locator(MaxNLocator(integer=True))
 plt.title(name)
-plt.ylabel('Count')
-plt.xlabel(r'$\Phi$' + f' (Period = {predict_period:.2f} days)')
-plt.legend()
+plt.ylabel("Count")
+plt.xlabel(r"$\Phi$" + f" (Period = {predict_period:.2f} days)")
 plt.tight_layout()
-plt.savefig(pathlib.Path(outdir, f'Phasefold-extended-{name}-{predict_period:.2f}.png'))
-print(pathlib.Path(outdir, f'Phasefold-extended-{name}-{predict_period:.2f}.png'))
-plt.close()
-
-# TIMELINE
-max_p = int(np.ceil((arrivals.max() - arrivals.min()) / predict_period))
-curve = np.tile([*curve,0], max_p)
-bins = np.tile(bins*predict_period, max_p) + np.repeat([i*predict_period for i in range(max_p)], bins.shape[0]) + arrivals.min()
-plt.vlines(arrivals, ymin=0, ymax=curve.max() + 0.5, color="r")
-plt.step(bins, curve)
-plt.plot(exposure_date, exposure_hr)
-plt.axvline(exposure_date.max(), linestyle="dashed", color="black")
+plt.xlim(0,1)
+plt.savefig(pathlib.Path(outdir, f"Phasefold-extended-{name}-{predict_period:.2f}.png"))
+print(pathlib.Path(outdir, f"Phasefold-extended-{name}-{predict_period:.2f}.png"))
 plt.show()
-# for i in range(60):
-#     plt.axvspan((arrivals.min()-1 + i*predict_period), (arrivals.min()-1 + i*predict_period) + active_period, alpha=0.1)
-# plt.savefig(pathlib.Path(outdir, "Timeline-extended.png"))
+plt.close()

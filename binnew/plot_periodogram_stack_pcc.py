@@ -1,3 +1,11 @@
+# /// script
+# requires-python = ">=3.12"
+# dependencies = [
+#     "matplotlib",
+#     "numpy",
+#     "scipy",
+# ]
+# ///
 import pathlib
 import argparse
 
@@ -5,7 +13,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import multivariate_normal
 from scipy.signal import peak_widths
-from tqdm import tqdm
 
 plt.rcParams["mathtext.fontset"] = "dejavuserif"
 plt.rcParams["font.size"] = 17.8
@@ -109,14 +116,20 @@ if accept_peak:
         f.write(f'period,pos,min\n{p},{p_p},{p_m}')
 
 fig, ax = plt.subplots(3, 1, figsize=(17.79, 8.3), sharex=True)
-ax[0].plot(periods, chisquare_stat)
-ax[0].set(ylabel=r"$\chi^2$ / ($\Phi$ - 1)")
-ax[1].plot(periods, inactive_stat)
-ax[1].set(ylabel=r"$F_0$")
-ax[2].semilogy(periods, prob)
-ax[2].axhline(confidence, c="r", linestyle="-.")
-ax[2].set(ylabel=r"$P_{cc}$")
-ax[2].invert_yaxis()
+# ax[0].plot(periods, chisquare_stat)
+# ax[0].set(ylabel=r"$\chi^2$ / ($\Phi$ - 1)")
+
+NEW = np.e**-(chisquare_stat * inactive_stat)
+
+ax[0].semilogy(periods, NEW)
+ax[0].set(ylabel=r"$F_0 \times \chi^2$")
+
+ax[1].semilogy(periods, prob)
+ax[1].axhline(confidence, c="r", linestyle="-.")
+ax[1].set(ylabel=r"$P_{cc}$")
+ax[1].invert_yaxis()
+
+ax[2].plot(periods, prob-NEW)
 
 fig.suptitle(name + r" ($\tau$ = " + f"{event_window} d)")
 fig.supxlabel("Period (d)", y=0.05)
@@ -146,4 +159,4 @@ if accept_peak:
 plt.xlim(0, periods.max())
 fig.align_ylabels()
 plt.tight_layout()
-plt.savefig(pathlib.Path(outdir, f"{name}-Periodogram-stack-{size:.2f}.pdf"))
+plt.savefig(pathlib.Path(outdir, f"{name}-Periodogram-stack-pcc-{size:.2f}.pdf"))

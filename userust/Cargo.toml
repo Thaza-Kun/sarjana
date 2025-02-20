@@ -26,6 +26,7 @@ serde = { version = "1.0.200", features = ["derive"] }
 serde-pickle = "1.1.1"
 tqdm = "0.7.0"
 which = "6.0.1"
+zip = "2.2.1"
 
 [features]
 pyargs = []
