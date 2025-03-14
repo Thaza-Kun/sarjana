@@ -1,3 +1,3 @@
-# userust
+# bin
 
 Describe your project here.
